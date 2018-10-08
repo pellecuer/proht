@@ -1,0 +1,21 @@
+body {    
+	min-height: 700px;
+}
+
+h1 {
+    color: #09357A; 
+}
+
+.homeCards {
+	position:relative;
+	top: 20px;
+}
+
+.redEDf {
+	color: #FE5815; 
+}
+
+.card {
+	box-shadow: 1px 2px #888888;
+	background-color: #FE5815;
+}
