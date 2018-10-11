@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block title %} Planning {% endblock %}
+
+{% block body %}    
+    <header class="text-center py-3">
+            <h1 class="bg-white-semi_transparent"><em class="text-dark">Horaires remontés pour </em>2019</h1>
+            <p>Dernière modification le 20/04/2019</p>           
+            
+    </header>
+    
+    <div class="">
+        <div class="container bg-light homeCards">
+            <div class="row">
+                <div class="col-md-4 offset-1">
+                    <span class="fa-stack fa-1x my-2">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <a href="{{ path('home') }}"><i class="fas fa-print fa-stack-1x fa-inverse"></i></a>                    
+                    </span>
+                    <span class="fa-stack fa-1x">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <a href="{{ path('home') }}"><i class="fas fa-calendar-alt fa-stack-1x fa-inverse"></i></a>                    
+                    </span>
+                </div>
+            </div>
+            <div class= "row">
+                <div class="col-12">
+                    <table class="table table-hover table-sm vertical-align">                        
+                        <thead>
+                            <tr class="text-center">
+                                <td colspan="1" class="align-middle">                                    
+                                    
+                                </td>
+                                <td colspan="1" class="align-middle"></td>                                
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-angle-left fa-2x"></i></a></td>
+                                <td colspan="3"> <em>Juin 2018</em> <br>semaine 6</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-angle-right fa-2x"></i></a></td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td>Vacances scolaires</td>
+                                <td class="bg-holidays"></td>
+                                <td class="bg-holidays"></td>
+                                <td class="bg-holidays"></td>
+                                <td class="bg-holidays"></td>
+                                <td class="bg-holidays"></td>
+                                <td class="bg-holidays"></td>
+                                <td class="bg-holidays"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Arrets de tranche</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="bg-stopTranche">Copat</td>                                
+                                <td class="bg-stopTranche"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>                           
+                            <tr>
+                                <th class ="col-md-2"></th>
+                                <th class ="col-md-1">Dimanche</th>
+                                <th class ="col-md-1">Lundi</th>
+                                <th class ="col-md-1">Mardi</th>
+                                <th class ="col-md-1">Mercredi</th>
+                                <th class ="col-md-1">Jeudi</th>
+                                <th class ="col-md-1">Vendredi</th>
+                                <th class ="col-md-1">Samedi</th>
+                                <th class ="col-md-1" colspan="3"></th>
+                            </tr>
+                            <tr>
+                                <td class ="td-sm"><i class="fa fa-sort float-right" aria-hidden="true"> </i><a href="{{ path('home') }}"><i class="fas fa-plus"></i> Ajouter</a></td>
+                                <td class ="td-sm">10</td>
+                                <td class ="td-sm">11</td>
+                                <td class ="td-sm">12</td>
+                                <td class ="td-sm">13</td>
+                                <td class ="td-sm">14</td>
+                                <td class ="td-sm">15</td>
+                                <td class ="td-sm">16</td>
+                                <td class ="td-sm">Total</td>
+                                <td class ="td-sm"></td>
+                                <td class ="td-sm"></td>                                
+                            </tr> 
+                        </thead>                        
+                        <tbody>
+                            <tr>
+                                <td>Jean Dupont</td>
+                                <td class="bg-h">H</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td class="bg-r">R</td>
+                                <td>44</td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                                 
+                            </tr>
+                            <tr>
+                                <td>Michel Dupuis</td>
+                                <td class="bg-h">H</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td class="bg-r">R</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>44</td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr>
+                                <td>Jacques Legrand</td>
+                                <td class="bg-h">H</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td class="bg-r">R</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>48</td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr>
+                                <td>Michel Duchaussoy</td>
+                                <td class="bg-h">H</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td class="bg-r">R</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>J</td>
+                                <td>45</td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>                    
+                </div>
+            </div>            
+        </div>
+    </div>                             
+{% endblock %}{# empty Twig template #} 

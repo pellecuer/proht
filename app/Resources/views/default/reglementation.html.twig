@@ -1,0 +1,103 @@
+
+{% extends 'base.html.twig' %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block title %} Accueil {% endblock %}
+
+{% block body %}
+     <header class="text-center py-3">
+            <h1 class="bg-white-semi_transparent"><em class="text-dark">Reglementation du </em>Travail</h1>
+            <p>Applicable au CNPE de St Alban</p>           
+            
+    </header>
+    
+    <div class="">
+        <div class="container bg-light homeCards">
+            <div class="row">
+                <div class="col-md-1 offset-1">
+                    <span class="fa-stack fa-1x my-2">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <a href="{{ path('home') }}"><i class="fas fa-print fa-stack-1x fa-inverse"></i></a>                    
+                    </span>                    
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-1">
+                    <h5>Règlementation du travail :</h5>
+                    <ul>
+                        <li>Semaine légale du dimanche 0 heures au samedi 24 heures</li>
+                        <li>Repos hebdomadaire de 35 heures minimum, avec un H de 24 heures minimum, entouré de 11 heures avant ou après ou autour. Les 11 heures peuvent déborder sur la semaine suivante. En revanche pas le H.</li>
+                        <li>Respect de 11 heures de repos entre 2 journées de travail</li>
+                        <li>10 heures par jour max</li>
+                        <li>48 heures max par semaine</li>
+                        <li>44 heures max par semaine en moyenne sur 12 semaines</li>
+                    </ul>
+                    <h5 class="my-3">Contraintes réglementaires :</h5> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-1">                    
+                     <div class="col-12">
+                    <table class="table table-hover table-sm vertical-align">                        
+                        <thead>
+                            <tr class="text-left">
+                                <th class ="col-md-1 align-middle"><i class="fa fa-sort float-right" aria-hidden="true"> </i><a href="{{ path('home') }}"><i class="fas fa-plus float-left"></i></a></th>                                
+                                <th class ="col-md-6 align-middle">Règle </th>
+                                <th class ="col-md-1 align-middle">Chiffre</th>
+                                <th class ="col-md-1 align-middle"></th>
+                                <th class ="col-md-1 align-middle"></th>
+                               
+                            </tr> 
+                        </thead>                        
+                        <tbody>
+                            <tr class="text-left">
+                                <td class="align-middle"></td>
+                                <td class="align-middle">Durée de travail max/jour</td>
+                                    <td class="align-middle">10</td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle"></td>
+                                <td class="align-middle">Repos hebdomadaire min</td>
+                                <td class="align-middle">35</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle"></td>
+                                <td class="align-middle">Temps de repos minimum entre 2 journées de travail</td>
+                                <td class="align-middle">11</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle"></td>
+                                <td class="align-middle">Nombre d'heures max/semaine</td>
+                                <td class="align-middle">48</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle"></td>
+                                <td class="align-middle">Nb d'heure moyenne max/semaine sur X semaines</td>
+                                <td class="align-middle">44</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle"></td>
+                                <td class="align-middle">X semaines</td>
+                                <td class="align-middle">12</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                        </tbody>
+                    </table>                            
+                </div>
+            </div>
+        </div>                    
+    </div>
+    
+{% endblock %}

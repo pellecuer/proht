@@ -1,0 +1,61 @@
+
+{% extends 'base.html.twig' %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block title %} Accueil {% endblock %}
+
+{% block body %}
+     <header class="text-center py-3">
+            <h1 class="bg-white-semi_transparent"><em class="text-dark">Documentation </em>Technique</h1>
+            <p>Comment utiliser, modifier l'application</p>           
+            
+    </header>
+    
+    <div class="">
+        <div class="container bg-light homeCards">
+            <div class="row">
+                <div class="col-md-1 offset-1">
+                    <span class="fa-stack fa-1x my-2">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <a href="{{ path('home') }}"><i class="fas fa-print fa-stack-1x fa-inverse"></i></a>                    
+                    </span>                    
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-1">
+                    <h5>Interlocuteurs</h5>
+                    <ul>
+                        <li>Clients</li>
+                            <p>Véronique Gogue - Appui RH spécialisé</p>
+                            <p>Helène Vergniau - Délégué Ressource MT</p>
+                            <p></p>
+                        <li>Developpeurs</li>
+                            <p>David Pellecuer - stagiaire, Alp System Info</p>
+                           
+                        <li>Responsables hierarchiques</li>
+                            <p>Thibault Félix - Manager SI Telecom, Alp System Info  </p>
+                            <p>François  Fumey - Conseil et expertise SI Telecom, Alp System Info</p>                        
+                    </ul>
+                    <h5>Résumé </h5>
+                    <p>
+                    Un planning des agents destiné à être présenté en CE (Comité d’Etablissement), 3 mois (voir la durée légale de présentation) avant l’arrêt des tranches, respectant la réglementation du travail. 
+                    </p>
+                    <h5>Objectifs</h5>
+                    <p>
+                    Faciliter et simplifier la saisie avec des alertes. Limiter les erreurs. Remplacer le système actuel sous excel 
+                    </p>                    
+                        
+                    
+                    
+
+                    
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>                    
+    </div>
+    
+{% endblock %}

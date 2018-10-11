@@ -1,0 +1,210 @@
+
+{% extends 'base.html.twig' %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block title %} Accueil {% endblock %}
+
+{% block body %}
+     <header class="text-center py-3">
+            <h1 class="bg-white-semi_transparent"><em class="text-dark">Roles et Droits </em>des agents</h1>
+            <p>Applicable au CNPE de St Alban</p>           
+            
+    </header>
+    
+    <div class="">
+        <div class="container bg-light homeCards">
+            <div class="row">
+                <div class="col-md-1 offset-1">
+                    <span class="fa-stack fa-1x my-2">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <a href="{{ path('home') }}"><i class="fas fa-print fa-stack-1x fa-inverse"></i></a>                    
+                    </span>                    
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-1">
+                    <h5 class="my-3">Tableau des roles :</h5> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-1">                    
+                     <div class="col-12">
+                    <table class="table table-hover table-sm vertical-align">                        
+                        <thead>
+                            <tr class="text-left">
+                                <th class ="col-md-1 align-middle"><span><i class="fa fa-sort float-right" aria-hidden="true"></span></i><span class="px-1"> Agent<a href="{{ path('home') }}"></span><span><i class="fas fa-plus float-left"></i></a></span></th> 
+                                <th class ="col-md-1 align-middle">NNI</th>
+                                <th class ="col-md-1 align-middle">Role</th>
+                                <th class ="col-md-1 align-middle"></th>
+                                <th class ="col-md-1 align-middle"></th>
+                               
+                            </tr> 
+                        </thead>                        
+                        <tbody>
+                            <tr class="text-left">
+                                <td class="align-middle">Michel X</td>
+                                <td class="align-middle">E32979</td>
+                                    <td class="align-middle">Administrateur</td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Jean Y</td>
+                                <td class="align-middle">E32979</td>
+                                <td class="align-middle">Webmaster</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Laurent Z</td>
+                                <td class="align-middle">E32979</td>
+                                <td class="align-middle">Appui RH Spécialisé</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">David P</td>
+                                <td class="align-middle">E32979</td>
+                                <td class="align-middle">Responsable d'équipe</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Clement D</td>
+                                <td class="align-middle">E32979</td>
+                                <td class="align-middle">Délégué ressource</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Sylvain A</td>
+                                <td class="align-middle">E32979</td>
+                                <td class="align-middle">Agent</td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td class="align-middle"><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                        </tbody>
+                    </table>                            
+                </div>
+            </div>
+        </div>                    
+    </div>
+                            
+    <div class="">
+        <div class="container bg-light homeCards">            
+            <div class="row">
+                <div class="col-md-10 offset-1">
+                    <h5 class="my-3">Tableau des droits :</h5> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-1">                    
+                     <div class="col-12">
+                    <table class="table table-hover table-sm vertical-align table-bordered">                        
+                        <thead>
+                            <tr class="text-left">
+                                <th class ="col-md-2 align-middle"><span><i class="fa fa-sort float-right" aria-hidden="true"></span></i><span class="px-1"> Fonction <a href="{{ path('home') }}"></span><span><i class="fas fa-plus float-left"></i></a></span></th> 
+                                <th class ="col-md-1 align-middle">
+                                    <ul>
+                                        <li>Droit en écriture et lecture sur les codes planning</li>
+                                        <li>Droit de changer les rôles</li>
+                                        <li>Droit de changer les droits</li>
+                                    </ul>                                            
+                                </th>
+                                <th class ="col-md-1 align-middle">
+                                    <ul>
+                                        <li>Droit en écriture en écriture et en lecture sur tous les services</li>
+                                        <li>Droit en écriture sur les vacances scolaires</li>
+                                        <li>Droit en écriture sur les arrêts de tranche +RCD, + Copat</li>
+                                        <li>Impression PDF</li>
+                                    </ul>
+                                </th>
+                                <th class ="col-md-1 align-middle">
+                                    <ul>
+                                        <li>Droit en écriture en écriture et en lecture sur son service</li>
+                                        <li>Impression pdf</li>
+                                        <li>Visualisation des modification de date à date</li>                                        
+                                    </ul>
+                                </th>
+                                <th class ="col-md-1 align-middle">
+                                    Droit en lecture après publication sur son planning et le planning de l'équipe
+                                </th>
+                                <th class ="col-md-1 align-middle">                                    
+                                </th>
+                                <th class ="col-md-1 align-middle">                                    
+                                </th>
+                            </tr> 
+                        </thead>                        
+                        <tbody>
+                            <tr class="text-left">
+                                <td class="align-middle">Administrateur</td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Webmaster</td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Appui RH Spécialisé</td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Responsable d'équipe</td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Délégué Ressource</td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Chef de projet</td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                            <tr class="text-left">
+                                <td class="align-middle">Agents</td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-danger"></td>
+                                <td class="align-middle bg-success"></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('home') }}"><i class="fas fa-trash-alt"></i></a</td>
+                            </tr>
+                        </tbody>
+                    </table>                            
+                </div>
+            </div>
+        </div>                    
+    </div>
+    
+{% endblock %}

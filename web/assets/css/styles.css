@@ -1,5 +1,5 @@
 body {    
-	min-height: 700px;
+	min-height: 900px;
 }
 
 h1 {
@@ -15,7 +15,33 @@ h1 {
 	color: #FE5815; 
 }
 
+.cardh {
+    box-shadow: 1px 2px #888888;
+	background-color: #09357A;
+}
+
 .card {
 	box-shadow: 1px 2px #888888;
-	background-color: #FE5815;
+	border-color: #09357A;
+}
+
+.bg-holidays {
+    background-color: #FE5815;
+    border: solid 1px #ffffff;
+}
+
+.bg-stopTranche {
+    background-color: #FFFF00;
+    border: solid 1px #ffffff;
+}
+
+
+.bg-h {
+    background-color: #cd0000;
+    border: solid 1px #ffffff;
+}
+
+.bg-r {
+    background-color: #008b00;
+    border: solid 1px #ffffff;
 }
