@@ -1,0 +1,8 @@
+{# empty Twig template #}
+
+    <h1>Liste de tous les agents</h1>
+<ul>
+    {% for code in codes %}
+        <li>{{ code.letter }} {{ code.timeRange }} {{ code.endDate|date('d/m/Y')  }}  {{ code.beginDate|date('d/m/Y') }} </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,8 @@
+{# empty Twig template #}
+
+    <h1>Liste de tous les agents</h1>
+<ul>
+    {% for agent in agents %}
+        <li>{{ agent.name }} {{ agent.firstname }} {{ agent.function}} {{ agent.role}} </li>
+    {% endfor %}
+</ul>

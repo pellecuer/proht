@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * CodePlanning
@@ -31,6 +32,7 @@ class CodePlanning
     /**
      * @var string
      *
+     * 
      * @ORM\Column(name="TimeRange", type="decimal", precision=10, scale=2)
      */
     private $timeRange;
@@ -38,6 +40,8 @@ class CodePlanning
     /**
      * @var \DateTime
      *
+     * @Assert\DateTime()
+     * @Assert\NotBlank()
      * @ORM\Column(name="BeginDate", type="datetime")
      */
     private $beginDate;

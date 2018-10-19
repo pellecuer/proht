@@ -55,6 +55,12 @@ class Agent
      * @ORM\Column(name="Role", type="string", length=100)
      */
     private $role;
+    
+        
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CodePlanning")
+     */
+     private $CodePlanning;
 
 
     /**
@@ -186,5 +192,17 @@ class Agent
     {
         return $this->role;
     }
+    
+    
+    function getLetter() {
+        return $this->letter;
+    }
+
+    function setLetter($letter) {
+        $this->letter = $letter;
+    }
+
+
+    
 }
 
