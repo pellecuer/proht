@@ -73,4 +73,12 @@ class FrontController extends Controller
     {       
         return $this->render('default/droitsRoles.html.twig');
     }
+    
+    /**
+     * @Route("/datatables", name="datatables")
+     */
+    public function dataTablesAction(Request $request)
+    {       
+        return $this->render('dataTable.html.twig');
+    }
 }
