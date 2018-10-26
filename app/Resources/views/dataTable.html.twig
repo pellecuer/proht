@@ -5,24 +5,45 @@
     <div class="container">
         <div class= "row">
             <div class= "col-xs-12">
-               <button id="addRow"type="button" class="btn btn-primary my-3">Ajouter</button>
+               <button id="addRow"type="button" class="btn btn-primary my-3">Ajouter </button>
+               
                <table id="example" class="display" style="width:100%">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Column 1</th>
                             <th>Column 2</th>
                             <th>Column 3</th>
                             <th>Column 4</th>
-                            <th>Column 5</th>
+                            <th></th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr>
+                            <td><input id="check" type="checkbox"></td>
+                            <td>Column 1</td>
+                            <td></td>
+                            <td>Column 3</td>
+                            <td>Column 4</td>
+                            <td><i class="fas fa-trash-alt" id="icon-delete"></i></td>
+                        </tr>
+                        <tr>
+                            <td><input id="check" type="checkbox"></td>
+                            <td>Column 1</td>
+                            <td></td>
+                            <td>Column 3</td>
+                            <td>Column 4</td>
+                            <td><i class="fas fa-trash-alt" id="icon-delete"></i></td>
+                        </tr>
+                    </tbody>
                     <tfoot>
                         <tr>
+                            <th></th>
                             <th>Column 1</th>
                             <th>Column 2</th>
                             <th>Column 3</th>
                             <th>Column 4</th>
-                            <th>Column 5</th>
+                            <th></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -34,22 +55,21 @@
 
 {% block javascripts %}
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript">    
- //$(document).ready( function () {
-  //   $('#example').DataTable();
- //} );
- 
+<script type="text/javascript">
+///addRow
  $(document).ready(function() {
-    var t = $('#example').DataTable();
+    var table = $('#example').DataTable();
     var counter = 1;
+    var checkbox = 'coco';
  
     $('#addRow').on( 'click', function () {
-        t.row.add( [
-            counter +'.1',
-            counter +'.2',
-            counter +'.3',
-            counter +'.4',
-            counter +'.5'
+        table.row.add( [
+            'J',
+            'J',
+            'J',
+            'H',
+            'H',
+            checkbox
         ] ).draw( false );
  
         counter++;
@@ -59,5 +79,16 @@
     $('#addRow').click();
 } );
 
+ //deleteRow
+ $(document).ready(function() {
+    var table = $('#example').DataTable();
+ 
+    $('#example tbody').on( 'click', '#icon-delete', function () {
+        table
+            .row( $(this).parents('tr') )
+            .remove()
+            .draw();
+    } );    
+} );
 </script>
 {% endblock %}
