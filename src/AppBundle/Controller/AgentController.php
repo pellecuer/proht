@@ -49,16 +49,15 @@ class AgentController extends Controller
         
         // finds *all* products
         //$agents = $repository->findAll();        
-        /*var_dump($agents);die;*/
+        /*var_dump($agents);die;*/        
+        
                     
 
         if (!$agents) {
             throw $this->createNotFoundException(
                 'No agent found'
             );
-        }
-        
-        
+        }        
         
         return $this->render('agent/show.html.twig', array(
                 'agents' => $agents,
