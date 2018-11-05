@@ -125,38 +125,39 @@ class AgendaController extends Controller {
      * @Route("/agenda/team", name="agendaTeam")
      * @Method({"GET", "POST"})
      */
-    public function indexTeamAction(Request $request)
+    public function indexTeamAction()
     {
         //CreateForm
+        /*
         $form = $this->createForm(DateType::class);
         $form->handleRequest($request);
          if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $startDate = $data['$startDate'];
             $endDate = $data['$endDate'];
-        //$startDate = new \DateTime('now - 200 days',  new \DateTimeZone('Europe/Paris'));
-        //$endDate = new \DateTime(('11-01-2019'));        
+         */
+         
+         
+        $startDate = new \DateTimeImmutable('now - 200 days',  new \DateTimeZone('Europe/Paris'));
+        $endDate = new \DateTime(('11-01-2019'));
+        $agent = ['Durant', 'Dupont', 'Michel'];
         
         $dateBetweens = $this->getDoctrine()
             ->getRepository(Agenda::class)
-            ->findDateBetweenDate($startDate, $endDate);
+            ->findDateBetweenDate($startDate, $endDate);        
         
-         //}
-        $agentTeam = ['Dupont'];
-        $agentBetweens = [];
-        for ($i = 1; $i <= count($agentTeam); $i++) {
-            $agentBetweens = [];
-       
+        
+        for ($i = 0; $i < count($agent); $i++) {            
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
-                ->findAgentBetweenDate($startDate, $endDate, $agentTeam[$i]);
+                ->findAgentBetweenDate($startDate, $endDate, $agent[$i]);
          }
 
-        return $this->render('agenda/index.html.twig', [
+        return $this->render('agenda.html.twig', [
             'dateBetweens' => $dateBetweens,
             'agentBetweens' => $agentBetweens,
-             'form'=>$form->createView()                
+             //'form'=>$form->createView()                
         ]);
-        }
+        
     }
 }

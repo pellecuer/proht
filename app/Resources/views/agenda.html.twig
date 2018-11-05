@@ -6,10 +6,6 @@
     <div class="container">
         
         
-        {{ form_start(form) }}
-                        {{ form_row(form.startDate, {'label': false}) }}
-                   
-        {{ form_end(form) }}
         
         
             <form class="form-inline">
@@ -36,73 +32,30 @@
                         </tr>
                         <tr>
                             <th scope ="col" ></th>                            
-                            {% for arraydate in arraydates %}
-                                <th class="">{{ arraydate|localizeddate('none', 'none', 'fr', null, 'E d') }}</th>
+                            {% for dateBetween in dateBetweens %}
+                                <th class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'E d') }}</th>
                             {% endfor %}   
                             </th>          
                         </tr>
+                         {{ dump (agentBetweens) }}
                     </thead>
                      <tbody>
-                         <tr>
-                             <td class="">Jean</td>
-                             <td class="editFor">J</td>
-                             <td class="editFor">m</td>
-                             <td class="editFor">s</td>
-                             <td class="editFor">b</td>
-                             <td class="editFor">q</td>
-                             <td class="editFor">v</td>
-                             <td class="update " scope ="col"><i class="fas fa-check"></i></td>
-                             <td class="trash" scope ="col"><i class="fas fa-trash-alt"></i></td>
-                         </tr>
-                           <tr>
-                            <td class="">Paul</td>
-                             <td class="editFor">v</td>
-                             <td class="editFor">J</td>
-                             <td class="editFor">m</td>
-                             <td class="editFor">s</td>
-                             <td class="editFor">b</td>
-                             <td class="editFor">q</td>
-                             <td class="update" scope ="col"><i class="fas fa-check"></i></td>
-                             <td class="trash" scope ="col"><i class="fas fa-trash-alt"></i></td>
-                         </tr>
-                         <tr>
-                            <td class="">Louis</td>
-                             <td class="editFor">u</td>
-                             <td class="editFor">J</td>
-                             <td class="editFor">m</td>
-                             <td class="editFor">z</td>
-                             <td class="editFor">b</td>
-                             <td class="editFor">w</td>
-                             <td class="update" scope ="col"><i class="fas fa-check"></i></td>
-                             <td class="trash" scope ="col"><i class="fas fa-trash-alt"></i></td>
+                        {% for agentBetween in agentBetweens %}
+                            <tr>
+                                <td>{{agentBetween.0.agent  }}</td>
+                               {% for letter in agentBetween %}
+                                    <td class="editFor">{{ letter.letter }}</td>
+                                {% endfor %}
+                                <td class="update" scope ="col"><i class="fas fa-check"></i></td>
+                                <td class="trash" scope ="col"><i class="fas fa-trash-alt"></i></td>
+                            </tr>
+                       {% endfor %}
                          </tr>
                      </tbody>                 
                  </table>
                 <h2>Description : <span id="titre"></span></h2>
                 <h2></h2>
-                <h2>Détail : <span id="producteur"></span></h2>
-                <h2>Maintenant : {{ now | localizeddate('none', 'none', 'fr', null, 'EEEE d MMMM Y') }}</h2>
-                <h2>Dans un mois : {{ end | date("F jS \\a\\t g:ia", "Europe/Paris") }}  </h2>
-                <h2> {% for agent in agent1 %}                                                
-                         <th class="">{{ agent.letter }}</th>
-                    {% endfor %}   
-                </h2>
-                <h2> {% for agent in agent2 %}
-                         <th class="">{{ agent.letter }}</th>
-                    {% endfor %}
-                </h2>
-                <h2> {% for agent in agent3 %}
-                         <th class="">{{agent.letter }}</th>
-                    {% endfor %}
-                </h2>
-                <h2> {% for d in db %}
-                         <th class="">{{d.date|localizeddate('none', 'none', 'fr', null, 'E d') }}</th>
-                    {% endfor %}
-                </h2> 
-                <h2> {% for d in db %}
-                         <th class="">{{d.letter }}</th>
-                    {% endfor %}
-                </h2>
+                <h2>Détail : <span id="producteur"></span></h2>                
                 
                {# {% for dateBetween in dateBetweens %}
                     <th class="">{{dateBetween.date | date("F jS \\a\\t g:ia", "Europe/Paris") }}</th>
