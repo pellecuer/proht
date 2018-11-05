@@ -41,7 +41,7 @@ class AgendaRepository extends EntityRepository
             ->setParameter('end', $endDate)
             ->setParameter('agent', $agent)
             ->orderBy('a.date', 'ASC')
-            ->setMaxResults(1000)
+            ->setMaxResults(90)
             ->getQuery()
             ->getResult()
             ;

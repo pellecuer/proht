@@ -138,24 +138,39 @@ class AgendaController extends Controller {
          */
          
          
-        $startDate = new \DateTimeImmutable('now - 200 days',  new \DateTimeZone('Europe/Paris'));
-        $endDate = new \DateTime(('11-01-2019'));
+        
         $agent = ['Durant', 'Dupont', 'Michel'];
         
-        $dateBetweens = $this->getDoctrine()
-            ->getRepository(Agenda::class)
-            ->findDateBetweenDate($startDate, $endDate);        
-        
+           
+        $startDate = new \DateTimeImmutable('now - 20 days',  new \DateTimeZone('Europe/Paris'));
+        $endDate = new \DateTime(('11-01-2019'));
         
         for ($i = 0; $i < count($agent); $i++) {            
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
                 ->findAgentBetweenDate($startDate, $endDate, $agent[$i]);
          }
+         
+        //Attention au timeStamp sur le DateTime // Bien mettre les lignes suivantes après le 1er For
+        $startDate = new \DateTimeImmutable('now - 20 days',  new \DateTimeZone('Europe/Paris'));
+        $endDate = new \DateTime(('11-01-2019'));
+         
+         
+        $diff=$startDate->diff($endDate)->days;
+        $diff1Day = new \DateInterval('P1D');
+        $arrayDate = [];
+
+        for ($i=0;$i<$diff;$i++){
+            $arrayDate[] =  $startDate;
+            $startDate = $startDate->add($diff1Day);
+        }
+         
+         
 
         return $this->render('agenda.html.twig', [
-            'dateBetweens' => $dateBetweens,
-            'agentBetweens' => $agentBetweens,
+            
+           'dateBetweens' => $arrayDate,
+            'agentBetweens' => $agentBetweens
              //'form'=>$form->createView()                
         ]);
         
