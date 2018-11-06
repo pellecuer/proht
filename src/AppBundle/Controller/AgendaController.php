@@ -6,96 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Agenda;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use AppBundle\Form\Type\DateType;
 
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\NotBlank;
  
 class AgendaController extends Controller {
-    /**
-     * @Route("/agenda", name="agenda")
-     */
-    public function showAction()
-    {
-             // finds *all* agenda 
-        $agendas = $this->getDoctrine()->getRepository(Agenda::class)->findAll();
-                
         
-        //ArrayDate();        
-        $now = new \DateTime("now");
-        $end = new \DateTime("now + 28 days");  
-        
-        $arrayDates = [];
-        $nbjours = 28;
-        for($i = 0; $i <= $nbjours; $i++) {
-           $arrayDates[] = new \DateTime("now + $i days");  
-        }
-        
-        
-        if (!$agendas) {
-            throw $this->createNotFoundException(
-                'No agenda found'
-            );
-        }
-        
-        //LigneDate
-        $x = new \DateTime("now-5");
-        $y = new \DateTime("now + 28 days");
-        $repository = $this->getDoctrine()->getRepository(Agenda::class);
-        $db = $repository->createQueryBuilder('p');
-        $db
-            ->where('p.date > :x')
-            ->andwhere('p.date < :y')
-            ->setParameter('x', $x)
-            ->setParameter('y', $y)
-            ->orderBy('p.date', 'ASC')            
-            ->setMaxResults(28);
-
-        $dateBeetween = $db->getQuery()->getResult();
-        
-        //Autre ligne 
-        
-        //ligne 1
-        $name = 'Dupont';
-        $agent1 = $repository->findBy(
-        ['agent' => $name],
-        ['date' => 'ASC']
-            );
-        
-        //Ligne 2
-        $name = 'Michel';
-        $agent2 = $repository->findBy(
-        ['agent' => $name],
-        ['date' => 'ASC']
-            );
-        
-        //ligne 3
-        $name = 'Durant';
-        $agent3 = $repository->findBy(
-        ['agent' => $name],
-        ['date' => 'ASC']
-            );
-
-         
-        
-        return $this->render('agenda.html.twig', array(
-                'agendas' => $agendas,
-                    'now' => $now,
-                    'end' => $end,
-                    'arraydates' => $arrayDates,
-                    'agent1' => $agent1,
-                    'agent2' => $agent2,
-                    'agent3' => $agent3,
-                    'db' => $dateBeetween,
-                    
-            ));
-        
-
-        // ... do something, like pass the $product object into a template
-    }
-    
     /**
      * @Route("/agenda/create", name="createagenda")
      */
@@ -115,8 +34,7 @@ class AgendaController extends Controller {
         $entityManager->flush();
 
         return new Response('Saved new agenda with id '.$agenda->getId());
-    }
-    
+    }    
 
 
     /**
@@ -125,54 +43,160 @@ class AgendaController extends Controller {
      * @Route("/agenda/team", name="agendaTeam")
      * @Method({"GET", "POST"})
      */
-    public function indexTeamAction()
-    {
-        //CreateForm
-        /*
-        $form = $this->createForm(DateType::class);
+    public function indexTeamAction(Request $request)
+    {        
+        //build the form
+        $form = $this->createFormBuilder()
+            ->add('startDate', DateType::class, array(
+            'placeholder' => 'Choose a delivery option',
+            'constraints' => array(
+                    new NotBlank()
+            ),
+            'widget' => 'single_text',
+            'label'  => 'Date de début',
+            'attr' => array('class' => 'form-group mb-2'),
+             ))
+                
+            ->add('endDate', DateType::class, array(
+            'placeholder' => 'Choose a delivery option',
+            'constraints' => array(
+                    new NotBlank()
+            ),
+            'widget' => 'single_text',
+            'label'  => 'Date de fin',
+            'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+            ))
+            
+            ->add('Envoyer', SubmitType::class, array(
+            'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
+            ))
+        
+            ->getForm()
+            ;
+            
+        //get date from Form
         $form->handleRequest($request);
-         if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {            
             $data = $form->getData();
-            $startDate = $data['$startDate'];
-            $endDate = $data['$endDate'];
-         */
+            $startDate = $data['startDate'];          
+            $endDate = $data['endDate'];
+            //dump($startDate);die;
+
+        }else {
+            $startDate = new \DateTimeImmutable('now - 20 days',  new \DateTimeZone('Europe/Paris'));
+            $endDate = new \DateTime(('11-01-2019'));
+            //dump($endDate);die;
+        } 
+        
+        //build arrayDate
+        $startDateArray = $startDate;
+        $endDateArray = $endDate;
+        $diff=$startDateArray->diff($endDateArray)->days;
+        $diff1Day = new \DateInterval('P1D');
+        $arrayDate = [];
+        for ($i=0;$i<$diff;$i++){
+            $arrayDate[] =  $startDateArray;
+             $startDateArray = $startDateArray->add($diff1Day);
+        }
+        //dump($arrayDate);die;
          
-         
-        
-        $agent = ['Durant', 'Dupont', 'Michel'];
-        
-           
-        $startDate = new \DateTimeImmutable('now - 20 days',  new \DateTimeZone('Europe/Paris'));
-        $endDate = new \DateTime(('11-01-2019'));
-        
+
+        $agent = ['Durant', 'Dupont', 'Michel'];        
+
         for ($i = 0; $i < count($agent); $i++) {            
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
                 ->findAgentBetweenDate($startDate, $endDate, $agent[$i]);
          }
-         
-        //Attention au timeStamp sur le DateTime // Bien mettre les lignes suivantes après le 1er For
-        $startDate = new \DateTimeImmutable('now - 20 days',  new \DateTimeZone('Europe/Paris'));
-        $endDate = new \DateTime(('11-01-2019'));
-         
-         
-        $diff=$startDate->diff($endDate)->days;
-        $diff1Day = new \DateInterval('P1D');
-        $arrayDate = [];
 
-        for ($i=0;$i<$diff;$i++){
-            $arrayDate[] =  $startDate;
-            $startDate = $startDate->add($diff1Day);
+         
+        return $this->render('agenda.html.twig', [
+
+       'dateBetweens' => $arrayDate,
+        'agentBetweens' => $agentBetweens,
+         'form'=>$form->createView()                
+        ]);
+        }   
+        
+        
+        /*$form = $this->createForm(AgendaType::class);
+        $form->handleRequest($request);
+       
+         if ($form->isSubmitted() && $form->isValid()) {            
+            $data = $form->getData();            
+            $startDate = $data['$startDate'];            
+            $endDate = $data['$endDate'];
+            
+            return $this->redirectToRoute('filterByDate', array(
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ));
+         }
+         else {
+         
+         */
+             
+       
+         
+
+              
+    
+    
+    /**
+     *  Lists all agenda entities.
+     *
+     * @Route("/agenda/{startDate}/{endDate}}", name="filterByDate")
+     * @Method({"GET", "POST"})
+     */
+     public function filterByDateAction(Request $request, \DateTime $startDate, \DateTime $endDate)
+    {
+        $form = $this->createForm(AgendaType::class);
+        $form->handleRequest($request);               
+        
+        //récupérer les placeholder
+        
+        dump($startDate);
+         
+        //Créer le formulaire
+        //setter la value des dates et team
+        //Générer le tableau des dates
+        // Générer le tableau des lettres
+        // Envoyer la vue
+         
+     }
+     
+     
+     /**
+     *  Lists all agenda entities.
+     *
+     * @Route("/test", name="test")
+     * @Method({"GET", "POST"})
+     */
+     public function testAction(Request $request)
+    {
+        $defaultData = array('message' => 'Type your message here');
+        $form2 = $this->createFormBuilder($defaultData)
+            ->add('name', TextType::class)
+            ->add('email', EmailType::class)
+            ->add('message', TextareaType::class)
+            ->add('send', SubmitType::class)
+            ->getForm();
+        
+
+        $form2->handleRequest($request);
+
+        if ($form2->isSubmitted() && $form2->isValid()) {
+            // data is an array with "name", "email", and "message" keys
+            $data = $form2->getData();
+           dump($data);die;
         }
          
-         
-
-        return $this->render('agenda.html.twig', [
-            
-           'dateBetweens' => $arrayDate,
-            'agentBetweens' => $agentBetweens
-             //'form'=>$form->createView()                
-        ]);
         
-    }
+        return $this->render('test.html.twig', [
+
+       
+         'form2'=>$form2->createView()
+        ]);           
+     }
+     
 }

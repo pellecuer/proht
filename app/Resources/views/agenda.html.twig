@@ -5,20 +5,28 @@
 {% block body %}   
     <div class="container">
         
-        
-        
-        
-            <form class="form-inline">
+            <form action="{{ path('agendaTeam') }}" method="post" class="form-inline">
+                <div class="form-group mb-2">
+            {{ form_start(form) }}
+            {{ form_widget(form.startDate) }}
+            {{ form_widget(form.endDate) }}
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+                </div
+            </form>               
+            
+            {#<form action="{{ path('agendaTeam') }}" method="POST" class="form-inline">                
                 <div class="form-group mb-2">
                   <label for="starDate">Début</label>
-                  <input type="date" id="starDate" value="email@example.com">
+                  <input type="date" id="startDate" name="startDate" value="email@example.com">
                 </div>                            
                 <div class="form-group mx-sm-3 mb-2">
                   <label for="endDate">Fin</label>
-                  <input type="date" class="form-control" id="endDate" placeholder="Password">
+                  <input type="date" class="form-control" id="endDate" name="endDate" placeholder="Password">
                 </div>
                 <button type="submit" class="btn btn-primary mb-2 sendDate">Envoyer</button>
-            </form>
+            </form>#}
+            
         
         <div class= "row">
             <div class="col-md-10">
@@ -42,7 +50,7 @@
                      <tbody>
                         {% for agentBetween in agentBetweens %}
                             <tr>
-                                <td>{{agentBetween.0.agent  }}</td>
+                                <td>{#{{agentBetween.0.agent  }}#}</td>
                                {% for letter in agentBetween %}
                                     <td class="editFor">{{ letter.letter }}</td>
                                 {% endfor %}
@@ -56,7 +64,6 @@
                 <h2>Description : <span id="titre"></span></h2>
                 <h2></h2>
                 <h2>Détail : <span id="producteur"></span></h2>                
-                
                {# {% for dateBetween in dateBetweens %}
                     <th class="">{{dateBetween.date | date("F jS \\a\\t g:ia", "Europe/Paris") }}</th>
                     {% endfor %}
