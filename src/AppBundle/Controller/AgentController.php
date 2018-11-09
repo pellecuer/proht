@@ -8,39 +8,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Agent;
+use AppBundle\Entity\Team;
+use AppBundle\Entity\Role;
 
 
+/**
+ * Agent controller.
+ *
+ * @Route("agent")
+ */
 class AgentController extends Controller
 {
-    /**
-     * @Route("/agent/create", name="createagent")
-     */
-    public function CreateAction()
-    {       
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $agent = new Agent();
-        $agent->setNNI('E32980');
-        $agent->setName('Dupont');
-        $agent->setFirstName('Jean');
-        $agent->setFunction('rsp Secondaire');
-        $agent->setRole('Valideur');
-        
-
-        // tells Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($agent);
-
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-
-        return new Response('Saved new agent with id '.$agent->getId());
-    }
-    
-    
-    
     
     /**
-     * @Route("/agent/show", name="showagent")
+     * @Route("/show", name="showagent")
      */
     public function showAction()
     {
@@ -65,5 +46,42 @@ class AgentController extends Controller
 
         // ... do something, like pass the $product object into a template
     }
+    
+    /**
+     *
+     * @Route("/create", name="createAgent")
+     */
+    public function CreateAction()
+    {        
+        $agent = new Agent();        
+        $agent->setNni('E33466');
+        $agent->setFirstName('François');
+        $agent->setName('Durand');
+        $agent->setFunction("Chef de chantier");
+        
+        // relates this agent to the team
+        $team = $this->getDoctrine()
+        ->getRepository(Team::class)
+        ->find(2);      
+        $agent->setTeam($team);
+        
+        // relates this agent to the Role
+         $role = $this->getDoctrine()
+        ->getRepository(Role::class)
+        ->find(2);
+        $agent->setRole($role);
+        
+        $entityManager = $this->getDoctrine()->getManager();     
+        $entityManager->persist($agent);
+        $entityManager->flush();
+        return new Response(
+            'Saved new agent with id: '.$agent->getId()            
+        );
+    }
+    
+    
+    
+    
+    
     
 }

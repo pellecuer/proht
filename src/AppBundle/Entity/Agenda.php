@@ -29,100 +29,51 @@ class Agenda
     private $date;
 
     /**
-     * @var string
+     * @var
      *
-     * @ORM\Column(name="agent", type="string", length=100)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agent")
      */
     private $agent;
 
     /**
-     * @var string
+     * @var 
      *
-     * @ORM\Column(name="letter", type="string", length=100, nullable=true)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Letter")
      */
     private $letter;
 
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
+    function getId() {
         return $this->id;
     }
 
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     *
-     * @return Agenda
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
+    function getDate(): \DateTime {
         return $this->date;
     }
 
-    /**
-     * Set agent
-     *
-     * @param string $agent
-     *
-     * @return Agenda
-     */
-    public function setAgent($agent)
-    {
-        $this->agent = $agent;
-
-        return $this;
-    }
-
-    /**
-     * Get agent
-     *
-     * @return string
-     */
-    public function getAgent()
-    {
+    function getAgent() {
         return $this->agent;
     }
 
-    /**
-     * Set letter
-     *
-     * @param string $letter
-     *
-     * @return Agenda
-     */
-    public function setLetter($letter)
-    {
-        $this->letter = $letter;
-
-        return $this;
-    }
-
-    /**
-     * Get letter
-     *
-     * @return string
-     */
-    public function getLetter()
-    {
+    function getLetter() {
         return $this->letter;
     }
+
+    function setId($id) {
+        $this->id = $id;
+    }
+
+    function setDate(\DateTime $date) {
+        $this->date = $date;
+    }
+
+    function setAgent($agent) {
+        $this->agent = $agent;
+    }
+
+    function setLetter($letter) {
+        $this->letter = $letter;
+    }
+
 }
 

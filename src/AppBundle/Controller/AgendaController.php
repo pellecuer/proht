@@ -83,22 +83,23 @@ class AgendaController extends Controller {
             //dump($startDate);die;
 
         }else {
-            $startDate = new \DateTime('now - 200 days',  new \DateTimeZone('Europe/Paris'));
-            $endDate = new \DateTime(('11-01-2019'));
+            // now - 200 days
+            $startDate = new \DateTime('01-01-2016',  new \DateTimeZone('Europe/Paris'));
+            $endDate = new \DateTime(('02-02-2020'));
             //dump($endDate);die;
         }
         
         //build letterArray
-        $agent = ['Dupont', 'Durant', 'Michel'];
+        $agent = [1, 2];
         $agentBetweens = [];
         For ($i=0; $i<count($agent); $i++){
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
-                ->findAgentBetweenDate($startDate, $endDate, $agent[$i]);
+                ->findAllBetweenDate($startDate, $endDate, $agent[$i]);
         }
         
         //build dateArray        
-        $diff=$startDate->diff($endDate)->format("%a");
+        //$diff=$startDate->diff($endDate)->format("%a");
         $interval = new \DateInterval('P1D');
         $arrayDate = [];
         $immutable = \DateTimeImmutable::createFromMutable($startDate);
@@ -111,9 +112,9 @@ class AgendaController extends Controller {
    
         return $this->render('agenda.html.twig', [
 
-       'dateBetweens' => $arrayDate,
-        'agentBetweens' => $agentBetweens,
-         'form'=>$form->createView()                
-        ]);
+            'dateBetweens' => $arrayDate,
+             'agentBetweens' => $agentBetweens,
+              'form'=>$form->createView()                
+             ]);
         } 
 }

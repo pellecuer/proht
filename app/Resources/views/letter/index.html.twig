@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Letter list</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Lettre</th>
+                <th>Time Range</th>
+                <th>Heure de début</th>
+                <th>Heure de fin</th>
+                <th>Durée effective</th>                
+            </tr>
+        </thead>
+        <tbody>
+        {% for letter in letters %}
+            <tr>                
+                <td>{{ letter.id }}</td>                
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+{% endblock %}

@@ -24,9 +24,9 @@ class Agent
     /**
      * @var string
      *
-     * @ORM\Column(name="NNI", type="string", length=45)
+     * @ORM\Column(name="Nni", type="string", length=45)
      */
-    private $nNI;
+    private $nni;
 
     /**
      * @var string
@@ -48,161 +48,78 @@ class Agent
      * @ORM\Column(name="Function", type="string", length=100)
      */
     private $function;
+    
+    
+    /**
+     * @var
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Team;
+    
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Role", type="string", length=100)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Role")
+     * * @ORM\JoinColumn(nullable=false)
      */
     private $role;
     
-        
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CodePlanning")
-     */
-     private $CodePlanning;
-
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
+    function getId() {
         return $this->id;
     }
 
-    /**
-     * Set nNI
-     *
-     * @param string $nNI
-     *
-     * @return Agent
-     */
-    public function setNNI($nNI)
-    {
-        $this->nNI = $nNI;
-
-        return $this;
+    function getNni() {
+        return $this->nni;
     }
 
-    /**
-     * Get nNI
-     *
-     * @return string
-     */
-    public function getNNI()
-    {
-        return $this->nNI;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Agent
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
+    function getName() {
         return $this->name;
     }
 
-    /**
-     * Set firstName
-     *
-     * @param string $firstName
-     *
-     * @return Agent
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    /**
-     * Get firstName
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
+    function getFirstName() {
         return $this->firstName;
     }
 
-    /**
-     * Set function
-     *
-     * @param string $function
-     *
-     * @return Agent
-     */
-    public function setFunction($function)
-    {
-        $this->function = $function;
-
-        return $this;
-    }
-
-    /**
-     * Get function
-     *
-     * @return string
-     */
-    public function getFunction()
-    {
+    function getFunction() {
         return $this->function;
     }
 
-    /**
-     * Set role
-     *
-     * @param string $role
-     *
-     * @return Agent
-     */
-    public function setRole($role)
-    {
-        $this->role = $role;
-
-        return $this;
+    function getTeam() {
+        return $this->Team;
     }
 
-    /**
-     * Get role
-     *
-     * @return string
-     */
-    public function getRole()
-    {
+    function getRole() {
         return $this->role;
     }
-    
-    
-    function getLetter() {
-        return $this->letter;
+
+    function setId($id) {
+        $this->id = $id;
     }
 
-    function setLetter($letter) {
-        $this->letter = $letter;
+    function setNni($nni) {
+        $this->nni = $nni;
     }
 
+    function setName($name) {
+        $this->name = $name;
+    }
 
-    
+    function setFirstName($firstName) {
+        $this->firstName = $firstName;
+    }
+
+    function setFunction($function) {
+        $this->function = $function;
+    }
+
+    function setTeam($Team) {
+        $this->Team = $Team;
+    }
+
+    function setRole($role) {
+        $this->role = $role;
+    }
 }
-

@@ -8,10 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * CodePlanning
  *
- * @ORM\Table(name="code_planning")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CodePlanningRepository")
+ * @ORM\Table(name="Letter")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LetterRepository")
  */
-class CodePlanning
+class Letter
 {
     /**
      * @var int
@@ -38,20 +38,19 @@ class CodePlanning
     private $timeRange;
 
     /**
-     * @var \DateTime
+     * @var 
      *
-     * @Assert\DateTime()
-     * @Assert\NotBlank()
-     * @ORM\Column(name="BeginDate", type="datetime")
+     * @Assert\Time()     
+     * @ORM\Column(name="startTime", type="time")
      */
-    private $beginDate;
+    private $startTime;
 
     /**
-     * @var \DateTime
+     * @var
      *
-     * @ORM\Column(name="EndDate", type="datetime")
+     * @ORM\Column(name="EndTime", type="time")
      */
-    private $endDate;
+    private $endTime;
 
     /**
      * @var string
@@ -120,51 +119,51 @@ class CodePlanning
     }
 
     /**
-     * Set beginDate
+     * Set startTime
      *
-     * @param \DateTime $beginDate
+     * @param \Time $startTime
      *
-     * @return CodePlanning
+     * @return startTime
      */
-    public function setBeginDate($beginDate)
+    public function setStartTime($startTime)
     {
-        $this->beginDate = $beginDate;
+        $this->startTime = $startTime;
 
         return $this;
     }
 
     /**
-     * Get beginDate
+     * Get endTime
      *
-     * @return \DateTime
+     * @return \Time
      */
-    public function getBeginDate()
+    public function getStartTime()
     {
-        return $this->beginDate;
+        return $this->startTime;
     }
 
     /**
-     * Set endDate
+     * Set endTime
      *
-     * @param \DateTime $endDate
+     * @param \Time $endTime
      *
-     * @return CodePlanning
+     * @return \Time
      */
-    public function setEndDate($endDate)
+    public function setEndTime($endTime)
     {
-        $this->endDate = $endDate;
+        $this->endTime = $endTime;
 
         return $this;
     }
 
     /**
-     * Get endDate
+     * Get endTime
      *
-     * @return \DateTime
+     * @return \Time
      */
-    public function getEndDate()
+    public function getEndTime()
     {
-        return $this->endDate;
+        return $this->endTime;
     }
 
     /**
