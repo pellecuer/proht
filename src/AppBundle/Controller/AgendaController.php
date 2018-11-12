@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Agenda;
+use AppBundle\Entity\Event;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -40,7 +41,7 @@ class AgendaController extends Controller {
     /**
      *  Lists all agenda entities.
      *
-     * @Route("/agenda/team", name="agendaTeam")
+     * @Route("/agenda/show", name="agendaTeam")
      * @Method({"GET", "POST"})
      */
     public function indexTeamAction(Request $request)
@@ -89,16 +90,16 @@ class AgendaController extends Controller {
             //dump($endDate);die;
         }
         
-        //build letterArray
-        $agent = [1, 2];
+        //build letter Array
+        $agentId  = [7, 10];
         $agentBetweens = [];
-        For ($i=0; $i<count($agent); $i++){
+        For ($i=0; $i<count($agentId); $i++){
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
-                ->findAllBetweenDate($startDate, $endDate, $agent[$i]);
+                ->findAllBetweenDate($startDate, $endDate, $agentId [$i]);
         }
         
-        //build dateArray        
+        //build date Array        
         //$diff=$startDate->diff($endDate)->format("%a");
         $interval = new \DateInterval('P1D');
         $arrayDate = [];
@@ -108,13 +109,22 @@ class AgendaController extends Controller {
              $immutable = $immutable->add($interval);
         }
         //dump($arrayDate);die;
+        
+        //build event Array
+        For ($i=0; $i<count($arrayDate); $i++){
+            $eventBetweens[] = $this->getDoctrine()
+                ->getRepository(Event::class)
+                ->findEventBetweenDate($startDate, $endDate, $arrayDate [$i]);
+        }
+        
          
    
         return $this->render('agenda.html.twig', [
 
             'dateBetweens' => $arrayDate,
-             'agentBetweens' => $agentBetweens,
-              'form'=>$form->createView()                
+            'agentBetweens' => $agentBetweens,
+            'eventBetweens' => $eventBetweens,
+            'form'=>$form->createView()                
              ]);
         } 
 }

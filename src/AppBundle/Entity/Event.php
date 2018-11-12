@@ -41,6 +41,13 @@ class Event
      * @ORM\Column(name="endDate", type="datetime")
      */
     private $endDate;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=45, nullable=true)
+     */
+    private $code;
 
 
     /**
@@ -124,5 +131,14 @@ class Event
     {
         return $this->endDate;
     }
+    
+    function getCode() {
+        return $this->code;
+    }
+
+    function setCode($code) {
+        $this->code = $code;
+    }
+
 }
 

@@ -9,7 +9,7 @@
                 <div class="form-group mb-2">
             {{ form_start(form) }}
             {{ form_widget(form.startDate) }}
-            {{ form_widget(form.endDate) }}
+            {{ form_widget(form.endDate) }}            
             {{ form_rest(form) }}
             {{ form_end(form) }}
                 </div
@@ -45,9 +45,20 @@
                             {% endfor %}   
                             </th>          
                         </tr>
-                         {{ dump (agentBetweens) }}
+                         {#{{ dump (eventBetweens) }}#}
                     </thead>
                     <tbody>
+                        {#{% for eventBetween in eventBetweens %}
+                            <tr>
+                                <td>{{eventBetween.0.agent.name  }}</td>
+                               {% for letter in agentBetween %}
+                                    <td class="editFor">{{ letter.letter.letter }}</td>
+                                {% endfor %}
+                                <td class="update" scope ="col"><i class="fas fa-check"></i></td>
+                                <td class="trash" scope ="col"><i class="fas fa-trash-alt"></i></td>
+                            </tr>
+                       {% endfor %}#}
+                        
                         {% for agentBetween in agentBetweens %}
                             <tr>
                                 <td>{{agentBetween.0.agent.name  }}</td>
