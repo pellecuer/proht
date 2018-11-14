@@ -27,6 +27,28 @@ class Team
      * @ORM\Column(name="name", type="string", length=45)
      */
     private $name;
+    
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Agent", mappedBy="Team")
+     */
+    private $Agents;
+
+    public function __construct()
+    {
+        $this->agents = new ArrayCollection();
+    }
+    
+    /**
+     * @var
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Event;
+    
+    
 
     function getId() {
         return $this->id;
@@ -42,7 +64,23 @@ class Team
 
     function setName($name) {
         $this->name = $name;
-    }    
+    } 
+    
+    function getAgents() {
+        return $this->Agents;
+    }
+
+    function setAgents($Agents) {
+        $this->Agents = $Agents;
+    }
+
+    function getEvent() {
+        return $this->Event;
+    }
+
+    function setEvent($Event) {
+        $this->Event = $Event;
+    }
       
 }
 

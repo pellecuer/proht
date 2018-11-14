@@ -21,8 +21,7 @@ class TeamController extends Controller {
      * @Route("/show", name="showteam")
      */
     public function showAction()
-    {
-            
+    {            
         $teams = $this->getDoctrine()->getRepository(Team::class)->findAll();
 
         if (!$teams) {
@@ -30,11 +29,50 @@ class TeamController extends Controller {
                 'No team found'
             );
         }        
-        
         return $this->render('team/show.html.twig', array(
                 'teams' => $teams,
             ));        
     }
+    
+    /**
+     * @Route("/showAgents/{id}", name="showAgents")
+     * @Method({"GET", "POST"})
+     */
+    public function showAgentsAction($id)
+    {            
+        $team = $this->getDoctrine()    
+                ->getRepository(Team::class)
+                ->find($id);
+        $agents = $team->getAgents();
+        $event = $team->getEvent();
+        
+        return $this->render('team/showAgents.html.twig', array(
+                'agents' => $agents,
+                'team' => $team,
+                'event' => $event,
+            ));
+    }
+    
+    /**
+     * @Route("/Create", name="createAgents")
+     * @Method({"GET", "POST"})
+     */
+    public function createAction()
+    {            
+        $team = $this->getDoctrine()   
+                ->getRepository(Team::class)
+                ->find($id);
+        $agents = $team->getAgents();
+        $event = $team->getEvent();
+        
+        return $this->render('team/showAgents.html.twig', array(
+                'agents' => $agents,
+                'team' => $team,
+                'event' => $event,
+            ));
+    }
+    
+    
     
     /**     
      * @Route("/{id}/edit", name="editTeam")
@@ -54,6 +92,5 @@ class TeamController extends Controller {
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         )); 
-    }
-     
+    }     
 }

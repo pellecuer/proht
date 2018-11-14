@@ -54,7 +54,7 @@ class Agent
      * @var
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $Team;
     
@@ -63,7 +63,7 @@ class Agent
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Role")
-     * * @ORM\JoinColumn(nullable=false)
+     * * @ORM\JoinColumn(nullable=true)
      */
     private $role;
     

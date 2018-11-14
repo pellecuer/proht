@@ -9,13 +9,7 @@
     <div class="container">       
         <h1>Voici la liste des evenements</h1>
         <form action="{{ path('createEvent') }}" method="post" class="form-inline">
-            <div class="form-group mb-2">
-            {{ form_start(form) }}
-            {{ form_widget(form.startDate) }}
-            {{ form_widget(form.endDate) }}
-            {{ form_widget(form.type) }}             
-            {{ form_rest(form) }}
-            {{ form_end(form) }}
+            <div class="form-group mb-2">            
             </div
         </form>
         <div class= "row">
@@ -35,13 +29,13 @@
                        {%for event in events %}
                             <tr>                                                            
                                 <td>{{ event.id }}</td>
-                                <td>{{ event.eventtype }}</td>
-                                <td>{{ event.code }}</td>
-                                <td>{{ event.startdate|localizeddate('none', 'none', 'fr', null, 'E dd Y') }}</td>
-                                 <td>{{ event.enddate|localizeddate('none', 'none', 'fr', null, 'E dd Y')  }}</td>  
-                                <td><a href="{{ path('home', { 'id': event.id }) }}">edit</a></td>                                
+                                <td class="editFor">{{ event.eventtype }}</td>
+                                <td class="editFor">{{ event.code }}</td>
+                                <td class="editFor">{{ event.startdate|localizeddate('none', 'none', 'fr', null, 'E dd Y') }}</td>
+                                <td class="editFor">{{ event.enddate|localizeddate('none', 'none', 'fr', null, 'E dd Y')  }}</td>  
+                                <td><a href="{{ path('editEvent', { 'id': event.id }) }}">edit</a></td>
                             </tr>
-                        {% endfor %}                       
+                        {% endfor %}
                     </body>                    
                 </table>
             </div>
