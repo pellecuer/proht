@@ -75,21 +75,30 @@ class EventController extends Controller {
      * @Route("/{id}/edit", name="editEvent")
      * @Method({"GET", "POST"})
      */
-    public function editDeleteAction(Request $request, Event $event)
+    public function editAction(Request $request, $id)
     {
-        $editForm = $this->createForm('AppBundle\Form\Type\EventType', $event);
-        $deleteForm = $this->createForm('AppBundle\Form\Type\EventType', $event);
-        
-        $editForm->handleRequest($request);
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('planemodel_edit', array('id' => $event->getId()));
+        //Check the object to update in database
+        $entityManager = $this->getDoctrine()->getManager();
+        $event = $entityManager->getRepository(Event::class)->find($id);        
+        if (!$event) {
+            throw $this->createNotFoundException(
+                'No event found for id '.$id
+            );
         }
-        return $this->render('event/edit.html.twig', array(
-            'event' => $event,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        )); 
-    }
-     
+        
+        //check datasForm
+        $form = $this->createForm('AppBundle\Form\Type\EventType', $event);
+        $form->handleRequest($request);        
+        
+        if ($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            
+            $event->setAgent('Michel');
+            $event->setletter('Z');
+            $event->setDate($date);
+                       
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($event);            
+            $entityManager->flush(); 
+        }
 }

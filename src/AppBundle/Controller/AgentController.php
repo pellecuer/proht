@@ -2,14 +2,21 @@
 
 namespace AppBundle\Controller;
 
+
+use AppBundle\Entity\Agent;
+use AppBundle\Form\Type\AgentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
-use AppBundle\Entity\Agent;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\Role;
+use AppBundle\Entity\Event;
+
+
 
 
 /**
@@ -26,13 +33,7 @@ class AgentController extends Controller
     public function showAction()
     {
              // finds *all* products 
-        $agents = $this->getDoctrine()->getRepository(Agent::class)->findAll();
-        
-        // finds *all* products
-        //$agents = $repository->findAll();        
-        /*var_dump($agents);die;*/        
-        
-                    
+        $agents = $this->getDoctrine()->getRepository(Agent::class)->findAll();                  
 
         if (!$agents) {
             throw $this->createNotFoundException(
@@ -51,37 +52,31 @@ class AgentController extends Controller
      *
      * @Route("/create", name="createAgent")
      */
-    public function CreateAction()
-    {        
-        $agent = new Agent();        
-        $agent->setNni('E33466');
-        $agent->setFirstName('François');
-        $agent->setName('Durand');
-        $agent->setFunction("Chef de chantier");
-        
-        // relates this agent to the team
-        $team = $this->getDoctrine()
-        ->getRepository(Team::class)
-        ->find(2);      
-        $agent->setTeam($team);
-        
-        // relates this agent to the Role
-         $role = $this->getDoctrine()
-        ->getRepository(Role::class)
-        ->find(2);
-        $agent->setRole($role);
-        
-        $entityManager = $this->getDoctrine()->getManager();     
-        $entityManager->persist($agent);
-        $entityManager->flush();
-        return new Response(
-            'Saved new agent with id: '.$agent->getId()            
-        );
+    public function CreateAction(Request $request)
+    {
+         // 1) build the form
+        $agent = new Agent();
+        $form = $this->createForm(AgentType::class, $agent);
+               
+       // 2) handle the submit (will only happen on POST)
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {            
+            $data = $form->getData();           
+                       
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($data);            
+            $entityManager->flush();
+            
+            
+            //return new Response('Saved new event with id '.$event->getId());
+            $this->addFlash('success',
+                    'Nouvel agent crée avec l\'id :' . $agent->getId()
+            );
+            return $this->redirectToRoute('showagent');
+         
+        }
+        return $this->render('agent/create.html.twig', array(            
+            'form' => $form->createView(),
+        ));
     }
-    
-    
-    
-    
-    
-    
 }
