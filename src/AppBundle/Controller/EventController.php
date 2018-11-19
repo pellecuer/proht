@@ -46,7 +46,8 @@ class EventController extends Controller {
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {            
-            $data = $form->getData();           
+            $data = $form->getData();
+            dump($data);die;
                        
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);            
@@ -77,28 +78,38 @@ class EventController extends Controller {
      */
     public function editAction(Request $request, $id)
     {
-        //Check the object to update in database
         $entityManager = $this->getDoctrine()->getManager();
-        $event = $entityManager->getRepository(Event::class)->find($id);        
-        if (!$event) {
-            throw $this->createNotFoundException(
-                'No event found for id '.$id
-            );
-        }
+        $event = $entityManager->getRepository(Event::class)->find($id);
+        //dump($event);die;
         
-        //check datasForm
         $form = $this->createForm('AppBundle\Form\Type\EventType', $event);
         $form->handleRequest($request);        
+         
+        if ($form->isSubmitted() && $form->isValid()) {            
+            //dump($event->getCode);
+            $entityManager->flush($event);
+            $this->addFlash('success', 'L\'évènement ' . $event->getCode() .  'a bien été mis à jour');
+            return $this->redirectToRoute('editEvent', array('id' => $event->getId()));
+            }
         
-        if ($form->isSubmitted() && $form->isValid()){
-            $data = $form->getData();
-            
-            $event->setAgent('Michel');
-            $event->setletter('Z');
-            $event->setDate($date);
-                       
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);            
-            $entityManager->flush(); 
-        }
+        return $this->render('event/edit.html.twig', array(
+            'event' => $event,
+            'edit_form' => $form->createView(),
+        ));
+    }
+    
+        /**
+     * Deletes an Event entity.
+     *
+     * @Route("/delete/{id}", name="eventDelete")
+     * @Method("GET")
+     */
+    public function deleteAction(Request $request, Event $event, $id)
+    {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($event);
+            $em->flush();
+            $this->addFlash('success', 'L\'évènement ' . $event->getCode() .  'a bien été supprimé');
+        return $this->redirectToRoute('showEvent');
+    }
 }

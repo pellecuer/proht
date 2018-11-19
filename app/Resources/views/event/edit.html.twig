@@ -7,8 +7,8 @@
 
 {% block body %}   
     <div class="container">       
-        <h1>Editer un nouvel evenement</h1>
-        <form action="{{ path('createEvent') }}" method="post" class="form-inline">
+        <h1>Modifier l'evenement</h1>
+        <form action="{{ path('editEvent', { 'id': event.id }) }}" method="post" class="form-inline">
             <div class="form-group mb-2">
             {{ form_start(edit_form) }}           
             {{ form_widget(edit_form) }}                         
