@@ -35,7 +35,7 @@ class AgendaController extends Controller {
         $entityManager->flush();
 
         return new Response('Saved new agenda with id '.$agenda->getId());
-    }    
+    }
 
 
     /**

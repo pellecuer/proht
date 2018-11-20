@@ -46,8 +46,7 @@ class EventController extends Controller {
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {            
-            $data = $form->getData();
-            dump($data);die;
+            $data = $form->getData();            
                        
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);            

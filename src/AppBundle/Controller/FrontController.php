@@ -81,4 +81,36 @@ class FrontController extends Controller
     {       
         return $this->render('dataTable.html.twig');
     }
+    
+    /**
+     * @Route("/equipe", name="equipe")
+     */
+    public function equipeAction(Request $request)
+    {       
+        return $this->render('default/equipe.html.twig');
+    }
+    
+    /**
+     * @Route("/section", name="section")
+     */
+    public function sectionAction(Request $request)
+    {       
+        return $this->render('default/section.html.twig');
+    }
+    
+    /**
+     * @Route("/service", name="service")
+     */
+    public function serviceAction(Request $request)
+    {       
+        return $this->render('default/service.html.twig');
+    }
+    
+    /**
+     * @Route("/historique", name="historique")
+     */
+    public function historiqueAction(Request $request)
+    {       
+        return $this->render('default/historique.html.twig');
+    }
 }

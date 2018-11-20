@@ -12,7 +12,7 @@
     <div class="my-2">
         <div class="container homeCards">
             <div class= "row text-center">
-                <div class="card-deck">
+                <div class="card-columns">
                     <div class="card">                      
                       <div class="card-body">
                         <h5 class="card-title">Droits et roles</h5>
@@ -34,18 +34,45 @@
                         <h5 class="card-title">Codes planning</h5>
                         <p class="card-text">Ajouter/modifier un lettre. Changer une amplitude horaire</p>
                         <a href="{{ path('codes')}}" class="btn btn-primary">Visualiser</a>
-                      </div>
-                      
+                      </div>                      
                     </div>
+                      
                     <div class="card">                      
                       <div class="card-body">
                         <h5 class="card-title">Reglementation</h5>
                         <p class="card-text">Ajouter/modifier les contrainte reglementaires</p>
                         <a href="{{ path('reglementation')}}" class="btn btn-primary">Visualiser</a>
-                      </div>
-                      
+                      </div>                      
                     </div>
-                  </div>
+                      
+                    <div class="card">                      
+                        <div class="card-body">
+                          <h5 class="card-title">Equipe</h5>
+                          <p class="card-text">Ajouter/modifier les équipes</p>
+                          <a href="{{ path('equipe')}}" class="btn btn-primary">Visualiser</a>
+                        </div>
+                    </div>
+                    <div class="card">                      
+                        <div class="card-body">
+                          <h5 class="card-title">Section</h5>
+                          <p class="card-text">Ajouter/modifier la section</p>
+                          <a href="{{ path('section')}}" class="btn btn-primary">Visualiser</a>
+                        </div>
+                    </div>
+                    <div class="card">                      
+                        <div class="card-body">
+                          <h5 class="card-title">Service</h5>
+                          <p class="card-text">Ajouter/modifier le service</p>
+                          <a href="{{ path('service')}}" class="btn btn-primary">Visualiser</a>
+                        </div>
+                    </div>
+                    <div class="card">                      
+                        <div class="card-body">
+                          <h5 class="card-title">Historique des modifications</h5>
+                          <p class="card-text">Consulter/imprimer l'historique des modifications</p>
+                          <a href="{{ path('historique')}}" class="btn btn-primary">Visualiser</a>
+                        </div>
+                    </div>  
             </div>
         </div>
     </div> 
