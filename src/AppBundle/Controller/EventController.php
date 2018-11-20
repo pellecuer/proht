@@ -49,7 +49,7 @@ class EventController extends Controller {
             $data = $form->getData();            
                        
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($data);            
+            $entityManager->persist($data);
             $entityManager->flush();
 
             //return new Response('Saved new event with id '.$event->getId());

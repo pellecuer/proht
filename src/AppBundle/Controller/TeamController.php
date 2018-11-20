@@ -59,17 +59,7 @@ class TeamController extends Controller {
      */
     public function createAction()
     {            
-        $team = $this->getDoctrine()   
-                ->getRepository(Team::class)
-                ->find($id);
-        $agents = $team->getAgents();
-        $event = $team->getEvent();
         
-        return $this->render('team/showAgents.html.twig', array(
-                'agents' => $agents,
-                'team' => $team,
-                'event' => $event,
-            ));
     }
     
     
