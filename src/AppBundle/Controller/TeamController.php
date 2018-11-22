@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Team;
+use AppBundle\Form\Type\TeamType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
@@ -30,7 +31,7 @@ class TeamController extends Controller {
             );
         }        
         return $this->render('team/show.html.twig', array(
-                'teams' => $teams,
+                'teams' => $teams,                
             ));        
     }
     
@@ -54,33 +55,75 @@ class TeamController extends Controller {
     }
     
     /**
-     * @Route("/Create", name="createAgents")
+     * Creates a new section entity.
+     *
+     * @Route("/create", name="create_team")
      * @Method({"GET", "POST"})
      */
-    public function createAction()
-    {            
-        
+    public function newAction(Request $request)
+    {
+        $team = new Team();
+        $form = $this->createForm(TeamType::class, $team);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($team);
+            $em->flush();
+            $this->addFlash('success',
+                    'Nouvelle équipe crée avec l\'id :' . $team->getId()
+            );
+            return $this->redirectToRoute('showteam', array('id' => $team->getId()));
+        }
+
+        return $this->render('team/create.html.twig', array(
+            'team' => $team,
+            'form' => $form->createView(),
+        ));
     }
     
-    
-    
-    /**     
+    /**
+     * Displays a form to edit an existing service entity.
+     *
      * @Route("/{id}/edit", name="editTeam")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Team $team)
-    {
-        $deleteForm = $this->createDeleteForm($planeModel);
-        $editForm = $this->createForm('AppBundle\Form\PlaneModelType', $planeModel);
-        $editForm->handleRequest($request);
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+    public function editAction(Request $request, Team $team)    
+    {        
+        $form = $this->createForm(TeamType::class, $team);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('planemodel_edit', array('id' => $planeModel->getId()));
+            $this->addFlash('success',
+                    'L\'équipe avec l\'id :' . $team->getId(). 'a été modifié avec succès'
+            );
+
+            return $this->redirectToRoute('showteam', array('id' => $team->getId()));
+            
         }
-        return $this->render('planemodel/edit.html.twig', array(
-            'planeModel' => $planeModel,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        )); 
-    }     
+
+        return $this->render('team/edit.html.twig', array(
+            'team' => $team,
+            'form' => $form->createView(),            
+        ));
+    }
+
+        
+       /**
+     * Deletes a Service entity.
+     *
+     * @Route("/delete/{id}", name="deleteTeam")
+     * @Method("GET")
+     */
+    public function deleteAction(Team $team)
+    {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($team);
+            $em->flush();
+           
+        return $this->redirectToRoute('showteam');
+    }    
+    
+   
 }

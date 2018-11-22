@@ -17,7 +17,8 @@
                             <th>id</th>
                             <th>Nom</th>
                             <th>Code d'arrêt</th>
-                            <th>Composition</th>
+                            <th>Agent</th>
+                            <th>Section</th>
                         </tr>
                     </thead>                    
                     <tbody> 
@@ -25,8 +26,12 @@
                             <tr>                                                            
                                 <td>{{ team.id }}</td>
                                 <td>{{ team.name }}</td>
-                                <td>{{ team.Event.code }}</td>
-                                <td><a href="{{ path('showAgents', { 'id': team.id }) }}"><i class="fas fa-eye"></i></a></td>                               
+                                <td>{{ team.event.code }}</td> 
+                                <td>{{ team.agent.name}}</td>
+                                <td>{{ team.section.name}}</td>
+                                <td><a href="{{ path('showAgents', { 'id': team.id }) }}"><i class="fas fa-eye"></i></a></td> 
+                                <td><a href="{{ path('editTeam', { 'id': team.id }) }}"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="{{ path('deleteTeam', { 'id': team.id }) }}"><i class="fas fa-trash-alt"></i></a></td>                                                              
                             </tr>
                         {% endfor %}                       
                     </body>                    

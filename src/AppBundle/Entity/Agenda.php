@@ -31,7 +31,7 @@ class Agenda
     /**
      * @var
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agent")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agent", cascade={"persist", "remove"})
      */
     private $agent;
 

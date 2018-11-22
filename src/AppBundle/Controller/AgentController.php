@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Agent;
 use AppBundle\Form\Type\AgentType;
+use AppBundle\Form\Type\TeamType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -86,4 +87,47 @@ class AgentController extends Controller
             'form' => $form->createView(),
         ));
     }
+    
+    /**
+     * Displays a form to edit an existing agent entity.
+     *
+     * @Route("/{id}/edit", name="editAgent")
+     * @Method({"GET", "POST"})
+     */
+    public function editAction(Request $request, Agent $agent)    
+    {        
+        $form = $this->createForm(AgentType::class, $agent);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success',
+                    'L\'agent avec le nom ' . $agent->getName(). 'a été modifié avec succès'
+            );
+
+            return $this->redirectToRoute('showagent', array('id' => $agent->getId()));
+            
+        }
+
+        return $this->render('agent/edit.html.twig', array(
+            'agent' => $agent,
+            'form' => $form->createView(),            
+        ));
+    }
+    
+      /**
+     * Deletes an agent entity.
+     *
+     * @Route("/delete/{id}", name="deleteAgent")
+     * @Method("GET")
+     */
+    public function deleteAction(Agent $agent)
+    {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($agent);
+            $em->flush();
+           
+        return $this->redirectToRoute('showagent');
+    }    
+    
 }

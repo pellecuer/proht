@@ -10,10 +10,10 @@
         <h1>Modifier l'evenement</h1>
         <form action="{{ path('editEvent', { 'id': event.id }) }}" method="post" class="form-inline">
             <div class="form-group mb-2">
-            {{ form_start(edit_form) }}           
-            {{ form_widget(edit_form) }}                         
-            {{ form_rest(edit_form) }}
-            {{ form_end(edit_form) }}
+            {{ form_start(form) }}           
+            {{ form_widget(form) }}                         
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
             </div            
         </form>
     </div> 

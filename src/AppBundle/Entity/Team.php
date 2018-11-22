@@ -31,23 +31,28 @@ class Team
     
     
     /**
-     * @ORM\OneToMany(targetEntity="Agent", mappedBy="Team")
+     * @ORM\ManyToOne(targetEntity="Agent", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $Agents;
+    private $Agent;
 
-    public function __construct()
-    {
-        $this->agents = new ArrayCollection();
-    }
+    
     
     /**
      * @var
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $Event;
     
+     /**
+     * @var
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Section")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $Section;
     
 
     function getId() {
@@ -66,12 +71,12 @@ class Team
         $this->name = $name;
     } 
     
-    function getAgents() {
-        return $this->Agents;
+    function getAgent() {
+        return $this->Agent;
     }
 
-    function setAgents($Agents) {
-        $this->Agents = $Agents;
+    function setAgent($Agent) {
+        $this->Agent = $Agent;
     }
 
     function getEvent() {
@@ -81,6 +86,13 @@ class Team
     function setEvent($Event) {
         $this->Event = $Event;
     }
-      
+    
+    function getSection() {
+        return $this->Section;
+    }
+
+    function setSection($Section) {
+        $this->Section = $Section;
+    }      
 }
 

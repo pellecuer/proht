@@ -45,11 +45,9 @@ class EventController extends Controller {
         
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {            
-            $data = $form->getData();            
-                       
+        if ($form->isSubmitted() && $form->isValid()) {                       
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($data);
+            $entityManager->persist($event);
             $entityManager->flush();
 
             //return new Response('Saved new event with id '.$event->getId());
@@ -93,7 +91,7 @@ class EventController extends Controller {
         
         return $this->render('event/edit.html.twig', array(
             'event' => $event,
-            'edit_form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
     

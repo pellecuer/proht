@@ -21,5 +21,6 @@ class initializeAgenda {
         $index = array_rand($messages);
 
         return $messages[$index];
-    }   
+    }
+    
 }

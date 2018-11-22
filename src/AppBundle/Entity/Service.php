@@ -38,7 +38,8 @@ class Service
     /**
      * @var
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")     
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")
+     * @ORM\JoinColumn(nullable=true)   
      */
     private $Event;
 

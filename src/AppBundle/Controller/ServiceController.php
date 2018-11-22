@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 use AppBundle\Entity\Service;
-use AppBundle\Form\ServiceType;
+use AppBundle\Form\Type\ServiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,7 +18,7 @@ class ServiceController extends Controller
     /**
      * Lists all service entities.
      *
-     * @Route("/", name="service_index")
+     * @Route("/show", name="service_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -27,7 +27,7 @@ class ServiceController extends Controller
 
         $services = $em->getRepository('AppBundle:Service')->findAll();
 
-        return $this->render('service/index.html.twig', array(
+        return $this->render('service/show.html.twig', array(
             'services' => $services,
         ));
     }
@@ -35,7 +35,7 @@ class ServiceController extends Controller
     /**
      * Creates a new service entity.
      *
-     * @Route("/new", name="service_new")
+     * @Route("/create", name="createService")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -48,90 +48,61 @@ class ServiceController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($service);
             $em->flush();
+            $this->addFlash('success',
+                    'Nouveau service crée avec l\'id :' . $service->getId()
+            );
 
-            return $this->redirectToRoute('service_show', array('id' => $service->getId()));
+            return $this->redirectToRoute('service_index', array('id' => $service->getId()));
         }
 
-        return $this->render('service/new.html.twig', array(
+        return $this->render('service/create.html.twig', array(
             'service' => $service,
             'form' => $form->createView(),
         ));
     }
 
-    /**
-     * Finds and displays a service entity.
-     *
-     * @Route("/{id}", name="service_show")
-     * @Method("GET")
-     */
-    public function showAction(Service $service)
-    {
-        $deleteForm = $this->createDeleteForm($service);
-
-        return $this->render('service/show.html.twig', array(
-            'service' => $service,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
+    
 
     /**
      * Displays a form to edit an existing service entity.
      *
-     * @Route("/{id}/edit", name="service_edit")
+     * @Route("/{id}/edit", name="editService")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Service $service)
-    {
-        $deleteForm = $this->createDeleteForm($service);
-        $editForm = $this->createForm('AppBundle\Form\ServiceType', $service);
-        $editForm->handleRequest($request);
+    public function editAction(Request $request, Service $service)    
+    {        
+        $form = $this->createForm(ServiceType::class, $service);
+        $form->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success',
+                    'Le service avec l\'id :' . $service->getId(). 'a été modifié avec succès'
+            );
 
-            return $this->redirectToRoute('service_edit', array('id' => $service->getId()));
+            return $this->redirectToRoute('service_index', array('id' => $service->getId()));
+            
         }
 
         return $this->render('service/edit.html.twig', array(
             'service' => $service,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form' => $form->createView(),            
         ));
     }
 
-    /**
-     * Deletes a service entity.
+        
+       /**
+     * Deletes a Service entity.
      *
-     * @Route("/{id}", name="service_delete")
-     * @Method("DELETE")
+     * @Route("/delete/{id}", name="deleteService")
+     * @Method("GET")
      */
-    public function deleteAction(Request $request, Service $service)
+    public function deleteAction(Service $service)
     {
-        $form = $this->createDeleteForm($service);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($service);
             $em->flush();
-        }
-
+            $this->addFlash('success', 'Le service ' . $service->getName() .  'a bien été supprimé');
         return $this->redirectToRoute('service_index');
-    }
-
-    /**
-     * Creates a form to delete a service entity.
-     *
-     * @param Service $service The service entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Service $service)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('service_delete', array('id' => $service->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
+    }    
 }
