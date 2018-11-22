@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Team
@@ -31,11 +32,23 @@ class Team
     
     
     /**
-     * @ORM\ManyToOne(targetEntity="Agent", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Agent", mappedBy="team")
      * @ORM\JoinColumn(nullable=true)
      */
-    private $Agent;
+    private $agents;
+    
+    public function __construct()
+    {
+        $this->agents = new ArrayCollection();
+    }
 
+    /**
+     * @return Collection|Product[]
+     */
+    public function getAgents()
+    {
+        return $this->agents;
+    }
     
     
     /**

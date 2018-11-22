@@ -28,13 +28,8 @@ class TeamType extends AbstractType
                 'class' => Event::class,
                 'choice_label' => 'code',
                 'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
-                ))
+                ))                
                 
-                ->add('Agent', EntityType::class, array(
-                'class' => Agent::class,
-                'choice_label' => 'name',
-                'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
-                ))
                  ->add('Section', EntityType::class, array(
                 'class' => Section::class,
                 'choice_label' => 'name',

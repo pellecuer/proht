@@ -44,7 +44,7 @@ class TeamController extends Controller {
         $team = $this->getDoctrine()    
                 ->getRepository(Team::class)
                 ->find($id);
-        $agents = $team->getAgents();
+        $agents = $team->getAgents();        
         $event = $team->getEvent();
         
         return $this->render('team/showAgents.html.twig', array(

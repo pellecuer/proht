@@ -53,10 +53,10 @@ class Agent
     /**
      * @var
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="agents")
      * @ORM\JoinColumn(nullable=true)
      */
-    private $Team;
+    private $team;
     
 
     /**
@@ -88,7 +88,7 @@ class Agent
     }
 
     function getTeam() {
-        return $this->Team;
+        return $this->team;
     }
 
     function getRole() {
@@ -115,8 +115,9 @@ class Agent
         $this->function = $function;
     }
 
-    function setTeam($Team) {
-        $this->Team = $Team;
+    function setTeam( Team $team) {
+        $this->team = $team;
+        return $this;
     }
 
     function setRole($role) {
