@@ -11,10 +11,10 @@ use AppBundle\Entity\Agent;
 use AppBundle\Form\Type\TeamType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Team controller.
@@ -131,7 +131,7 @@ class TeamController extends Controller {
     }
     
        /**
-     * Add an Agent entity.
+     * Add an Agent in Team.
      *
      * @Route("/add/{id}", name="addAgent")
      * @Method({"GET", "POST"})
@@ -171,7 +171,7 @@ class TeamController extends Controller {
             $em->flush();
 
              $this->addFlash('success',
-                        'L\' agent avec l\'id :' . $agent->getId(). 'a été ajouté avec succès à la team' . $team->getName()
+                        'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team' . $team->getName()
                 );
 
             return $this->redirectToRoute('showAgents', array('id' => $team->getId()));        
@@ -180,7 +180,67 @@ class TeamController extends Controller {
         return $this->render('team/addAgent.html.twig', array(
             //'team' => $team,
             'form' => $form->createView(),
-            'team' => $team
+            'team' => $team,
+            'title'=> 'Ajouter'
+            
+        ));
+    }
+    
+     /**
+     * Remove an Agent of Team.
+     *
+     * @Route("/remove/{id}", name="removeAgent")
+     * @Method({"GET", "POST"})
+     */
+    public function removeAgentAction($id, Request $request)
+    {
+        $team = $this->getDoctrine()    
+                    ->getRepository(Team::class)
+                    ->find($id);
+        $agents = $team->getAgents();
+        //dump($agents);die;
+       
+        
+        //dump($agent);die;
+        //build the form
+        $form = $this->createFormBuilder()
+                
+            ->add('agents', ChoiceType::class, array(                
+                'choices' => $agents,            ))
+            
+            ->add('Envoyer', SubmitType::class, array(
+                'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
+            ))
+        
+            ->getForm()
+            ;
+        
+         //get date from Form
+        $form->handleRequest($request);        
+        if ($form->isSubmitted() && $form->isValid()) {
+             $agentArray = $form->getData();
+                      
+            $agent = $agentArray['agents'];                                     
+                  
+             //add Agent
+            $team->removeAgent($agent);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($agent);
+            $em->flush();
+
+             $this->addFlash('success',
+                        'L\' agent : ' . $agent->getName(). ' a été supprimé avec succès de la team' . $team->getName()
+                );
+
+            return $this->redirectToRoute('showAgents', array('id' => $team->getId()));        
+        }
+        
+        return $this->render('team/removeAgent.html.twig', array(
+            //'team' => $team,
+            'form' => $form->createView(),
+            'team' => $team,
+            'title'=> 'Supprimer'
             
         ));
     }    

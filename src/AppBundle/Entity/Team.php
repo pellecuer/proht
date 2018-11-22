@@ -125,7 +125,7 @@ class Team
             $this->agents->removeElement($agent);
             // set the owning side to null (unless already changed)
             if ($agent->getTeam() === $this) {
-                $agent->setCategory(null);
+                $agent->setTeam(null);
             }
         }
 
