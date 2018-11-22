@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Team;
+use AppBundle\Entity\Agent;
 use AppBundle\Form\Type\TeamType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
@@ -123,6 +124,37 @@ class TeamController extends Controller {
             $em->flush();
            
         return $this->redirectToRoute('showteam');
+    }
+    
+       /**
+     * Add an Agent entity.
+     *
+     * @Route("/add/{id}", name="addAgent")
+     * @Method({"GET", "POST"})
+     */
+    public function addAgentAction($id)
+    {
+             
+        $agent = $this->getDoctrine()    
+                ->getRepository(Agent::class)
+                ->find(138);
+        
+        $team = $this->getDoctrine()    
+                ->getRepository(Team::class)
+                ->find($id);        
+        $team->addAgent($agent);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($agent);
+        $em->flush();
+           
+         $this->addFlash('success',
+                    'L\' agent avec l\'id :' . $agent->getId(). 'a été ajouté avec succès à la team' . $team->getName()
+            );
+
+        return $this->redirectToRoute('showAgents', array('id' => $team->getId()));
+        
+        
     }    
     
    

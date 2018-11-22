@@ -106,6 +106,30 @@ class Team
 
     function setSection($Section) {
         $this->Section = $Section;
-    }      
+    }
+
+    //add Agent
+     public function addAgent(Agent $agent): self
+    {
+        if (!$this->agents->contains($agent)) {
+            $this->agents[] = $agent;
+            $agent->setTeam($this);
+        }
+
+        return $this;
+    }
+    
+    public function removeAgent(Agent $agent): self
+    {
+        if ($this->agents->contains($agent)) {
+            $this->agents->removeElement($agent);
+            // set the owning side to null (unless already changed)
+            if ($agent->getTeam() === $this) {
+                $agent->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
 }
 

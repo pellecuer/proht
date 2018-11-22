@@ -126,8 +126,8 @@ class AgentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($agent);
             $em->flush();
+            $this->addFlash('success', 'L\'agent ' . $agent->getName() .  'a bien été supprimé');
            
         return $this->redirectToRoute('showagent');
-    }    
-    
+    } 
 }
