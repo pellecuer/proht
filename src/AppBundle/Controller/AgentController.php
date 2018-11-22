@@ -17,7 +17,6 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\Event;
 
-use AppBundle\Service\initializeAgenda;
 
 
 
@@ -55,7 +54,7 @@ class AgentController extends Controller
      *
      * @Route("/create", name="createAgent")
      */
-    public function CreateAction(Request $request, InitializeAgenda $initializeAgenda)
+    public function CreateAction(Request $request)
     {
          // 1) build the form
         $agent = new Agent();
@@ -74,11 +73,7 @@ class AgentController extends Controller
             //return new Response('Saved new event with id '.$event->getId());
             $this->addFlash('success',
                     'Nouvel agent crée avec l\'id :' . $agent->getId()
-            );
-            
-            //Take the service
-            $message = $initializeAgenda->getHappyMessage();
-            $this->addFlash('success', $message);
+            );  
             
             return $this->redirectToRoute('showagent');
          

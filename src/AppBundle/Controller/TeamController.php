@@ -11,10 +11,10 @@ use AppBundle\Entity\Agent;
 use AppBundle\Form\Type\TeamType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
-
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use AppBundle\Service\initializeAgenda;
 
 /**
  * Team controller.
@@ -136,7 +136,7 @@ class TeamController extends Controller {
      * @Route("/add/{id}", name="addAgent")
      * @Method({"GET", "POST"})
      */
-    public function addAgentAction($id, Request $request)
+    public function addAgentAction($id, Request $request, InitializeAgenda $initializeAgenda)
     {
         $team = $this->getDoctrine()    
                     ->getRepository(Team::class)
@@ -173,9 +173,14 @@ class TeamController extends Controller {
              $this->addFlash('success',
                         'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team' . $team->getName()
                 );
-
+            
+            //Get the service Initialize 
+            $message = $initializeAgenda->getHappyMessage();
+            $message = $initializeAgenda->initialize($team, $agent);
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('showAgents', array('id' => $team->getId()));        
         }
+        
         
         return $this->render('team/addAgent.html.twig', array(
             //'team' => $team,
