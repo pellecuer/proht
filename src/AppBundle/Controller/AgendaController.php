@@ -80,24 +80,23 @@ class AgendaController extends Controller {
         if ($form->isSubmitted() && $form->isValid()) {            
             $data = $form->getData();
             $startDate = $data['startDate'];          
-            $endDate = $data['endDate'];
-            //dump($startDate);die;
+            $endDate = $data['endDate'];            
 
         }else {
-            // now - 200 days
-            $startDate = new \DateTime('01-01-2016',  new \DateTimeZone('Europe/Paris'));
-            $endDate = new \DateTime(('02-02-2020'));
-            //dump($endDate);die;
+            // now + 15 days
+            $startDate = new \DateTime('now',  new \DateTimeZone('Europe/Paris'));            
+            $endDate = new \DateTime(('now + 15 day'));            
         }
         
         //build letter Array
-        $agentId  = [7, 10];
+        $agentId  = [123, 138];
         $agentBetweens = [];
         For ($i=0; $i<count($agentId); $i++){
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
                 ->findAllBetweenDate($startDate, $endDate, $agentId [$i]);
         }
+            
         
         //build date Array        
         //$diff=$startDate->diff($endDate)->format("%a");
