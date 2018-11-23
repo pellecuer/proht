@@ -31,8 +31,8 @@
                                 <td>{{ event.id }}</td>
                                 <td class="editFor">{{ event.eventtype }}</td>
                                 <td class="editFor">{{ event.code }}</td>
-                                <td class="editFor">{{ event.startdate|localizeddate('none', 'none', 'fr', null, 'E dd Y') }}</td>
-                                <td class="editFor">{{ event.enddate|localizeddate('none', 'none', 'fr', null, 'E dd Y')  }}</td>                                
+                                <td class="editFor">{{ event.startdate|localizeddate('none', 'none', 'fr', null, 'E dd MM Y') }}</td>
+                                <td class="editFor">{{ event.enddate|localizeddate('none', 'none', 'fr', null, 'E dd MM Y')  }}</td>                                
                                 <td><a href="{{ path('editEvent', { 'id': event.id }) }}"><i class="fas fa-edit"></i></a></td>
                                 <td><a href="{{ path('eventDelete', { 'id': event.id }) }}"><i class="fas fa-trash-alt"></i></a></td>
                             </tr>

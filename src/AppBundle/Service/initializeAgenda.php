@@ -4,6 +4,8 @@
 namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Entity\Letter;
+use AppBundle\Entity\Agenda;
 
 
 
@@ -38,26 +40,30 @@ class initializeAgenda {
         //build the arrayDate
         $startDate = $team->getEvent()->getStartDate();
         $endDate = $team->getEvent()->getEndDate();
-        $letter =  $this->getDoctrine()->getRepository(Letter::class)->findOneByName('L');
+        $letter = $this->em->getRepository(Letter::class)->find(1);
+        //$letter =  $this->getDoctrine()->getRepository(Letter::class)->findOneByName('L');
         
-        //Build
+        
         $date = $startDate;
-        $entityManager = $this->getDoctrine()->getManager();
-        while ($startDate<$endDate){
-           
+        $interval = new \DateInterval('P1D');
+        $interval = date_diff($startDate, $endDate);
+        
+        while ($startDate<$endDate){           
+           $date->add($interval);
            $agenda = new Agenda();
            $agenda->setAgent($agent);
            $agenda->setletter($letter);
-           $agenda->setDate($date);           
+           $agenda->setDate($date);          
            
            //persist
-           $entityManager->persist($agenda);          
+           //dump($agenda);die;
+           $this->em->persist($agenda);       
            
            //increment date
            $date = $date++;
         }
         
-        $entityManager->flush();
+        $this->em->flush();
         $message = 'agenda initialisé pour l\'agent : ' . $agent->getName();
 
         return $message;
