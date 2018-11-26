@@ -57,10 +57,12 @@
                                 <td class="update" scope ="col"><i class="fas fa-check"></i></td>
                                 <td class="trash" scope ="col"><i class="fas fa-trash-alt"></i></td>
                             </tr>
-                       {% endfor %}#}  
+                       {% endfor %}#}
+                        
+                        {{ dump (agentBetweens) }}
                         {% for agentBetween in agentBetweens %}
                             <tr>                                
-                                <td>{{agentBetween.agent.name  }}</td>
+                                <td>{{agentBetween.0.agent.name  }}</td>
                                {% for letter in agentBetween %}
                                     <td class="editFor">{{ letter.letter.letter }}</td>
                                 {% endfor %}

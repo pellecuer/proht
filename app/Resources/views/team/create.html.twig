@@ -10,11 +10,7 @@
         <h1>Créer une nouvelle équipe</h1>
         <form action="{{ path('create_team') }}" method="post" class="form-inline">
             <div class="form-group mb-2">
-            {{ form_start(form) }}          
-            {{ form_widget(form.name) }}
-            {{ form_widget(form.Event) }}
-            {{ form_widget(form.Agent) }}
-            {{ form_widget(form.Section) }}
+            {{ form_start(form) }}
             {{ form_rest(form) }}
             {{ form_end(form) }}            
             

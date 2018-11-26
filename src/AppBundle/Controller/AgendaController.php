@@ -85,18 +85,18 @@ class AgendaController extends Controller {
         }else {
             // now + 15 days
             $startDate = new \DateTime('now',  new \DateTimeZone('Europe/Paris'));            
-            $endDate = new \DateTime(('now + 15 day'));            
+            $endDate = new \DateTime(('now + 90 day'));          
         }
         
         //build letter Array
-        $agentId  = [123, 138];
+        $agentId  = [139, 140, 141];
         $agentBetweens = [];
         For ($i=0; $i<count($agentId); $i++){
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
                 ->findAllBetweenDate($startDate, $endDate, $agentId [$i]);
         }
-            
+        //dump($agentBetweens);die;
         
         //build date Array        
         //$diff=$startDate->diff($endDate)->format("%a");

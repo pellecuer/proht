@@ -85,8 +85,8 @@ class EventController extends Controller {
         if ($form->isSubmitted() && $form->isValid()) {            
             //dump($event->getCode);
             $entityManager->flush($event);
-            $this->addFlash('success', 'L\'évènement ' . $event->getCode() .  'a bien été mis à jour');
-            return $this->redirectToRoute('editEvent', array('id' => $event->getId()));
+            $this->addFlash('success', 'L\'évènement ' . $event->getCode() .  ' a bien été mis à jour');
+            return $this->redirectToRoute('showEvent');
             }
         
         return $this->render('event/edit.html.twig', array(

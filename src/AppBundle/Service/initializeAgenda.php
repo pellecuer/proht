@@ -45,11 +45,9 @@ class initializeAgenda {
         
         
         $date = $startDate;
-        $interval = new \DateInterval('P1D');
-        $interval = date_diff($startDate, $endDate);
+        //$interval = new \DateInterval('P1D');       
         
-        while ($startDate<$endDate){           
-           $date->add($interval);
+        while ($startDate<$endDate){ 
            $agenda = new Agenda();
            $agenda->setAgent($agent);
            $agenda->setletter($letter);
@@ -60,7 +58,7 @@ class initializeAgenda {
            $this->em->persist($agenda);       
            
            //increment date
-           $date = $date++;
+           $date -> modify('+1 day');
         }
         
         $this->em->flush();
