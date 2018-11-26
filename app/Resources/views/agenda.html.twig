@@ -7,9 +7,7 @@
         
             <form action="{{ path('agendaTeam') }}" method="post" class="form-inline">
                 <div class="form-group mb-2">
-            {{ form_start(form) }}
-            {{ form_widget(form.startDate) }}
-            {{ form_widget(form.endDate) }}            
+            {{ form_start(form) }}                     
             {{ form_rest(form) }}
             {{ form_end(form) }}
                 </div

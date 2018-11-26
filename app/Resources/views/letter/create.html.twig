@@ -1,4 +1,3 @@
-{# empty Twig template #}
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
@@ -7,14 +6,13 @@
 {% block title %}Welcome!{% endblock %}
 
 {% block body %}   
-    <div class="container">       
-        <h1>Modifier la lettre</h1>        
+    <div class="container">
+        <h1>Créer une nouvelle lettre</h1>       
         <div class="form-group mb-2">
-        {{ form_start(form) }}           
-        {{ form_widget(form) }}                         
+        {{ form_start(form) }} 
         {{ form_rest(form) }}
         {{ form_end(form) }}
-        </div> 
+        </div>     
     </div> 
 {% endblock %}
 

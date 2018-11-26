@@ -70,5 +70,5 @@ class AgendaRepository extends EntityRepository
             ->getQuery()
             ->getResult()
             ;
-    }  
+    }
 }

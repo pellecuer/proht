@@ -8,9 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Agenda;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Team;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\NotBlank;
  
@@ -67,6 +69,12 @@ class AgendaController extends Controller {
             'label'  => 'Date de fin',
             'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
             ))
+                
+             ->add('Team', EntityType::class, array(
+                'class' => Team::class,
+                'choice_label' => 'name',
+                'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
+                ))  
             
             ->add('Envoyer', SubmitType::class, array(
             'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
@@ -80,16 +88,27 @@ class AgendaController extends Controller {
         if ($form->isSubmitted() && $form->isValid()) {            
             $data = $form->getData();
             $startDate = $data['startDate'];          
-            $endDate = $data['endDate'];            
+            $endDate = $data['endDate']; 
+            $team = $data['Team'];
 
         }else {
             // now + 15 days
             $startDate = new \DateTime('now',  new \DateTimeZone('Europe/Paris'));            
-            $endDate = new \DateTime(('now + 90 day'));          
-        }
+            $endDate = new \DateTime(('now + 15 day')); 
+            $team = $this->getDoctrine()
+                ->getRepository(Team::class)
+                ->find(18);
+                }
+            //dump($team);die;
         
-        //build letter Array
-        $agentId  = [139, 140, 141];
+        //build letter Array        
+        $agentId = [];        
+        $agents = $team->getAgents();
+        foreach ($agents as $agent) {
+        $agentId[] = $agent->getId();
+        }
+
+        //$agentId  = [139, 140, 141];
         $agentBetweens = [];
         For ($i=0; $i<count($agentId); $i++){
             $agentBetweens[] = $this->getDoctrine()

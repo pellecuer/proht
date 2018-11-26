@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Letter;
+use AppBundle\Form\Type\LetterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
@@ -39,41 +40,71 @@ class LetterController extends Controller {
     /**
      * @Route("/create", name="createLetter")
      */
-    public function CreateAction()
+    public function CreateAction(Request $request)
     {       
-        $entityManager = $this->getDoctrine()->getManager();
-
         $letter = new Letter();
-        $letter->setLetter('J');
-        $letter->setTimeRange(8);                      
+        $form = $this->createForm(LetterType::class, $letter);
+        $form->handleRequest($request);
 
-        // tells Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($letter);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($letter);
+            $em->flush();
+            $this->addFlash('success',
+                    'Nouvelle lettre crée avec l\'id :' . $letter->getId()
+            );
 
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
+            return $this->redirectToRoute('showletter', array('id' => $letter->getId()));
+        }
 
-        return new Response('Saved new agent with id '.$letter->getId());
+        return $this->render('letter/create.html.twig', array(
+            'letter' => $letter,
+            'form' => $form->createView(),
+        ));
     }
     
-    /**     
-     * @Route("/{id}/edit", name="editletter")
+    
+    /**
+     * Displays a form to edit an existing letter entity.
+     *
+     * @Route("/{id}/edit", name="editLetter")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Letter $letter)
-    {
-        $deleteForm = $this->createDeleteForm($planeModel);
-        $editForm = $this->createForm('AppBundle\Form\PlaneModelType', $planeModel);
-        $editForm->handleRequest($request);
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+    public function editAction(Request $request, Letter $letter)    
+    {        
+        $form = $this->createForm(LetterType::class, $letter);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('planemodel_edit', array('id' => $planeModel->getId()));
+            $this->addFlash('success',
+                    'La lettre avec l\'id :' . $letter->getId(). 'a été modifiée avec succès'
+            );
+
+            return $this->redirectToRoute('showletter', array('id' => $letter->getId()));
+            
         }
-        return $this->render('planemodel/edit.html.twig', array(
-            'planeModel' => $planeModel,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        )); 
+
+        return $this->render('letter/edit.html.twig', array(
+            'letter' => $letter,
+            'form' => $form->createView(),            
+        ));
     }
+
+        
+       /**
+     * Deletes a Service entity.
+     *
+     * @Route("/delete/{id}", name="deleteLetter")
+     * @Method("GET")
+     */
+    public function deleteAction(Letter $letter)
+    {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($letter);
+            $em->flush();
+            $this->addFlash('success', 'La lettre ' . $letter->getLetter() .  'a bien été supprimée');
+        return $this->redirectToRoute('showletter');
+    }    
      
 }

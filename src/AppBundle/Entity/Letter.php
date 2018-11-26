@@ -28,34 +28,27 @@ class Letter
      * @ORM\Column(name="Letter", type="string", length=2)
      */
     private $letter;
-
-    /**
-     * @var string
-     *
-     * 
-     * @ORM\Column(name="TimeRange", type="decimal", precision=10, scale=2)
-     */
-    private $timeRange;
+   
 
     /**
      * @var 
      *
      * @Assert\Time()     
-     * @ORM\Column(name="startTime", type="time")
+     * @ORM\Column(name="startTime", type="time", nullable =true)
      */
     private $startTime;
 
     /**
      * @var
      *
-     * @ORM\Column(name="EndTime", type="time")
+     * @ORM\Column(name="EndTime", type="time", nullable =true)
      */
     private $endTime;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="EffectiveDuration", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="EffectiveDuration", type="decimal", precision=10, scale=2, nullable =true)
      */
     private $effectiveDuration;
 
@@ -94,30 +87,7 @@ class Letter
         return $this->letter;
     }
 
-    /**
-     * Set timeRange
-     *
-     * @param string $timeRange
-     *
-     * @return CodePlanning
-     */
-    public function setTimeRange($timeRange)
-    {
-        $this->timeRange = $timeRange;
-
-        return $this;
-    }
-
-    /**
-     * Get timeRange
-     *
-     * @return string
-     */
-    public function getTimeRange()
-    {
-        return $this->timeRange;
-    }
-
+   
     /**
      * Set startTime
      *
