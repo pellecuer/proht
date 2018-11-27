@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Agenda;
+use AppBundle\Entity\Agent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -43,7 +44,7 @@ class AgendaController extends Controller {
     /**
      *  Lists all agenda entities.
      *
-     * @Route("/agenda/show", name="agendaTeam")
+     * @Route("/agenda/show", name="showAgenda")
      * @Method({"GET", "POST"})
      */
     public function indexTeamAction(Request $request)
@@ -98,8 +99,7 @@ class AgendaController extends Controller {
             $team = $this->getDoctrine()
                 ->getRepository(Team::class)
                 ->find(18);
-                }
-            //dump($team);die;
+                }            
         
         //build letter Array        
         $agentId = [];        
@@ -107,42 +107,63 @@ class AgendaController extends Controller {
         foreach ($agents as $agent) {
         $agentId[] = $agent->getId();
         }
-
-        //$agentId  = [139, 140, 141];
+        
         $agentBetweens = [];
         For ($i=0; $i<count($agentId); $i++){
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
                 ->findAllBetweenDate($startDate, $endDate, $agentId [$i]);
         }
-        //dump($agentBetweens);die;
         
-        //build date Array        
-        //$diff=$startDate->diff($endDate)->format("%a");
         $interval = new \DateInterval('P1D');
         $arrayDate = [];
-        $immutable = \DateTimeImmutable::createFromMutable($startDate);
+        $immutable = \DateTimeImmutable::createFromMutable($startDate);        
         while ($immutable<$endDate){
             $arrayDate[] =  $immutable;
-             $immutable = $immutable->add($interval);
-        }
-        //dump($arrayDate);die;
+            $immutable = $immutable->add($interval);
+        }   
         
         //build event Array
         For ($i=0; $i<count($arrayDate); $i++){
             $eventBetweens[] = $this->getDoctrine()
                 ->getRepository(Event::class)
                 ->findEventBetweenDate($startDate, $endDate, $arrayDate [$i]);
-        }
+        }       
         
-         
    
         return $this->render('agenda.html.twig', [
 
             'dateBetweens' => $arrayDate,
             'agentBetweens' => $agentBetweens,
-            'eventBetweens' => $eventBetweens,
+            'eventBetweens' => $eventBetweens,            
             'form'=>$form->createView()                
              ]);
-        } 
+        }
+        
+         /**
+     * Deletes an agenda entity.
+     *
+     * @Route("/delete/{agentId}", name="deleteAgenda")
+     * @Method("GET")
+     */
+    public function deleteAction(Request $request, $agentId)    {        
+            
+        $agent = $this->getDoctrine()
+        ->getRepository(Agent::class)                
+        ->find($agentId);
+        $startDate = $agent->getTeam()->getEvent()->getStartDate();
+        $endDate = $agent->getTeam()->getEvent()->getEndDate();
+                 
+        //deleteAgentAgendaBetweenDate($startDate, $endDate,$agentId);    
+        deleteAgentAgendaBetweenDate($startDate, $endDate, $agentId);
+        
+        $em = $this->getDoctrine()->getManager();
+            $em->remove($agenda);
+            $em->flush();
+            $this->addFlash('success', 'L\'agent ' . $agenda->getAgent()->getName() .  'a bien été supprimé');
+           
+        return $this->redirectToRoute('showagent');
+    } 
+        
+        
 }

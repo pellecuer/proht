@@ -171,7 +171,7 @@ class TeamController extends Controller {
             $em->flush();
 
              $this->addFlash('success',
-                        'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team' . $team->getName()
+                        'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team ' . $team->getName()
                 );
             
             //Get the service Initialize 

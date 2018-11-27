@@ -18,7 +18,7 @@ class ServiceController extends Controller
     /**
      * Lists all service entities.
      *
-     * @Route("/show", name="service_index")
+     * @Route("/show", name="ShowService")
      * @Method("GET")
      */
     public function indexAction()
@@ -52,7 +52,7 @@ class ServiceController extends Controller
                     'Nouveau service crée avec l\'id :' . $service->getId()
             );
 
-            return $this->redirectToRoute('service_index', array('id' => $service->getId()));
+            return $this->redirectToRoute('ShowService', array('id' => $service->getId()));
         }
 
         return $this->render('service/create.html.twig', array(
@@ -80,7 +80,7 @@ class ServiceController extends Controller
                     'Le service avec l\'id :' . $service->getId(). 'a été modifié avec succès'
             );
 
-            return $this->redirectToRoute('service_index', array('id' => $service->getId()));
+            return $this->redirectToRoute('ShowService', array('id' => $service->getId()));
             
         }
 
@@ -103,6 +103,6 @@ class ServiceController extends Controller
             $em->remove($service);
             $em->flush();
             $this->addFlash('success', 'Le service ' . $service->getName() .  'a bien été supprimé');
-        return $this->redirectToRoute('service_index');
+        return $this->redirectToRoute('ShowService');
     }    
 }

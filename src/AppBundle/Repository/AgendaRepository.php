@@ -18,28 +18,27 @@ class AgendaRepository extends EntityRepository
     public function findAgentBetweenDate($startDate, $endDate, $agent)
     {
         return $this->createQueryBuilder('a')
-            ->where('a.date > :start')
-            ->andWhere('a.date < :end')
+            ->where('a.date >= :start')
+            ->andWhere('a.date <= :end')
             ->andWhere('a.agent = :agent')
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
             ->setParameter('agent', $agent)
             ->orderBy('a.date', 'ASC')
-            ->setMaxResults(90)
+            ->setMaxResults(1000)
             ->getQuery()
             ->getResult()
             ;
     }
     
     /**
-     * @param $startDate, $endDate, $agent, $agendaId
-     * @return Product[]
+     * @param $startDate, $endDate, $agendaId     
      */
     public function findAllBetweenDate($startDate, $endDate, $agentId)
     {
         return $this->createQueryBuilder('agenda')
-            ->where('agenda.date > :start')
-            ->andWhere('agenda.date < :end')            
+            ->where('agenda.date >= :start')
+            ->andWhere('agenda.date <= :end')            
                 
             ->innerJoin('agenda.agent', 'agent')
             ->addSelect('agent')
@@ -62,11 +61,31 @@ class AgendaRepository extends EntityRepository
     public function findEventBetweenDate($startDate, $endDate)
     {
         return $this->createQueryBuilder('event')
-            ->where('event.startDate > :start')
-            ->andWhere('event.endDate < :end') 
+            ->where('event.startDate >= :start')
+            ->andWhere('event.endDate <= :end') 
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)            
             ->setMaxResults(10000)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    
+    /**
+     * @param $startDate, $endDate, $agendaId      
+     */
+    public function deleteAgentAgendaBetweenDate($startDate, $endDate, $agentId)
+    {
+        return $this->createQueryBuilder('agenda')
+            ->where('agenda.date > :start')
+            ->andWhere('agenda.date < :end')           
+            ->innerJoin('agenda.agent', 'agent')
+            ->addSelect('agent')
+            ->andWhere('agent.id = :id')
+                
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
+            ->setParameter('id', $agentId)
             ->getQuery()
             ->getResult()
             ;

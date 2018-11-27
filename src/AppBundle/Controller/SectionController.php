@@ -18,7 +18,7 @@ class SectionController extends Controller
     /**
      * Lists all section entities.
      *
-     * @Route("/show", name="section_index")
+     * @Route("/show", name="showSection")
      * @Method("GET")
      */
     public function indexAction()
@@ -50,7 +50,7 @@ class SectionController extends Controller
                     'Le section avec l\'id :' . $section->getId(). 'a été modifié avec succès'
             );
 
-            return $this->redirectToRoute('section_index', array('id' => $section->getId()));
+            return $this->redirectToRoute('showSection', array('id' => $section->getId()));
             
         }
 
@@ -80,7 +80,7 @@ class SectionController extends Controller
                     'Nouveau section crée avec l\'id :' . $section->getId()
             );
 
-            return $this->redirectToRoute('section_index', array('id' => $section->getId()));
+            return $this->redirectToRoute('showSection', array('id' => $section->getId()));
         }
 
         return $this->render('section/create.html.twig', array(
@@ -101,6 +101,6 @@ class SectionController extends Controller
             $em->remove($section);
             $em->flush();
             $this->addFlash('success', 'Le section ' . $section->getName() .  'a bien été supprimé');
-        return $this->redirectToRoute('section_index');
+        return $this->redirectToRoute('showSection');
     }    
 }

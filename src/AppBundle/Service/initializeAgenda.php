@@ -38,11 +38,8 @@ class initializeAgenda {
     public function initialize($team, $agent)
     {
         //build the arrayDate
-        $startDate = $team->getEvent()->getStartDate();
+        $startDate = $team->getEvent()->getStartDate();        
         $endDate = $team->getEvent()->getEndDate();
-        $letter = $this->em->getRepository(Letter::class)->find(1);
-        //$letter =  $this->getDoctrine()->getRepository(Letter::class)->findOneByName('L');
-        
         
         $date = $startDate;        
         
@@ -73,6 +70,5 @@ class initializeAgenda {
         $message = 'agenda initialisé pour l\'agent : ' . $agent->getName();
 
         return $message;
-    }
-    
+    }    
 }
