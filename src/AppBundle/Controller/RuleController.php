@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Rule;
+use AppBundle\Form\Type\RuleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,45 +41,70 @@ class RuleController extends Controller {
     /**
      * @Route("/create", name="createRule")
      */
-    public function CreateAction()
+    public function CreateAction(Request $request)
     {       
-        $entityManager = $this->getDoctrine()->getManager();
+         $rule = new Rule();
+        $form = $this->createForm(RuleType::class, $rule);
+        $form->handleRequest($request);
 
-        $rule = new Rule();
-        $rule->setMaxHourPerDay(10);
-        $rule->setMinRestPerWeek(24);
-        $rule->setMinRestBetweenDays(11);
-        $rule->setMaxHourPerWeek(48);
-        $rule->setMaxAveragePerWeek(44);
-        $rule->setNbWeekForAverage(12);                    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($rule);
+            $em->flush();
+            $this->addFlash('success',
+                    'Nouvelle règle crée avec l\'id :' . $rule->getId()
+            );
 
-        // tells Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($rule);
+            return $this->redirectToRoute('showrule', array('id' => $rule->getId()));
+        }
 
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-
-        return new Response('Saved new agent with id '.$rule->getId());
+        return $this->render('rule/create.html.twig', array(
+            'rules' => $rule,
+            'form' => $form->createView(),
+        ));
     }
     
-    /**     
-     * @Route("/{id}/edit", name="editrule")
+    /**
+     * Displays a form to edit an existing Rule entity.
+     *
+     * @Route("/{id}/edit", name="editRule")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Rule $rule)
-    {
-        $deleteForm = $this->createDeleteForm($planeModel);
-        $editForm = $this->createForm('AppBundle\Form\PlaneModelType', $planeModel);
-        $editForm->handleRequest($request);
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+    public function editAction(Request $request, Rule $rule)    
+    {        
+        $form = $this->createForm(RuleType::class, $rule);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('planemodel_edit', array('id' => $planeModel->getId()));
+            $this->addFlash('success',
+                    'Le rule avec l\'id :' . $rule->getId(). 'a été modifié avec succès'
+            );
+
+            return $this->redirectToRoute('showrule', array('id' => $rule->getId()));
+            
         }
-        return $this->render('planemodel/edit.html.twig', array(
-            'planeModel' => $planeModel,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        )); 
+
+        return $this->render('rule/edit.html.twig', array(
+            'rule' => $rule,
+            'form' => $form->createView(),            
+        ));
     }
+
+        
+       /**
+     * Deletes a rule entity.
+     *
+     * @Route("/delete/{id}", name="deleteRule")
+     * @Method("GET")
+     */
+    public function deleteAction(Rule $rule)
+    {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($rule);
+            $em->flush();
+            $this->addFlash('success', 'La règle avec l\'id ' . $rule->getId() .  'a bien été supprimée');
+        return $this->redirectToRoute('showrule');
+    }    
      
 }

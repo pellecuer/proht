@@ -44,16 +44,15 @@ class initializeAgenda {
         //$letter =  $this->getDoctrine()->getRepository(Letter::class)->findOneByName('L');
         
         
-        $date = $startDate;  
+        $date = $startDate;        
         
         while ($startDate<$endDate){ 
             $agenda = new Agenda();
             $agenda->setAgent($agent);           
-            $agenda->setDate($date);
+            $agenda->setDate($date);            
             
-            $dayWeek =$date->format('w');
-            
-            if ($dayWeek == 6) {
+            $dayWeek =$date->format('w');            
+            if ($dayWeek == 6) {                
                 $idLetter = 22;
             } elseif ($dayWeek == 0) {
                 $idLetter = 23;

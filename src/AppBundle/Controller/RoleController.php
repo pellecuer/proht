@@ -36,14 +36,14 @@ class RoleController extends Controller {
     }
     
    /**
-     * Creates a new service entity.
+     * Creates a new role entity.
      *
      * @Route("/create", name="createRole")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
-        $role = new Service();
+        $role = new Role();
         $form = $this->createForm(RoleType::class, $role);
         $form->handleRequest($request);
 
@@ -59,13 +59,13 @@ class RoleController extends Controller {
         }
 
         return $this->render('role/create.html.twig', array(
-            'role' => $role,
+            'roles' => $role,
             'form' => $form->createView(),
         ));
     }
     
     /**
-     * Displays a form to edit an existing service entity.
+     * Displays a form to edit an existing Role entity.
      *
      * @Route("/{id}/edit", name="editRole")
      * @Method({"GET", "POST"})
@@ -81,7 +81,7 @@ class RoleController extends Controller {
                     'Le role avec l\'id :' . $role->getId(). 'a été modifié avec succès'
             );
 
-            return $this->redirectToRoute('showrole', array('id' => $service->getId()));
+            return $this->redirectToRoute('showrole', array('id' => $role->getId()));
             
         }
 
@@ -93,7 +93,7 @@ class RoleController extends Controller {
 
         
        /**
-     * Deletes a Service entity.
+     * Deletes a role entity.
      *
      * @Route("/delete/{id}", name="deleteRole")
      * @Method("GET")

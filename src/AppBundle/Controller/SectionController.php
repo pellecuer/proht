@@ -63,7 +63,7 @@ class SectionController extends Controller
     /**
      * Creates a new section entity.
      *
-     * @Route("/create", name="create_section")
+     * @Route("/create", name="createSection")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)

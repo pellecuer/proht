@@ -7,17 +7,12 @@
 
 {% block body %}   
     <div class="container">
-        <h1>Créer un nouveau service</h1>
-        <form action="{{ path('createEvent') }}" method="post" class="form-inline">
-            <div class="form-group mb-2">
-            {{ form_start(form) }}           
-            {{ form_widget(form.name) }}
-            {{ form_widget(form.chief) }}
-            {{ form_widget(form.Event) }}               
-            {{ form_rest(form) }}
-            {{ form_end(form) }}
-            </div
-        </form>
+        <h1>Créer un nouveau service</h1>        
+        <div class="form-group mb-2">
+        {{ form_start(form) }} 
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        </div>        
     </div> 
 {% endblock %}
 

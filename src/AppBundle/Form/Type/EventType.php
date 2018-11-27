@@ -49,13 +49,13 @@ class EventType extends AbstractType
                     'Rcd' => 'RCD',
                     'Arrêt de tranche' => 'Arrêt de tranche'
                     ),
-            'placeholder' => 'Choisissez une option',
-            'constraints' => array(
-                    new NotBlank()
-            ),            
-            'label'  => 'type',
-            'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
-            ))    
+                'placeholder' => 'Choisissez une option',
+                'constraints' => array(
+                        new NotBlank()
+                ),            
+                'label'  => 'type',
+                'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+                ))    
                         
             ->add('Envoyer', SubmitType::class, array(
             'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
