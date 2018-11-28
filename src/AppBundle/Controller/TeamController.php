@@ -170,13 +170,11 @@ class TeamController extends Controller {
             $em->persist($agent);
             $em->flush();
 
-             $this->addFlash('success',
+            $this->addFlash('success',
                         'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team ' . $team->getName()
-                );
-            
+                );            
             //Get the service Initialize            
-            $message = $initializeAgenda->initialize($team, $agent);
-            $this->addFlash('success', $message);
+            $initializeAgenda->initialize($team, $agent);           
             return $this->redirectToRoute('showAgents', array('id' => $team->getId()));        
         }
         

@@ -43,7 +43,7 @@ class initializeAgenda {
         
         $date = $startDate;        
         
-        while ($startDate<$endDate){ 
+        while ($startDate<=$endDate){ 
             $agenda = new Agenda();
             $agenda->setAgent($agent);           
             $agenda->setDate($date);            
@@ -60,10 +60,11 @@ class initializeAgenda {
                  
            $agenda->setletter($letter);
            $this->em->persist($agenda);
-           $date -> modify('+1 day');
+           $this->em->flush();
+           $date -> modify('+1 day');           
         }
         
-        $this->em->flush();
+        
         $message = 'agenda initialisé pour l\'agent : ' . $agent->getName();
 
         return $message;
