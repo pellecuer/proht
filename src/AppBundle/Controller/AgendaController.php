@@ -150,20 +150,22 @@ class AgendaController extends Controller {
             
         $agent = $this->getDoctrine()
         ->getRepository(Agent::class)                
-        ->find($agentId);
+        ->find($agentId);        
         $startDate = $agent->getTeam()->getEvent()->getStartDate();
-        $endDate = $agent->getTeam()->getEvent()->getEndDate();
-                 
-        //deleteAgentAgendaBetweenDate($startDate, $endDate,$agentId);    
-        deleteAgentAgendaBetweenDate($startDate, $endDate, $agentId);
+        $endDate = $agent->getTeam()->getEvent()->getEndDate();  
+             
+        $agendaToRemoves = $this->getDoctrine()
+            ->getRepository(Agenda::class)
+            ->deleteAgentAgendaBetweenDate($startDate, $endDate, $agentId);
         
         $em = $this->getDoctrine()->getManager();
-            $em->remove($agenda);
-            $em->flush();
-            $this->addFlash('success', 'L\'agent ' . $agenda->getAgent()->getName() .  'a bien été supprimé');
+        
+        foreach ($agendaToRemoves as $agendaToRemove){
+            $em->remove($agendaToRemove); 
+        }                
+        $em->flush();
+        $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
            
-        return $this->redirectToRoute('showagent');
+        return $this->redirectToRoute('showAgenda');
     } 
-        
-        
 }

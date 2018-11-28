@@ -74,20 +74,18 @@ class AgendaRepository extends EntityRepository
     /**
      * @param $startDate, $endDate, $agendaId      
      */
-    public function deleteAgentAgendaBetweenDate($startDate, $endDate, $agentId)
+    public function deleteAgentAgendaBetweenDate($startDate, $endDate, $agent)
     {
-        return $this->createQueryBuilder('agenda')
-            ->where('agenda.date > :start')
-            ->andWhere('agenda.date < :end')           
-            ->innerJoin('agenda.agent', 'agent')
-            ->addSelect('agent')
-            ->andWhere('agent.id = :id')
+        return $this->createQueryBuilder('agenda')                       
+            ->where('agenda.date >= :start')
+            ->andWhere('agenda.date <= :end') 
+            ->andWhere('agenda.agent = :agent')
                 
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
-            ->setParameter('id', $agentId)
-            ->getQuery()
+            ->setParameter('agent', $agent)
+            ->getQuery()            
             ->getResult()
-            ;
+            ;       
     }
 }

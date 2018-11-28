@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="agenda")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AgendaRepository")
+ * 
  */
 class Agenda
 {
