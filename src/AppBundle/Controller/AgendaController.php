@@ -123,7 +123,7 @@ class AgendaController extends Controller {
                 ->getRepository(Agenda::class)
                 ->findAllBetweenDate($startDate, $endDate, $agentId [$i]);
         }
-        dump($agentBetweens);die;
+        //dump($agentBetweens);die;
         
         $interval = new \DateInterval('P1D');
         $arrayDate = [];
