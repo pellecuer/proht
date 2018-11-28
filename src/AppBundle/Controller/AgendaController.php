@@ -26,13 +26,18 @@ class AgendaController extends Controller {
      */
     public function CreateAction(Request $request)
     {   
+        /* on récupère la valeur envoyée par la vue */
+        $letter = strtoupper($request->request->get('letter'));
+        $nni = $request->request->get('nni');
+        $date = $request->request->get('date');
+        
         
         
         
         $agenda = new Agenda();
-        $form = $this->createForm(AgendaType::class, $agenda);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        $agenda->setLetter($letter);
+        $agenda->set($letter);
+        
             $em = $this->getDoctrine()->getManager();
             $em->persist($agenda);
             $em->flush();
@@ -40,12 +45,7 @@ class AgendaController extends Controller {
                     'Nouvel agenda crée pour l\'agent :' . $agent->getId()
             );
             
-            return $this->redirectToRoute('agendashow');
-            }
-
-        return $this->render('agenda/create.html.twig', array(            
-            'form' => $form->createView(),
-        ));
+            return $this->redirectToRoute('agendashow'); 
     }
 
 

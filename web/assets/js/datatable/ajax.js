@@ -50,17 +50,16 @@ $('.update').on( "click", function(){
     $( '#producteur' ).text(personnage);
 });
 
-//send date intervall
-$( "form" ).submit (function(){
-    var startDate = $("input:first").val();
-    var endDate = $("input:second").val();
+//sendAgendaControlleur
+$('.editFor').on( "keyup", function(){
+    var letter = $(this).html();
+    var date = $(this).html();
     $.ajax({
-        url:'/dateAjax',
+        url:'/agenda/create',
         type: "POST",
         dataType: "json",
         data: {
-            "startDate": startDate,
-            "endDate": endDate
+            "letter": letter
         },
         async: true,
         success: function (data)
