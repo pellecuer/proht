@@ -92,7 +92,7 @@ class AgentController extends Controller
             
             //return new Response('Saved new event with id '.$event->getId());
             $this->addFlash('success',
-                    'Nouvel agent crée avec l\'id :' . $agent->getId()
+                    'Nouvel agent crée avec l\'id : ' . $agent->getId()
             );  
             
             return $this->redirectToRoute('showagent');
@@ -141,7 +141,7 @@ class AgentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($agent);
             $em->flush();
-            $this->addFlash('success', 'L\'agent ' . $agent->getName() .  'a bien été supprimé');
+            $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé');
            
         return $this->redirectToRoute('showagent');
     } 

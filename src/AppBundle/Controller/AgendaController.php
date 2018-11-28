@@ -96,18 +96,19 @@ class AgendaController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {            
             $data = $form->getData();
-            $startDate = $data['startDate'];          
+            $startDate = $data['startDate'];            
             $endDate = $data['endDate']; 
             $team = $data['Team'];
 
         }else {
-            // now + 15 days
-            $startDate = new \DateTime('now',  new \DateTimeZone('Europe/Paris'));            
-            $endDate = new \DateTime(('now + 15 day')); 
+            // now + 15 days                        
             $team = $this->getDoctrine()
                 ->getRepository(Team::class)
                 ->find(18);
-                }            
+                } 
+            $startDate = $team->getEvent()->getStartDate();
+            $endDate = $team->getEvent()->getEndDate();            
+            //$endDate = $startDate->add(new \DateInterval('P7D'));
         
         //build letter Array        
         $agentId = [];        
@@ -122,12 +123,14 @@ class AgendaController extends Controller {
                 ->getRepository(Agenda::class)
                 ->findAllBetweenDate($startDate, $endDate, $agentId [$i]);
         }
+        //dump($agentBetweens);die;
         
         $interval = new \DateInterval('P1D');
         $arrayDate = [];
-        $immutable = \DateTimeImmutable::createFromMutable($startDate);        
-        while ($immutable<$endDate){
-            $arrayDate[] =  $immutable;
+        $immutable = \DateTimeImmutable::createFromMutable($startDate);
+        
+        while ($immutable<=$endDate){
+            $arrayDate[] =  $immutable;            
             $immutable = $immutable->add($interval);
         }   
         

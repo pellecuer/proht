@@ -174,8 +174,7 @@ class TeamController extends Controller {
                         'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team ' . $team->getName()
                 );
             
-            //Get the service Initialize 
-            $message = $initializeAgenda->getHappyMessage();
+            //Get the service Initialize            
             $message = $initializeAgenda->initialize($team, $agent);
             $this->addFlash('success', $message);
             return $this->redirectToRoute('showAgents', array('id' => $team->getId()));        

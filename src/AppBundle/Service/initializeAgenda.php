@@ -58,11 +58,8 @@ class initializeAgenda {
             }
             $letter = $this->em->getRepository(Letter::class)->find($idLetter);
                  
-           $agenda->setletter($letter);           
-           
-           $this->em->persist($agenda);      
-           
-           //increment date
+           $agenda->setletter($letter);
+           $this->em->persist($agenda);
            $date -> modify('+1 day');
         }
         
