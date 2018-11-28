@@ -40,10 +40,18 @@ class AgendaType extends AbstractType
     }
     
     public function configureOptions(OptionsResolver $resolver)
-{
-    $resolver->setDefaults(array(
-        'data_class' => AgendaType::class,
-    ));
-}
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\Agenda',
+        ));
+    }
+    
+     /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'appbundle_agenda';
+    }
    
 }

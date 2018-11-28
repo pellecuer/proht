@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Agenda;
+use AppBundle\Form\Type\AgendaType;
 use AppBundle\Entity\Agent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -22,22 +24,28 @@ class AgendaController extends Controller {
     /**
      * @Route("/agenda/create", name="createagenda")
      */
-    public function CreateAction( )
-    {       
-        $entityManager = $this->getDoctrine()->getManager();
-        $date = new \DateTime('11-01-2018');
-        $agenda = new Agenda();        
-        $agenda->setAgent('Michel');
-        $agenda->setletter('Z');
-        $agenda->setDate($date);        
+    public function CreateAction(Request $request)
+    {   
+        
+        
+        
+        $agenda = new Agenda();
+        $form = $this->createForm(AgendaType::class, $agenda);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($agenda);
+            $em->flush();
+            $this->addFlash('success',
+                    'Nouvel agenda crée pour l\'agent :' . $agent->getId()
+            );
+            
+            return $this->redirectToRoute('agendashow');
+            }
 
-        // tells Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($agenda);
-
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-
-        return new Response('Saved new agenda with id '.$agenda->getId());
+        return $this->render('agenda/create.html.twig', array(            
+            'form' => $form->createView(),
+        ));
     }
 
 
