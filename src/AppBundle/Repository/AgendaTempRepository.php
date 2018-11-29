@@ -2,14 +2,14 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Agenda;
+use AppBundle\Entity\AgendaTemp;
 use AppBundle\Entity\Event;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AgendaRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AgendaTempRepository")
  */
-class AgendaRepository extends EntityRepository
+class AgendaTempRepository extends EntityRepository
 {
     
     /**
@@ -36,18 +36,18 @@ class AgendaRepository extends EntityRepository
      */
     public function findAllBetweenDate($startDate, $endDate, $agentId)
     {
-        return $this->createQueryBuilder('agenda')
-            ->where('agenda.date >= :start')
-            ->andWhere('agenda.date <= :end')            
+        return $this->createQueryBuilder('agendaTemp')
+            ->where('agendaTemp.date >= :start')
+            ->andWhere('agendaTemp.date <= :end')            
                 
-            ->innerJoin('agenda.agent', 'agent')
+            ->innerJoin('agendaTemp.agent', 'agent')
             ->addSelect('agent')
             ->andWhere('agent.id = :id')    
                 
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
             ->setParameter('id', $agentId)
-            ->orderBy('agenda.date', 'ASC')
+            ->orderBy('agendaTemp.date', 'ASC')
             ->setMaxResults(10000)
             ->getQuery()
             ->getResult()

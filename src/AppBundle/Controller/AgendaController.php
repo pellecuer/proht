@@ -27,7 +27,8 @@ class AgendaController extends Controller {
     public function editAction(Request $request)
     {   
         /* on récupère l'id de l'objet envoyée par la vue */
-        $letterUpdate = strtoupper($request->request->get('letter'));        
+        $letterUpdate = strtoupper($request->request->get('letter'));
+        dump($letterUpdate);die;
         $letter = $this->getDoctrine()
                 ->getRepository(Letter::class)->findOneBy([
                         'letter' => $letterUpdate
@@ -178,21 +179,12 @@ class AgendaController extends Controller {
         while ($immutable<=$endDate){
             $arrayDate[] =  $immutable;            
             $immutable = $immutable->add($interval);
-        }   
+        } 
         
-        //build event Array
-        For ($i=0; $i<count($arrayDate); $i++){
-            $eventBetweens[] = $this->getDoctrine()
-                ->getRepository(Event::class)
-                ->findEventBetweenDate($startDate, $endDate, $arrayDate [$i]);
-        }       
-        
-   
         return $this->render('agenda.html.twig', [
 
             'dateBetweens' => $arrayDate,
-            'agentBetweens' => $agentBetweens,
-            'eventBetweens' => $eventBetweens,
+            'agentBetweens' => $agentBetweens,            
             'team' => $team,
             'startDate' => $startDate,
             'endDate' => $endDate,
