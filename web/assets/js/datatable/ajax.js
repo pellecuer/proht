@@ -1,11 +1,11 @@
 //Event handlers
 $(".editFor" ).on( "mouseenter", function(){
-    $( this).css( "background-color", "#C6E2FF");
+   // $( this).css( "background-color", "#C6E2FF");
     //$('html,body').css('cursor','crosshair');
     $(this).attr('contenteditable', 'true');
 });
 $(".editFor" ).on( "mouseleave", function(){
-    $( this).css( "background-color", "transparent");
+    //$( this).css( "background-color", "transparent");
     //$('html,body').css('cursor','crosshair');
     $(this).attr('contenteditable', 'false');
 });
@@ -15,7 +15,7 @@ $(".editFor" ).on( "keypress", function(){
 });
 
 //Check
-$('.editFor').on( "keyup", function(){
+/*$('.editFor').on( "keyup", function(){
     var personnage = $(this).html();
     $.ajax({
         url:'/ajax_request',
@@ -33,6 +33,7 @@ $('.editFor').on( "keyup", function(){
         }
     });
 });
+*/
 
 //delete object in DB
 $('.trash').on( "click", function(){
@@ -52,13 +53,14 @@ $('.update').on( "click", function(){
 
 //sendAgendaControlleur
 $('.editFor').on( "keyup", function(){
+    var id = $(this).attr('id');
     var letter = $(this).html();
-    var date = $(this).html();
     $.ajax({
-        url:'/agenda/create',
+        url:'/agendaEdit',
         type: "POST",
         dataType: "json",
         data: {
+            "id": id,
             "letter": letter
         },
         async: true,
@@ -66,7 +68,7 @@ $('.editFor').on( "keyup", function(){
         {
             console.log(data);
             $( '#titre' ).text(data.titre);
-            $( '#producteur' ).text(data.producteur);
+            $( '#description' ).text(data.description);
         }
     });
 });

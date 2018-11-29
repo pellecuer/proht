@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Agenda;
-use AppBundle\Form\Type\AgendaType;
+use AppBundle\Entity\Letter;
 use AppBundle\Entity\Agent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
@@ -22,30 +22,76 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class AgendaController extends Controller {
         
     /**
-     * @Route("/agenda/create", name="createagenda")
+     * @Route("/agendaEdit", name="/agendaEdit")
      */
-    public function CreateAction(Request $request)
+    public function editAction(Request $request)
     {   
-        /* on récupère la valeur envoyée par la vue */
-        $letter = strtoupper($request->request->get('letter'));
-        $nni = $request->request->get('nni');
-        $date = $request->request->get('date');
-        
-        
-        
-        
-        $agenda = new Agenda();
-        $agenda->setLetter($letter);
-        $agenda->set($letter);
-        
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($agenda);
-            $em->flush();
-            $this->addFlash('success',
-                    'Nouvel agenda crée pour l\'agent :' . $agent->getId()
+        /* on récupère l'id de l'objet envoyée par la vue */
+        $letterUpdate = strtoupper($request->request->get('letter'));        
+        $letter = $this->getDoctrine()
+                ->getRepository(Letter::class)->findOneBy([
+                        'letter' => $letterUpdate
+                        ]);
+        if (!$letter) {
+            throw $this->createNotFoundException(
+                'La lettre saisie ne correspond à aucun code. Veuillez saisir une autre lettre'
             );
             
-            return $this->redirectToRoute('agendashow'); 
+        } else {
+            $id = $request->request->get('id');
+            $agenda = $this->getDoctrine()
+                    ->getRepository(Agenda::class)
+                    ->find($id);
+            
+            if (!$agenda) {
+            throw $this->createNotFoundException(
+                'Aucun objet dans la base Agenda ne correspond à votre saisie. Merci de ressayer'
+            );
+            } else {
+            
+                $agenda->setLetter($letter);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($agenda);
+                $em->flush();
+                $this->addFlash('success',
+                        'Agenda mis à jour pour l\'agent :' . $agenda->getAgent()->getName()
+                );
+            }
+        }
+        
+        
+        switch ($letterUpdate){
+            case 'H':
+                $titre = 'Repos hebdomadaire';
+                $description = '35h minimum minimum';
+                break;
+            case 'J':
+                $titre = 'Journée de travail normal';
+                $description = '7h45-16h30';
+                break;
+            case 'M':
+                $titre = 'Horaire M';
+                $description = '5h-13h';
+                break;
+            case 'D':
+                $titre = '5h30';
+                $description = '15h30';
+                break;
+            case 'R':
+                $titre = 'Repos journalier';
+                $description = '11h minimum';
+        }
+        /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
+         * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
+         */
+        $response = new Response(json_encode(array(
+            'titre' => $titre,
+            'description' => $description
+        )));
+        
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;         
     }
 
 

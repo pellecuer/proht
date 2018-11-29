@@ -35,7 +35,8 @@ class AgentController extends Controller
     public function findAgentAction($id)
     {
              // finds *all* products 
-        $agent = $this->getDoctrine()->getRepository(Agent::class)->find($id);                  
+        $agent = $this->getDoctrine()->getRepository(Agent::class)
+                ->find($id);                  
 
         if (!$agent) {
             throw $this->createNotFoundException(
