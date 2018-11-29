@@ -55,7 +55,7 @@ class AgendaController extends Controller {
                 $em->persist($agenda);
                 $em->flush();
                 $this->addFlash('success',
-                        'Agenda mis à jour pour l\'agent :' . $agenda->getAgent()->getName()
+                        'Agenda mis à jour pour l\'agent : ' . $agenda->getAgent()->getName()
                 );
             }
         }
@@ -192,7 +192,10 @@ class AgendaController extends Controller {
 
             'dateBetweens' => $arrayDate,
             'agentBetweens' => $agentBetweens,
-            'eventBetweens' => $eventBetweens,            
+            'eventBetweens' => $eventBetweens,
+            'team' => $team,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
             'form'=>$form->createView()                
              ]);
         }
