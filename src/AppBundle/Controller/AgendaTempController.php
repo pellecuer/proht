@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use AppBundle\Entity\Agenda;
+
 use AppBundle\Entity\AgendaTemp;
 use AppBundle\Entity\Letter;
 use AppBundle\Entity\Agent;
@@ -31,7 +31,7 @@ class AgendaTempController extends Controller {
     
     
     /**
-     * @Route("/agendaTempEdit", name="/agendaTempEdit")
+     * @Route("/edit", name="/agendaTempEdit")
      */
     public function editAction(Request $request)
     {   
@@ -43,7 +43,7 @@ class AgendaTempController extends Controller {
                 ->getRepository(Letter::class)->findOneBy([
                         'letter' => $letterUpdate
                         ]);
-        dump($letter);die;
+        
         if (!$letter) {
             throw $this->createNotFoundException(
                 'La lettre saisie ne correspond à aucun code. Veuillez saisir une autre lettre'
@@ -51,23 +51,23 @@ class AgendaTempController extends Controller {
             
         } else {
             $id = $request->request->get('id');
-            $agenda = $this->getDoctrine()
-                    ->getRepository(Agenda::class)
+            $agendaTemp = $this->getDoctrine()
+                    ->getRepository(AgendaTemp::class)
                     ->find($id);
             
-            if (!$agenda) {
+            if (!$agendaTemp) {
             throw $this->createNotFoundException(
                 'Aucun objet dans la base Agenda ne correspond à votre saisie. Merci de ressayer'
             );
             } else {
             
-                $agenda->setLetter($letter);
+                $agendaTemp->setLetter($letter);
 
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($agenda);
+                $em->persist($agendaTemp);
                 $em->flush();
                 $this->addFlash('success',
-                        'Agenda mis à jour pour l\'agent : ' . $agenda->getAgent()->getName()
+                        'Agenda mis à jour pour l\'agent : ' . $agendaTemp->getAgent()->getName()
                 );
             }
         }

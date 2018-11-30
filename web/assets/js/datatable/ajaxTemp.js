@@ -51,34 +51,14 @@ $('.update').on( "click", function(){
     $( '#producteur' ).text(personnage);
 });
 
-//sendAgendaControlleur
-$('.editFor').on( "keyup", function(){
-    var id = $(this).attr('id');
-    var letter = $(this).html();
-    $.ajax({
-        url:'/agendaEdit',
-        type: "POST",
-        dataType: "json",
-        data: {
-            "id": id,
-            "letter": letter
-        },
-        async: true,
-        success: function (data)
-        {
-            console.log(data);
-            $( '#titre' ).text(data.titre);
-            $( '#description' ).text(data.description);
-        }
-    });
-});
+
 
 //sendAgendaTempControlleur
 $('.editFor').on( "keyup", function(){
     var id = $(this).attr('id');
     var letter = $(this).html();
     $.ajax({
-        url:'/agendaTemp/edit',
+        url:'/agendaTempEdit',
         type: "POST",
         dataType: "json",
         data: {
