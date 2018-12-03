@@ -170,8 +170,6 @@ class AgendaTempController extends Controller {
                 'startDate' => $startDate,
                 'endDate' => $endDate,                                
                  ]);
-    }
-    
-    
+    }  
 }
 
