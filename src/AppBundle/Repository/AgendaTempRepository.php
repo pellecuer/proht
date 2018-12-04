@@ -112,4 +112,17 @@ class AgendaTempRepository extends EntityRepository
             ->getResult()
             ;       
     }
+    
+    /**
+     * @return Agenda[] Returns an array of Agenda objects
+     */
+    public function findAgent($agent)
+    {
+        return $this->createQueryBuilder('a')           
+            ->andWhere('a.agent = :agent')            
+            ->setParameter('agent', $agent)  
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

@@ -24,8 +24,7 @@ class AgendaRepository extends EntityRepository
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
             ->setParameter('agent', $agent)
-            ->orderBy('a.date', 'ASC')
-            ->setMaxResults(1000)
+            ->orderBy('a.date', 'ASC')            
             ->getQuery()
             ->getResult()
             ;
@@ -47,8 +46,7 @@ class AgendaRepository extends EntityRepository
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
             ->setParameter('id', $agentId)
-            ->orderBy('agenda.date', 'ASC')
-            ->setMaxResults(10000)
+            ->orderBy('agenda.date', 'ASC')            
             ->getQuery()
             ->getResult()
             ;
@@ -70,8 +68,7 @@ class AgendaRepository extends EntityRepository
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
             ->setParameter('id', $agentId)
-            ->orderBy('agendaTemp.date', 'ASC')
-            ->setMaxResults(10000)
+            ->orderBy('agendaTemp.date', 'ASC')            
             ->getQuery()
             ->getResult()
             ;
@@ -88,8 +85,7 @@ class AgendaRepository extends EntityRepository
             ->where('event.startDate >= :start')
             ->andWhere('event.endDate <= :end') 
             ->setParameter('start', $startDate)
-            ->setParameter('end', $endDate)            
-            ->setMaxResults(10000)
+            ->setParameter('end', $endDate)  
             ->getQuery()
             ->getResult()
             ;
@@ -111,5 +107,18 @@ class AgendaRepository extends EntityRepository
             ->getQuery()            
             ->getResult()
             ;       
+    }
+    
+    /**
+     * @return Agenda[] Returns an array of Agenda objects
+     */
+    public function findAgent($agent)
+    {
+        return $this->createQueryBuilder('a')           
+            ->andWhere('a.agent = :agent')            
+            ->setParameter('agent', $agent)  
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

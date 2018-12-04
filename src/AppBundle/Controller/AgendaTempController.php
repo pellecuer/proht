@@ -36,41 +36,38 @@ class AgendaTempController extends Controller {
      */
     public function editAction(Request $request)
     {   
-        /* on récupère l'id de l'objet envoyée par la vue */
+        /* on récupère la lettre envoyée en Ajax */
         $letterUpdate = strtoupper($request->request->get('letter'));
         
+        /* on vérifie que la lettre éxiste dans notre base en Ajax */
         $letter = $this
                 ->getDoctrine()
                 ->getRepository(Letter::class)->findOneBy([
                         'letter' => $letterUpdate
                         ]);
+              
+        $id = $request->request->get('id');
+        $agendaTemp = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->find($id);
         
-        //on vérifie que la lettre éxiste
-        if (!$letter) {
-            throw $this->createNotFoundException(
-                'La lettre saisie ne correspond à aucun code. Veuillez saisir une autre lettre'
-            );
-            
-        } else {
-            // si la lettre éxiste, on récupère l'objet agenda dans temp
-            $id = $request->request->get('id');
-            $agendaTemp = $this->getDoctrine()
-                    ->getRepository(AgendaTemp::class)
-                    ->find($id);
-            
-            // si agendaTemp n'éxiste pas, on le crée à partir d'une copie de la team dans agenda
-            if (!$agendaTemp) {                
+        // si agendaTemp n'éxiste pas, on le crée à partir d'une copie de la team dans agenda
+            if (!$agendaTemp) {
                 $agenda = $this->getDoctrine()
                         ->getRepository(Agenda::class)
                         ->find($id);
                 $agents = $agenda->getAgent()->getTeam()->getAgents();
+                //ok jusque là
                 
-                //on récupère les objets agenda pour chaque agent de la team que l'on doit copier
+                //on récupère les objets agenda pour chaque agent de la team que l'on doit copier à  l'aide du QueryBuilder                                
                 $agendas = [];
-                $repository = $this->getDoctrine()->getRepository(Agenda::class);
-                for ($i=0; $i<count($agents);$i++){
-                    $agendas[] = $repository->findByAgent($agents[$i]);                  
-                    $em = $this->getDoctrine()->getManager();
+                for ($i=0; $i<count($agents); $i++){
+                    $agendas[] = $this->getDoctrine()
+                        ->getRepository(Agenda::class)
+                        ->findAgent($agents[$i]);
+                }           
+            }
+                    /*$em = $this->getDoctrine()->getManager();
                     $agendaTemp = new AgendaTemp();
                     $agendaTemp->setAgent($agendas[$i]->getAgent());
                     $agendaTemp->setLetter($agendas[$i]->getLetter());
@@ -79,28 +76,17 @@ class AgendaTempController extends Controller {
                     $em->flush();
                     $this->addFlash('success',
                         'Agenda mis à jour dans Temp pour l\'agent : ' . $agendaTemp->getAgent()->getName()
-                );               
-                } 
+                );*/              
                 
-                
-            } else {          
-                //sinon, si l'agendaTemp éxiste, j'update l'éxistant
-                $agendaTemp->setLetter($letter);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($agendaTemp);
-                $em->flush();
-                $this->addFlash('success',
-                        'Agenda mis à jour dans Temp pour l\'agent : ' . $agendaTemp->getAgent()->getName()
-                );               
-            }
-        }
-                       
+            
+        
+                  
         /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
          * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
          */
         $response = new Response(json_encode([
-            'titre' => 'Voici la réponse',
-            'description' => 'héhé'
+            'titre' => $agendas[0][0]->getAgent()->getName(),
+            'description' => $letterUpdate
             ]));
         
         $response->headers->set('Content-Type', 'application/json');
