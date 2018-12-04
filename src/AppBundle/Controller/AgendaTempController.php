@@ -81,7 +81,7 @@ class AgendaTempController extends Controller {
                     $em->flush();
                     $this->addFlash('success',
                         'Agenda mis à jour dans Temp pour l\'agent : ' . $agendaTemp->getAgent()->getName()
-                );                    
+                );               
                 } 
                 
                 
