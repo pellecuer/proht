@@ -27,7 +27,8 @@ class AgendaController extends Controller {
     public function editAction(Request $request)
     {   
         /* on récupère l'id de l'objet envoyée par la vue */
-        $letterUpdate = strtoupper($request->request->get('letter'));        
+        $letterUpdate = strtoupper($request->request->get('letter'));
+        
         $letter = $this->getDoctrine()
                 ->getRepository(Letter::class)->findOneBy([
                         'letter' => $letterUpdate

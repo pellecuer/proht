@@ -69,9 +69,7 @@ class AgendaTempController extends Controller {
                 $agendas = [];
                 $repository = $this->getDoctrine()->getRepository(Agenda::class);
                 for ($i=0; $i<count($agents);$i++){
-                    $agendas[] = $repository->findOneByBy([
-                            'name' => $agents[$i]->getId()
-                    ]);                    
+                    $agendas[] = $repository->findByAgent($agents[$i]);                  
                     $em = $this->getDoctrine()->getManager();
                     $agendaTemp = new AgendaTemp();
                     $agendaTemp->setAgent($agendas[$i]->getAgent());
@@ -125,7 +123,7 @@ class AgendaTempController extends Controller {
         //Si équipe constituée pour cet utilisateur valideur
         $utilisateur = $this->getDoctrine()
                 ->getRepository(Utilisateur::class)
-                ->find (1);       
+                ->find (1); 
         
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
