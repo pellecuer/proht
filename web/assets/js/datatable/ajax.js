@@ -52,7 +52,7 @@ $('.update').on( "click", function(){
 });
 
 //sendAgendaControlleur
-$('.editFor').on( "keyup", function(){
+/*$('.editFor').on( "keyup", function(){
     var id = $(this).attr('id');
     var letter = $(this).html();
     $.ajax({
@@ -71,7 +71,7 @@ $('.editFor').on( "keyup", function(){
             $( '#description' ).text(data.description);
         }
     });
-});
+});*/
 
 //sendAgendaTempControlleur
 $('.editFor').on( "keyup", function(){
