@@ -65,27 +65,40 @@ class AgendaTempController extends Controller {
                     $agendas[] = $this->getDoctrine()
                         ->getRepository(Agenda::class)
                         ->findAgent($agents[$i]);
-                }           
-            }
-                    /*$em = $this->getDoctrine()->getManager();
-                    $agendaTemp = new AgendaTemp();
-                    $agendaTemp->setAgent($agendas[$i]->getAgent());
-                    $agendaTemp->setLetter($agendas[$i]->getLetter());
-                    $agendaTemp->setDate($agendas[$i]->getDate());  
-                    $em->persist($agendaTemp);
-                    $em->flush();
-                    $this->addFlash('success',
+                    foreach ($agendas[$i] as $agendaToCopy){
+                        $em = $this->getDoctrine()->getManager();
+                        $agendaTemp = new AgendaTemp();
+                        $agendaTemp->setAgent($agendaToCopy->getAgent());
+                        $agendaTemp->setLetter($agendaToCopy->getLetter());
+                        $agendaTemp->setDate($agendaToCopy->getDate());
+                        
+                        //A ajouter ultérieurement
+                        //$agendaTemp->setUtilisateur($agendaToCopy->getUtilisateur());
+                        $em->persist($agendaTemp);
+                        $em->flush();
+                        }
+                }
+                $this->addFlash('success',
                         'Agenda mis à jour dans Temp pour l\'agent : ' . $agendaTemp->getAgent()->getName()
-                );*/              
-                
+                    );
             
-        
+            //Sinon si l'agendaTemp éxiste, on fait un update'
+            } else {
+                $agendaTemp->setLetter($letter);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($agendaTemp);
+                $em->flush();
+                $this->addFlash('success',
+                        'Agenda mis à jour dans Temp pour l\'agent : ' . $agendaTemp->getAgent()->getName()
+                );
+            }
+            
                   
         /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
          * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
          */
         $response = new Response(json_encode([
-            'titre' => $agendas[0][0]->getAgent()->getName(),
+            'titre' => $agendaTemp->getAgent()->getName(),
             'description' => $letterUpdate
             ]));
         
