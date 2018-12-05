@@ -17,7 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+
  
 class AgendaController extends Controller {
         
@@ -106,7 +107,7 @@ class AgendaController extends Controller {
     {        
         //build the form
         $form = $this->createFormBuilder()
-            ->add('startDate', DateType::class, array(
+            /*->add('startDate', DateType::class, array(
             'placeholder' => 'Choose a delivery option',
             'constraints' => array(
                     new NotBlank()
@@ -124,14 +125,26 @@ class AgendaController extends Controller {
             'widget' => 'single_text',
             'label'  => 'Date de fin',
             'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
-            ))
+            ))*/
                 
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
                 'choice_label' => 'name',
                 'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
-                ))  
-            
+                ))
+                
+            ->add('interval', DateIntervalType::class, array(
+                'widget' => 'choice',
+                'with_years'  => false,
+                'with_months' => false,
+                'with_weeks' => true,
+                'weeks' => range(0, 4),
+                'with_days'   => false,
+                'with_hours'  => false,
+                'label' => 'Interval',
+                'attr' => array('class' => 'form-group mx-sm-3 mb-2')
+             ))
+                
             ->add('Envoyer', SubmitType::class, array(
             'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
             ))
@@ -143,19 +156,19 @@ class AgendaController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {            
             $data = $form->getData();
-            $startDate = $data['startDate'];            
-            $endDate = $data['endDate']; 
+            $dateInterval = $data['interval'];
             $team = $data['Team'];
 
-        }else {
-            // now + 15 days                        
+        } else {            
+            $dateInterval = new \dateInterval ('P15D');
             $team = $this->getDoctrine()
                 ->getRepository(Team::class)
                 ->find(18);
-                } 
-            $startDate = $team->getEvent()->getStartDate();
-            $endDate = $team->getEvent()->getEndDate();            
-            //$endDate = $startDate->add(new \DateInterval('P7D'));
+        }
+        
+        $startDate = $team->getEvent()->getStartDate();
+        $immutable = \DateTimeImmutable::createFromMutable($startDate);           
+        $endDate = $immutable->add($dateInterval);
         
         //build letter Array        
         $agentId = [];        
@@ -163,6 +176,7 @@ class AgendaController extends Controller {
         foreach ($agents as $agent) {
         $agentId[] = $agent->getId();
         }
+       
         
         $agentBetweens = [];
         For ($i=0; $i<count($agentId); $i++){
@@ -173,8 +187,7 @@ class AgendaController extends Controller {
         //dump($agentBetweens);die;
         
         $interval = new \DateInterval('P1D');
-        $arrayDate = [];
-        $immutable = \DateTimeImmutable::createFromMutable($startDate);
+        $arrayDate = [];        
         
         while ($immutable<=$endDate){
             $arrayDate[] =  $immutable;            
