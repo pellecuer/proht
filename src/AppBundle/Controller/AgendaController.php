@@ -141,7 +141,7 @@ class AgendaController extends Controller {
                 'weeks' => range(0, 4),
                 'with_days'   => false,
                 'with_hours'  => false,
-                'label' => 'Interval',
+                'label' => false,
                 'attr' => array('class' => 'form-group mx-sm-3 mb-2')
              ))
                 
@@ -205,7 +205,7 @@ class AgendaController extends Controller {
              ]);
         }
         
-         /**
+    /**
      * Deletes an agenda entity.
      *
      * @Route("/delete/{agentId}", name="deleteAgenda")

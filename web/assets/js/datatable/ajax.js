@@ -1,5 +1,5 @@
 //Event handlers
-/*$(".editFor" ).on( "mouseenter", function(){
+$(".editFor" ).on( "mouseenter", function(){
    // $( this).css( "background-color", "#C6E2FF");
     //$('html,body').css('cursor','crosshair');
     $(this).attr('contenteditable', 'true');
@@ -13,7 +13,7 @@ $(".editFor" ).on( "keypress", function(){
     //$('html,body').css('cursor','crosshair');
     $(this).text('');
 });
-*/
+
 
 //Check
 /*$('.editFor').on( "keyup", function(){
