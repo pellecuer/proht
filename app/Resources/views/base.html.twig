@@ -60,6 +60,20 @@
         {% endblock %}
     
         <div class="container">
+             <div class = "row my-3">
+                 <div class ="col-md-12 ">
+                    <a class="btn btn-primary" href="{{ path('login') }}" role="button">Login</a>
+                 </div>
+             </div>      
+            
+            {% if  app.user %}
+            <div class = "row my-3">
+                <div class ="col-md-12 ">
+                    <h5>Bonjour, {{ app.user.username }}</h>
+                </div>
+            </div>
+                
+            {% endif %}    
             <div class = "row my-3">
                <div class ="col-md-12 ">
                 {% for label, messages in app.flashes %}
