@@ -43,7 +43,10 @@ security:
             provider: our_db_provider
             form_login:
                 login_path: login
-                check_path: login
+                check_path: login                    
+            logout:
+                path:   /logout
+                target: /
             
     access_control:
         # require ROLE_ADMIN for /admin*
