@@ -55,8 +55,6 @@ class User implements UserInterface, \Serializable
     private $password;
 
    
-    
-    
     /**
      * @ORM\Column(type="array")
      */
@@ -66,6 +64,13 @@ class User implements UserInterface, \Serializable
     {
         $this->roles = array('ROLE_USER');
     }
+    
+    
+    function getId() {
+        return $this->id;
+    }
+
+    
 
     // other properties and methods
 
@@ -150,4 +155,6 @@ class User implements UserInterface, \Serializable
             // $this->salt
         ) = unserialize($serialized, array('allowed_classes' => false));
     }
+    
+    
 }
