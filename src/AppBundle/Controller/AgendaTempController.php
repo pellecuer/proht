@@ -212,7 +212,7 @@ class AgendaTempController extends Controller {
      * Deletes an agenda entity.
      *
      * @Route("/delete/{id}", name="deleteTemp")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function deleteAction(Request $request, Team $team)
     {    
@@ -224,6 +224,30 @@ class AgendaTempController extends Controller {
         
         foreach ($agendaToRemoves as $agendaToRemove){
             $em->remove($agendaToRemove);
+        }                
+        $em->flush();
+        $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
+           
+        return $this->redirectToRoute('showAgendaTemp', array('id' => $team->getId()));
+    }
+    
+    /**
+     * Deletes an agenda entity.
+     *
+     * @Route("/valid/{id}", name="validTemp")
+     * @Method("GET")
+     */
+    public function validAction(Request $request, Team $team)
+    {    
+        $agendaToUpdates = $this->getDoctrine()
+            ->getRepository(AgendaTemp::class)
+            ->findAgendaByTeam($team);
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        foreach ($agendaToUpdates as $agendaToUpdate){
+            // update dans l'agenda
+            
         }                
         $em->flush();
         $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
