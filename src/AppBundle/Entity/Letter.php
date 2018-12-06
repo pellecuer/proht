@@ -25,7 +25,7 @@ class Letter
     /**
      * @var string
      *
-     * @ORM\Column(name="Letter", type="string", length=2)
+     * @ORM\Column(name="Letter", type="string", length=2, nullable =true)
      */
     private $letter;
    

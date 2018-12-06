@@ -58,7 +58,7 @@ class AgendaTempController extends Controller {
                         ->getRepository(Agenda::class)
                         ->find($id);
                 $agents = $agenda->getAgent()->getTeam()->getAgents();
-                //ok jusque là
+                
                 
                 //on récupère les objets agenda pour chaque agent de la team que l'on doit copier à  l'aide du QueryBuilder                                
                 $agendas = [];
@@ -211,10 +211,11 @@ class AgendaTempController extends Controller {
     /**
      * Deletes an agenda entity.
      *
-     * @Route("/delete/{id}", name="deleteTemp")
+     * @Route("/delete/{id}/user/{userId}", name="deleteTemp")
+     * @ParamConverter("utilisateur", options={"mapping": {"userId": "id"}})
      * @Method({"GET", "POST"})
      */
-    public function deleteAction(Request $request, Team $team)
+    public function deleteAction(Request $request, Team $team, Utilisateur $utilisateur)
     {    
         $agendaToRemoves = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
@@ -228,20 +229,24 @@ class AgendaTempController extends Controller {
         $em->flush();
         $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
            
-        return $this->redirectToRoute('showAgendaTemp', array('id' => $team->getId()));
+        return $this->redirectToRoute('showAgendaTemp', array(
+            'id' => $team->getId(),
+            'userId' =>$utilisateur->getId()          
+                    ));
     }
     
     /**
      * Deletes an agenda entity.
      *
-     * @Route("/valid/{id}", name="validTemp")
-     * @Method("GET")
+     * @Route("/valid/{id}/user/{userId}", name="validTemp")
+     * @ParamConverter("utilisateur", options={"mapping": {"userId": "id"}})
+     * @Method({"GET", "POST"})
      */
-    public function validAction(Request $request, Team $team)
+    public function validAction(Request $request, Team $team, Utilisateur $utilisateur)
     {    
         $agendaToUpdates = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
-            ->findAgendaByTeam($team);
+            ->findTempByUserByTeam($team, $utilisateur);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -252,7 +257,10 @@ class AgendaTempController extends Controller {
         $em->flush();
         $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
            
-        return $this->redirectToRoute('showAgendaTemp', array('id' => $team->getId()));
+        return $this->redirectToRoute('showAgendaTemp', array(
+                'id' => $team->getId(),
+                'userId' =>$utilisateur->getId()          
+                    ));               
     } 
 }
 

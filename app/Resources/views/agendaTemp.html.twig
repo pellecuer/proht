@@ -11,7 +11,7 @@
                 <caption class="text-center">Equipe {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
                 <thead class="thead">                        
                     <tr class ="bg-dark">
-                        <th scope ="col" class="text-info"><a class="btn btn-success btn-sm" href="{{ path('agendaTempEdit2', { 'id': team.id, 'userId': 2}) }}" role="button">Enregistrer les modif</a></th>
+                        <th scope ="col" class="text-info"><a class="btn btn-success btn-sm" href="{{ path('validTemp', { 'id': team.id, 'userId': 1}) }}" role="button">Enregistrer les modif</a></th>
                         <th scope ="col" class="text-info"><a class="btn btn-danger btn-sm" href="{{ path('deleteTemp', { 'id': team.id, 'userId': 2}) }}" role="button">Annuler les modif</a></th>
                         <th scope ="col" class="text-info"></th>
                         <th scope ="col" class="text-info"></th>
