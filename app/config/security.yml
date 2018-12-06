@@ -41,3 +41,10 @@ security:
             pattern:    ^/
             http_basic: ~
             provider: our_db_provider
+            form_login:
+                login_path: login
+                check_path: login
+            
+    access_control:
+        # require ROLE_ADMIN for /admin*
+        - { path: ^/admin, roles: ROLE_ADMIN }
