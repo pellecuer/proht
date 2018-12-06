@@ -60,21 +60,25 @@
         {% endblock %}
     
         <div class="container">
+             {% if  app.user %}
              <div class = "row my-3">
                  <div class ="col-md-12 ">
-                    <a class="btn btn-success" href="{{ path('login') }}" role="button">Sign in <i class="fas fa-sign-in-alt"></i></a>
                     <a class="btn btn-danger" href="{{ path('logout') }}" role="button">Sign out <i class="fas fa-sign-out-alt"></i></a>
-                 </div>
-             </div>      
-            
-            {% if  app.user %}
+                   
+                </div> 
+             </div>
+            <div class = "row my-3">
+            <div class ="col-md-12 ">
+                <h5>Bonjour, {{ app.user.username }}</h>
+            </div>              
+            {% else %}
             <div class = "row my-3">
                 <div class ="col-md-12 ">
-                    <h5>Bonjour, {{ app.user.username }}</h>
-                </div>
-            </div>
+                    <a class="btn btn-success" href="{{ path('login') }}" role="button">Sign in <i class="fas fa-sign-in-alt"></i></a>
+                 </div>
+             </div>  
+            {% endif %} 
                 
-            {% endif %}    
             <div class = "row my-3">
                <div class ="col-md-12 ">
                 {% for label, messages in app.flashes %}
