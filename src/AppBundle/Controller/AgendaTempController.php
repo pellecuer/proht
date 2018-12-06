@@ -247,6 +247,7 @@ class AgendaTempController extends Controller {
         $agendaToUpdates = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
             ->findTempByUserByTeam($team, $utilisateur);
+        dump($agendaToUpdates);die;
         
         $em = $this->getDoctrine()->getManager();
         
