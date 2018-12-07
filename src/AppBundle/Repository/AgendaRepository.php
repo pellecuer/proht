@@ -138,6 +138,25 @@ class AgendaRepository extends EntityRepository
             ->getQuery()
             ->getResult()
             ;
-    } 
+    }
+    
+    /**
+     * @param $team, $user     
+     */
+    public function findAgendaByUserByTeam($team, $user)
+    {
+        return $this->createQueryBuilder('agenda')
+            ->where('agenda.user = :user')               
+            ->innerJoin('agenda.agent', 'agent')
+            ->addSelect('agent')
+            ->andWhere('agent.team = :team')    
+                
+            ->setParameter('user', $user)
+            ->setParameter('team', $team)
+            
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     
 }

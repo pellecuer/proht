@@ -14,7 +14,7 @@ use AppBundle\Entity\Letter;
 use AppBundle\Entity\Agent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
-use AppBundle\Entity\Utilisateur;
+use AppBundle\Entity\User;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -46,6 +46,17 @@ class AgendaTempController extends Controller {
                 ->getRepository(Letter::class)->findOneBy([
                         'letter' => $letterUpdate
                         ]);
+        
+         if (!$letter) {
+                // si la lettre n'éxiste pas renvoie la route agendaTempEdit :
+                $response = new Response(json_encode(array(
+                'titre' => 'Erreur :',
+                'description' => 'La lettre saisie n\'éxiste pas. Veuillez refaire votre saisie'
+            )));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }                                
+             
               
         $id = $request->request->get('id');
         $agendaTemp = $this->getDoctrine()
@@ -110,21 +121,21 @@ class AgendaTempController extends Controller {
     
     /**
      * @Route("/edit2/{id}/user/{userId}", name="agendaTempEdit2")
-     * @ParamConverter("utilisateur", options={"mapping": {"userId": "id"}})
+     * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      * @Method({"GET", "POST"})
      */
-    public function edit2Action( Team $team, Utilisateur $utilisateur)
+    public function edit2Action( Team $team, User $user)
     {          
         //check it temp exist for this User and this Team        
          $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByUserByTeam($team, $utilisateur);         
+                ->findTempByUserByTeam($team, $user);         
         
         if (!$agendaTemp) {
                 // si l'agendaTemp n'éxiste pas, récupère l'agenda éxistant de la team                
                 $agendas = $this->getDoctrine()
                     ->getRepository(Agenda::class)
-                    ->findAgendaByTeam($team, $utilisateur);                    
+                    ->findAgendaByTeam($team, $user);                    
                 
                 //crée les agendas Temp                
                 foreach ($agendas as $agenda){
@@ -133,7 +144,7 @@ class AgendaTempController extends Controller {
                         $agendaTemp->setAgent($agenda->getAgent());
                         $agendaTemp->setLetter($agenda->getLetter());
                         $agendaTemp->setDate($agenda->getDate());
-                        $agendaTemp->setUtilisateur($utilisateur);
+                        $agendaTemp->setUser($user);
                         
                         //A ajouter ultérieurement
                         //$agendaTemp->setUtilisateur($agendaToCopy->getUtilisateur());
@@ -143,34 +154,33 @@ class AgendaTempController extends Controller {
                         
                 return $this->redirectToRoute('showAgendaTemp', array(
                     'id' => $team->getId(),
-                    'userId' =>$utilisateur->getId()          
+                    'userId' =>$user->getId()         
                     ));
         
-        } return $this->redirectToRoute('showAgendaTemp', array(
+        }  return $this->redirectToRoute('showAgendaTemp', array(
             'id' => $team->getId(),
-            'userId' =>$utilisateur->getId() 
-                ));      
-    }
+            'userId' =>$user->getId()
+                ));          
+    }  
     
     
     
      /**
      * @Route("/show/{id}/user/{userId}", name="showAgendaTemp")
-     * @ParamConverter("utilisateur", options={"mapping": {"userId": "id"}})
+     * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      */
-    public function showAction( Team $team, Utilisateur $utilisateur)
+    public function showAction( Team $team, User $user)
     {        
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findByUtilisateur($utilisateur);         
+                ->findTempByUserByTeam($team, $user);              
 
             if (!$agendaTemp) {
                 // si l'agendaTemp n'éxiste pas renvoie la route agenda :
                 return $this->redirectToRoute('showAgenda');            
             }  
-
-            // sinon, si l'agendaTemp éxiste déjà pour la team, créer la vue :               
-
+         
+             
             //build letter Array        
             $agentId = [];        
             $agents = $team->getAgents();
@@ -212,10 +222,10 @@ class AgendaTempController extends Controller {
      * Deletes an agenda entity.
      *
      * @Route("/delete/{id}/user/{userId}", name="deleteTemp")
-     * @ParamConverter("utilisateur", options={"mapping": {"userId": "id"}})
+     * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      * @Method({"GET", "POST"})
      */
-    public function deleteAction(Request $request, Team $team, Utilisateur $utilisateur)
+    public function deleteAction(Request $request, Team $team, User $user)
     {    
         $agendaToRemoves = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
@@ -231,7 +241,7 @@ class AgendaTempController extends Controller {
            
         return $this->redirectToRoute('showAgendaTemp', array(
             'id' => $team->getId(),
-            'userId' =>$utilisateur->getId()          
+            'userId' =>$user->getId()       
                     ));
     }
     
@@ -239,14 +249,14 @@ class AgendaTempController extends Controller {
      * Deletes an agenda entity.
      *
      * @Route("/valid/{id}/user/{userId}", name="validTemp")
-     * @ParamConverter("utilisateur", options={"mapping": {"userId": "id"}})
+     * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      * @Method({"GET", "POST"})
      */
-    public function validAction(Request $request, Team $team, Utilisateur $utilisateur)
+    public function validAction(Request $request, Team $team, User $user)
     {    
         $agendaToUpdates = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
-            ->findTempByUserByTeam($team, $utilisateur);
+            ->findTempByUserByTeam($team, $user);
         dump($agendaToUpdates);die;
         
         $em = $this->getDoctrine()->getManager();

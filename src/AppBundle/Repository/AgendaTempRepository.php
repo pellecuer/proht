@@ -131,15 +131,15 @@ class AgendaTempRepository extends EntityRepository
     /**
      * @param $team, $user     
      */
-    public function findTempByUserByTeam($team, $utilisateur)
+    public function findTempByUserByTeam($team, $user)
     {
         return $this->createQueryBuilder('agendaTemp')
-            ->where('agendaTemp.utilisateur >= :utilisateur')                
+            ->where('agendaTemp.user = :user')               
             ->innerJoin('agendaTemp.agent', 'agent')
             ->addSelect('agent')
             ->andWhere('agent.team = :team')    
                 
-            ->setParameter('utilisateur', $utilisateur)
+            ->setParameter('user', $user)
             ->setParameter('team', $team)
             
             ->getQuery()

@@ -47,9 +47,9 @@ class AgendaTemp
     /**
      * @var 
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Utilisateur")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
-    private $utilisateur;
+    private $user;
 
 
     function getId() {
@@ -84,12 +84,12 @@ class AgendaTemp
         $this->letter = $letter;
     }
     
-    function getUtilisateur() {
-        return $this->utilisateur;
+    function getUser() {
+        return $this->user;
     }
 
-    function setUtilisateur($utilisateur) {
-        $this->utilisateur = $utilisateur;
+    function setUser($user) {
+        $this->user = $user;
     }
 
 }
