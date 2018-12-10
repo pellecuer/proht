@@ -32,7 +32,7 @@ class Agenda
     /**
      * @var
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agent", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agent")
      */
     private $agent;
 

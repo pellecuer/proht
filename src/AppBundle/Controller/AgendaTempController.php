@@ -24,6 +24,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+use AppBundle\Service\historyAgenda;
+
 /**
  * Team controller.
  *
@@ -202,15 +204,13 @@ class AgendaTempController extends Controller {
         
         foreach ($agendaToRemoves as $agendaToRemove){
             $agendaToRemove->setAgent(null);
-            $em->remove($agendaToRemove);
+            $em->remove($agendaToRemove);            
         }                
         $em->flush();
        $this->addFlash('success', 'L\'agenda provisoire a bien été supprimé pour l\'équipe ' . $team->getName());
+      
            
-        return $this->redirectToRoute('showAgendaTemp', array(
-            'id' => $team->getId(),
-            'userId' =>$user->getId()       
-                    ));
+        return $this->redirectToRoute('showAgenda');
     }
     
     
@@ -222,7 +222,7 @@ class AgendaTempController extends Controller {
      * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      * @Method({"GET", "POST"})
      */
-    public function validAction(Request $request, Team $team, User $user)
+    public function validAction(Request $request, Team $team, User $user, historyAgenda $historyAgenda)
     {    
         $agendaToUpdates = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
@@ -241,9 +241,12 @@ class AgendaTempController extends Controller {
             ->getRepository(Agenda::class)
             ->findAgendaToUpdate($date, $agent);
             
-            foreach ($agendas as $agenda){            
-            $agenda->setLetter($letter);
-            $em->persist($agenda);
+            foreach ($agendas as $agenda){
+                if ($agenda->getLetter() != $letter){
+                   $agenda->setLetter($letter);
+                    $em->persist($agenda);
+                    $historyAgenda->history($agenda, $user); 
+                }
             }
         }                
         
@@ -255,7 +258,5 @@ class AgendaTempController extends Controller {
                 'userId' =>$user->getId()
                     ));               
     }
-    
-    
 }
 

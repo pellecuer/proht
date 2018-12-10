@@ -38,6 +38,10 @@ services:
     AppBundle\Service\::
         class: 'initializeAgenda'
         arguments: [ "@doctrine.orm.entity_manager" ]
+        
+    AppBundle\Service\::
+        class: 'historyAgenda'
+        arguments: [ "@doctrine.orm.entity_manager" ]
     
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
