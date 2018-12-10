@@ -196,21 +196,24 @@ class AgendaTempController extends Controller {
     {    
         $agendaToRemoves = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
-            ->findAgendaByTeam($team);
+            ->findTempByUserByTeam($team, $user);
         
         $em = $this->getDoctrine()->getManager();
         
         foreach ($agendaToRemoves as $agendaToRemove){
+            $agendaToRemove->setAgent(null);
             $em->remove($agendaToRemove);
         }                
         $em->flush();
-        $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
+       $this->addFlash('success', 'L\'agenda provisoire a bien été supprimé pour l\'équipe ' . $team->getName());
            
         return $this->redirectToRoute('showAgendaTemp', array(
             'id' => $team->getId(),
             'userId' =>$user->getId()       
                     ));
     }
+    
+    
     
     /**
      * Persist temp in agenda entity.
@@ -224,22 +227,35 @@ class AgendaTempController extends Controller {
         $agendaToUpdates = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
             ->findTempByUserByTeam($team, $user);
-        dump($agendaToUpdates);die;
+        //dump($agendaToUpdates);die;
         
         $em = $this->getDoctrine()->getManager();
         
         foreach ($agendaToUpdates as $agendaToUpdate){
             // update dans l'agenda
+            $date = $agendaToUpdate->getDate();
+            $letter = $agendaToUpdate->getLetter();
+            $agent = $agendaToUpdate->getAgent();            
             
+            $agendas = $this->getDoctrine()
+            ->getRepository(Agenda::class)
+            ->findAgendaToUpdate($date, $agent);
             
+            foreach ($agendas as $agenda){            
+            $agenda->setLetter($letter);
+            $em->persist($agenda);
+            }
         }                
+        
         $em->flush();
-        $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
+        $this->addFlash('success', 'L\'agenda a bien été mis à jour pour l\'équipe' . $team->getName());
            
-        return $this->redirectToRoute('showAgendaTemp', array(
+        return $this->redirectToRoute('deleteTemp', array(
                 'id' => $team->getId(),
-                'userId' =>$utilisateur->getId()          
+                'userId' =>$user->getId()
                     ));               
-    } 
+    }
+    
+    
 }
 
