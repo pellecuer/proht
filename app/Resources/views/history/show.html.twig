@@ -8,8 +8,8 @@
 {% block body %}   
     <div class="container">       
         <header class="text-center py-3">
-            <h1 class="bg-white-semi_transparent"><em class="text-dark">Roles </em></h1>
-            <p>Voici l'historique des changements</p>
+            <h1 class="bg-white-semi_transparent"><em class="text-dark">Historique </em></h1>
+            <p>Voici l'historique des changements pour l'agenda de l'agent {{ historys.0.agent.name }} </p>
         </header>
         <div class="row">
             <div class="col-md-1">
@@ -36,11 +36,11 @@
                        {%for history in historys %}
                             <tr>                                                            
                                 <td>{{ history.id }}</td>
-                                <td>{{ history.date }}</td>                             
+                                <td>{{ history.date|localizeddate('none', 'none', 'fr', null, 'E dd MMM Y') }}</td>                             
                                 <td>{{ history.agent.name }}</td>
                                 <td>{{ history.letter.letter }}</td>                                
-                                <td>{{ history.user }}</td>
-                                <td>{{ history.dateChange }}</td>
+                                <td>{{ history.user.username }}</td>
+                                <td>{{ history.dateChange|localizeddate('full', 'none', 'fr', null, 'E dd MMM Y  H:m')}}</td>
                             </tr>
                         {% endfor %}                       
                     </body>                    

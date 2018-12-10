@@ -75,7 +75,7 @@ $('.update').on( "click", function(){
 });*/
 
 //sendAgendaTempControlleur
-$('.editFor').on( "keyup", function(){
+$('.editFor').on( "change paste keyup", function(){
     var id = $(this).attr('id');
     var letter = $(this).html();
     $.ajax({
@@ -96,10 +96,3 @@ $('.editFor').on( "keyup", function(){
     });
 });
 
-
-//sendAgendaTempControlleur
-/*
-$('.update').on( "click", function(){
-    $(this).closest('tr').find("td:nth-child(n)").attr('contenteditable', 'true');     
-});
-*/

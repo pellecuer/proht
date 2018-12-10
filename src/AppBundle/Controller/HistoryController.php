@@ -28,13 +28,16 @@ class HistoryController extends Controller {
     public function showAction(Agent $agent)
     {         
         $historys = $this->getDoctrine()
-                ->getRepository(History::class)
+                ->getRepository(HistoryChange::class)
                 ->findByAgent($agent);
         
         if (!$historys) {
-            throw $this->createNotFoundException(
-                'No role found'
+            
+            $this->addFlash(
+            'danger',
+            'Il n\'éxiste pas d\'historique pour l\'agent ' . $agent->getName()                    
             );
+            return $this->redirectToRoute('showagent'); 
         }        
         
         return $this->render('history/show.html.twig', array(

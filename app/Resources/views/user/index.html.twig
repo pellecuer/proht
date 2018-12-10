@@ -26,6 +26,7 @@
                         <tr>
                             <th>Nom</th>
                             <th>Email</th>
+                            <th>Role</th>
                             
                         </tr>
                     </thead>                   
@@ -33,7 +34,7 @@
                         {%for user in users %}
                             <tr>                                                            
                                 <td>{{ user.username }}</td>
-                                <td>{{ user.email }}</td>                               
+                                <td>{{ user.email }}</td>                          
                                 <td><a href="{{ path('user_edit', { 'id': user.id }) }}"><i class="fas fa-edit"></i></a></td>
                                 <td><a href="{{ path('user_delete', { 'id': user.id }) }}"><i class="fas fa-trash-alt"></i></a></td>                                
                             </tr>

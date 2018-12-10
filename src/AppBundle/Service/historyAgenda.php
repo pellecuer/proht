@@ -21,7 +21,7 @@ class historyAgenda {
     public function history($agenda, $user)
     {
         $history = new HistoryChange();
-        $history->setDateChange(new \DateTime('now'));
+        $history->setDateChange(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
         $history->setDate($agenda->getDate());
         $history->setAgent($agenda->getAgent());
         $history->setLetter($agenda->getLetter());
