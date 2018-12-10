@@ -35,7 +35,7 @@ class AgendaTempController extends Controller {
     /**
      * @Route("/edit", name="/agendaTempEdit")
      */
-    public function editAction(Request $request)
+    public function editAjaxAction(Request $request)
     {   
         /* on récupère la lettre envoyée en Ajax */
         $letterUpdate = strtoupper($request->request->get('letter'));
@@ -48,70 +48,29 @@ class AgendaTempController extends Controller {
                         ]);
         
          if (!$letter) {
-                // si la lettre n'éxiste pas renvoie la route agendaTempEdit :
+                // si la lettre n'éxiste pas renvoie la route agendaTempEdit
                 $response = new Response(json_encode(array(
                 'titre' => 'Erreur :',
                 'description' => 'La lettre saisie n\'éxiste pas. Veuillez refaire votre saisie'
-            )));
-            $response->headers->set('Content-Type', 'application/json');
-            return $response;
+                )));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
         }                                
              
-              
+         // si agendaTemp n'éxiste pas, on le crée à partir d'une copie de la team dans agenda     
         $id = $request->request->get('id');
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->find($id);
+                ->find($id);   
+            
+        $agendaTemp->setLetter($letter);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($agendaTemp);
+        $em->flush();
         
-        // si agendaTemp n'éxiste pas, on le crée à partir d'une copie de la team dans agenda
-            if (!$agendaTemp) {
-                $agenda = $this->getDoctrine()
-                        ->getRepository(Agenda::class)
-                        ->find($id);
-                $agents = $agenda->getAgent()->getTeam()->getAgents();
-                
-                
-                //on récupère les objets agenda pour chaque agent de la team que l'on doit copier à  l'aide du QueryBuilder                                
-                $agendas = [];
-                for ($i=0; $i<count($agents); $i++){
-                    $agendas[] = $this->getDoctrine()
-                        ->getRepository(Agenda::class)
-                        ->findAgent($agents[$i]);
-                    foreach ($agendas[$i] as $agendaToCopy){
-                        $em = $this->getDoctrine()->getManager();
-                        $agendaTemp = new AgendaTemp();
-                        $agendaTemp->setAgent($agendaToCopy->getAgent());
-                        $agendaTemp->setLetter($agendaToCopy->getLetter());
-                        $agendaTemp->setDate($agendaToCopy->getDate());
-                        
-                        //A ajouter ultérieurement
-                        //$agendaTemp->setUtilisateur($agendaToCopy->getUtilisateur());
-                        $em->persist($agendaTemp);
-                        $em->flush();
-                        }
-                }
-                $this->addFlash('success',
-                        'Agenda mis à jour dans Temp pour l\'agent : ' . $agendaTemp->getAgent()->getName()
-                    );
-            
-            //Sinon si l'agendaTemp éxiste, on fait un update'
-            } else {
-                $agendaTemp->setLetter($letter);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($agendaTemp);
-                $em->flush();
-                $this->addFlash('success',
-                        'Agenda mis à jour dans Temp pour l\'agent : ' . $agendaTemp->getAgent()->getName()
-                );
-            }
-            
-                  
-        /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
-         * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
-         */
         $response = new Response(json_encode([
-            'titre' => $agendaTemp->getAgent()->getName(),
-            'description' => $letterUpdate
+            'titre' => 'Mise à jour Ok',
+            'description' => 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agendaTemp->getAgent()->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y')
             ]));
         
         $response->headers->set('Content-Type', 'application/json');
@@ -124,18 +83,19 @@ class AgendaTempController extends Controller {
      * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      * @Method({"GET", "POST"})
      */
-    public function edit2Action( Team $team, User $user)
+    public function copyAgendaAction( Team $team, User $user)
     {          
         //check it temp exist for this User and this Team        
          $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByUserByTeam($team, $user);         
+                ->findTempByUserByTeam($team, $user);
+         //dump($agendaTemp);die;
         
         if (!$agendaTemp) {
                 // si l'agendaTemp n'éxiste pas, récupère l'agenda éxistant de la team                
                 $agendas = $this->getDoctrine()
                     ->getRepository(Agenda::class)
-                    ->findAgendaByTeam($team, $user);                    
+                    ->findAgendaByTeam($team, $user);                
                 
                 //crée les agendas Temp                
                 foreach ($agendas as $agenda){
@@ -178,26 +138,33 @@ class AgendaTempController extends Controller {
             if (!$agendaTemp) {
                 // si l'agendaTemp n'éxiste pas renvoie la route agenda :
                 return $this->redirectToRoute('showAgenda');            
-            }  
-         
-             
-            //build letter Array        
-            $agentId = [];        
+            }
+                   
+                                       
+            //$agentBetweens = $this->getDoctrine()
+               // ->getRepository(AgendaTemp::class)
+               // ->findTempByUserByTeam($team, $user);
+            //dump($agentBetweens);die;
+            
+            //crée un array des agents de la team
+            $agentId = [];    
             $agents = $team->getAgents();
             foreach ($agents as $agent) {
-            $agentId[] = $agent->getId();
+                $agentId[] = $agent->getId();
             }
-
+            
             $startDate = $team->getEvent()->getStartDate();
-            $endDate = $team->getEvent()->getEndDate();  
-
+            $endDate = $team->getEvent()->getEndDate();
+            
+            //crée un array d'array des agendas
             $agentBetweens = [];
             For ($i=0; $i<count($agentId); $i++){
                 $agentBetweens[] = $this->getDoctrine()
                     ->getRepository(AgendaTemp::class)
-                    ->findAllTempBetweenDate($startDate, $endDate, $agentId [$i]);
+                    ->findAllBetweenDate($startDate, $endDate, $agentId [$i], $user);
             }
-            //dump($agentBetweens);die;
+            dump ($agentBetweens);die;
+            
 
             $interval = new \DateInterval('P1D');
             $arrayDate = [];

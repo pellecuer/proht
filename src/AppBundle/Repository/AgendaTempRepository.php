@@ -70,8 +70,7 @@ class AgendaTempRepository extends EntityRepository
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
             ->setParameter('id', $agentId)
-            ->orderBy('agendaTemp.date', 'ASC')
-            ->setMaxResults(10000)
+            ->orderBy('agendaTemp.date', 'ASC')            
             ->getQuery()
             ->getResult()
             ;
@@ -163,6 +162,32 @@ class AgendaTempRepository extends EntityRepository
             ->getQuery()
             ->getResult()
             ;
-    } 
+    }
+    
+    /**
+     * @param $startDate, $endDate, $agendaId     
+     */
+    public function findAllTempBetweenDateByUser($startDate, $endDate, $agentId, $user)
+    {
+        return $this->createQueryBuilder('agendaTemp')
+            ->where('agendaTemp.user = :user')
+            ->andWhere('agendaTemp.date >= :start')
+            ->andWhere('agendaTemp.date <= :end')
+               
+                
+            ->innerJoin('agendaTemp.agent', 'agent')
+            ->addSelect('agent')
+            ->andWhere('agent.id = :id')    
+            
+            ->setParameter('user', $user)   
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
+            ->setParameter('id', $agentId)
+            ->orderBy('agendaTemp.date', 'ASC')            
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    
     
 }
