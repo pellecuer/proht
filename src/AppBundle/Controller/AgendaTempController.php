@@ -213,7 +213,7 @@ class AgendaTempController extends Controller {
     }
     
     /**
-     * Deletes an agenda entity.
+     * Persist temp in agenda entity.
      *
      * @Route("/valid/{id}/user/{userId}", name="validTemp")
      * @ParamConverter("user", options={"mapping": {"userId": "id"}})
@@ -230,6 +230,7 @@ class AgendaTempController extends Controller {
         
         foreach ($agendaToUpdates as $agendaToUpdate){
             // update dans l'agenda
+            
             
         }                
         $em->flush();
