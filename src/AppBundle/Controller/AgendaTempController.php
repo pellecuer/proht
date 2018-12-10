@@ -248,7 +248,7 @@ class AgendaTempController extends Controller {
         }                
         
         $em->flush();
-        $this->addFlash('success', 'L\'agenda a bien été mis à jour pour l\'équipe' . $team->getName());
+        $this->addFlash('success', 'L\'agenda a bien été mis à jour pour l\'équipe ' . $team->getName());
            
         return $this->redirectToRoute('deleteTemp', array(
                 'id' => $team->getId(),
