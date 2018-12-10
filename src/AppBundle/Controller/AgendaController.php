@@ -177,6 +177,7 @@ class AgendaController extends Controller {
         $agentId[] = $agent->getId();
         }
        
+            
         
         $agentBetweens = [];
         For ($i=0; $i<count($agentId); $i++){

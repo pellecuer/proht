@@ -161,9 +161,9 @@ class AgendaTempController extends Controller {
             For ($i=0; $i<count($agentId); $i++){
                 $agentBetweens[] = $this->getDoctrine()
                     ->getRepository(AgendaTemp::class)
-                    ->findAllBetweenDate($startDate, $endDate, $agentId [$i], $user);
+                    ->findAllTempBetweenDateByUser($startDate, $endDate, $agentId [$i], $user);
             }
-            dump ($agentBetweens);die;
+            //dump ($agentBetweens);die;
             
 
             $interval = new \DateInterval('P1D');
