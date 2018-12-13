@@ -92,6 +92,11 @@ $('.editFor').on( "change paste keyup", function(){
             console.log(data);
             $( '#titre' ).text(data.titre);
             $( '#description' ).text(data.description);
+            $( '#startLegalWeek' ).text(data.startLegalWeek);
+            $( '#endLegalWeek' ).text(data.endLegalWeek);
+            $( '#startLegalDay' ).text(data.startLegalDay);
+            $( '#endLegalDay' ).text(data.endLegalDay);
+            $( '#hoursPerWeek' ).text(data.hoursPerWeek);
         }
     });
 });

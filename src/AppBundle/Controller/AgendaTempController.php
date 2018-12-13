@@ -15,6 +15,7 @@ use AppBundle\Entity\Agent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Rule;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -24,6 +25,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use AppBundle\Service\historyAgenda;
 
 /**
@@ -37,7 +39,7 @@ class AgendaTempController extends Controller {
     /**
      * @Route("/edit", name="/agendaTempEdit")
      */
-    public function editAjaxAction(Request $request)
+    public function editAjaxAction(Request $request, UserInterface $user)
     {   
         /* on récupère la lettre envoyée en Ajax */
         $letterUpdate = strtoupper($request->request->get('letter'));
@@ -57,27 +59,170 @@ class AgendaTempController extends Controller {
                 )));
                 $response->headers->set('Content-Type', 'application/json');
                 return $response;
-        }                                
+        }                              
              
          // si agendaTemp n'éxiste pas, on le crée à partir d'une copie de la team dans agenda     
         $id = $request->request->get('id');
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->find($id);   
+                ->find($id);
+        
+                
+        //Legal Week
+        $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
+        if ($date->format('w') == 0) {            
+            $startLegalWeek = $date->modify('sunday 00:00');
+            $endLegalWeek = $date->modify('next sunday 00:00');
             
-        $agendaTemp->setLetter($letter);
+        } else {            
+            $startLegalWeek = $date->modify('last sunday 00:00');
+            $endLegalWeek = $date->modify('next sunday 00:00');
+        }
+        
+        //LegalDay
+        $startLegalDay = $date->modify('today 00:00'); 
+        $endLegalDay = $date->modify('tomorrow 00:00');
+        
+        //Persist in db for testing
+        $letterInMemory = $agendaTemp->getLetter();
+        $agendaTemp->setLetter($letter);  
         $em = $this->getDoctrine()->getManager();
+        $em->persist($agendaTemp);
+        $em->flush();
+        
+        $hoursPerWeek = 0;
+        $arrayWeeks = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent()->getId(), $user);
+        
+        foreach ($arrayWeeks as $arrayWeek){
+            $hoursPerWeek = $hoursPerWeek + $arrayWeek->getLetter()->getEffectiveDuration();
+        }
+        
+        $rule = $this->getDoctrine()
+                ->getRepository(Rule::class)
+                ->find(9);     
+       
+        //return error or persist
+        if ($hoursPerWeek > $rule->getMaxHourperWeek()) {  
+            // si la lettre n'éxiste pas renvoie la route agendaTempEdit
+            $response = new Response(json_encode(array(
+            'titre' => 'Erreur :',
+            'description' => 'Le total des heures de la semaine dépasse la durée légale (' . $rule->getMaxHourperWeek() . 'heures/semaine)' 
+            )));
+            $response->headers->set('Content-Type', 'application/json');
+            $agendaTemp->setLetter($letterInMemory);        
+            $em->persist($agendaTemp);
+            $em->flush();            
+            return $response;
+            
+        }
+        
+        $agendaTemp->setLetter($letter);        
         $em->persist($agendaTemp);
         $em->flush();
         
         $response = new Response(json_encode([
             'titre' => 'Mise à jour Ok',
+            'startLegalWeek' => $startLegalWeek->format('D d M Y H:i:s'),
+            'endLegalWeek' => $endLegalWeek->format('D d M Y H:i:s'),
+            'startLegalDay' => $startLegalDay->format('D d M H:i:s'),
+            'endLegalDay' => $endLegalDay->format('D d M H:i:s'),
+            'hoursPerWeek' => $hoursPerWeek,
             'description' => 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agendaTemp->getAgent()->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y')
             ]));
         
         $response->headers->set('Content-Type', 'application/json');
-        return $response;       
+        return $response;    
+        
     }
+    
+    
+     /**
+     * @Route("/test", name="/test")
+     */
+    public function testAction(UserInterface $user)
+    {   
+        /* on récupère la lettre envoyée en Ajax */
+        $letterUpdate = 'J';
+        
+        /* on vérifie que la lettre éxiste dans notre base en Ajax */
+        $letter = $this
+                ->getDoctrine()
+                ->getRepository(Letter::class)->findOneBy([
+                        'letter' => $letterUpdate
+                        ]);
+        
+         if (!$letter) {
+                // si la lettre n'éxiste pas renvoie la route agendaTempEdit
+                
+                return $this->redirectToRoute('home');
+                }                                
+             
+         // si agendaTemp n'éxiste pas, on le crée à partir d'une copie de la team dans agenda     
+        $id = 4755;
+        $agendaTemp = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->find($id);
+        
+        //Caculate hour/week
+        $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
+        
+        //Legal Week
+        if ($date->format('w') == 0) {            
+            $startLegalWeek = $date->modify('sunday 00:00');
+            $endLegalWeek = $date->modify('next sunday 00:00');
+            
+        } else {            
+            $startLegalWeek = $date->modify('last sunday 00:00');
+            $endLegalWeek = $date->modify('next sunday 00:00');
+        }
+        
+        //LegalDay
+        $startLegalDay = $date->modify('today 00:00'); 
+        $endLegalDay = $date->modify('tomorrow 00:00');
+        
+        //arrayWeek
+        $letterInMemory = $agendaTemp->getLetter();
+        $agendaTemp->setLetter($letter);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($agendaTemp);
+        $em->flush();
+                        
+        $hoursPerWeek = 0;
+        $arrayWeeks = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent()->getId(), $user);
+        //dump($arrayWeek);die;
+        foreach ($arrayWeeks as $arrayWeek){
+            $hoursPerWeek = $hoursPerWeek + $arrayWeek->getLetter()->getEffectiveDuration();
+        }
+        
+        
+        $rule = $this->getDoctrine()
+                ->getRepository(Rule::class)
+                ->find(9);
+        
+        if ($hoursPerWeek > $rule->getMaxHourperWeek()) {
+             // si la lettre n'éxiste pas renvoie la route agendaTempEdit
+            
+           
+            $response = new Response(json_encode(array(
+            'titre' => 'Erreur :',
+            'description' => 'La durée hebdomadaire dépasse le maximum légal de ' . $rule->getMaxHourperWeek() . ' heures. Veuillez refaire votre saisie'
+            )));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }  else {
+            $coco = 'haha';
+        }
+        
+        dump($coco);die;
+        
+        
+    }
+    
+    
     
     
     /**

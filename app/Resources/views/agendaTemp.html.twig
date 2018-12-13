@@ -76,9 +76,15 @@
                    {% endfor %}                        
                 </tbody>                 
             </table>
-            <h2>Description : <span id="titre"></span></h2>
-            <h2></h2>
-            <h2>Détail : <span id="description"></span></h2>                
+            <h5>Description : <span id="titre"></span></h5>            
+            <h5>Détail : <span id="description"></span></h5>
+            <h5>Début de semaine légale : <span id="startLegalWeek"></span></h5>
+            <h5>Fin de semaine légale : <span id="endLegalWeek"></span></h5>
+            <h5>Début de journée légale : <span id="startLegalDay"></span></h5>
+            <h5>Fin de journée légale : <span id="endLegalDay"></span></h5>
+             <h5>Heures totalisés cette semaine : <span id="hoursPerWeek"></span></h5>
+            
+            
            {# {% for dateBetween in dateBetweens %}
                 <th class="">{{dateBetween.date | date("F jS \\a\\t g:ia", "Europe/Paris") }}</th>
                 {% endfor %}
