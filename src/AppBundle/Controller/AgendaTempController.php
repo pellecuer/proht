@@ -90,13 +90,20 @@ class AgendaTempController extends Controller {
         $em->persist($agendaTemp);
         $em->flush();
         
+        
+        //Verify Hours/week
         $hoursPerWeek = 0;
         $arrayWeeks = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent()->getId(), $user);
         
         foreach ($arrayWeeks as $arrayWeek){
-            $hoursPerWeek = $hoursPerWeek + $arrayWeek->getLetter()->getEffectiveDuration();
+            if ($arrayWeek->getLetter()->getLetter() == 'R' || $arrayWeek->getLetter()->getLetter() == 'H') {
+                $effectiveDuration = 0;
+            } else {
+                $effectiveDuration = $arrayWeek->getLetter()->getEffectiveDuration();
+            }
+            $hoursPerWeek = $hoursPerWeek + $effectiveDuration;
         }
         
         $rule = $this->getDoctrine()
@@ -114,13 +121,64 @@ class AgendaTempController extends Controller {
             $agendaTemp->setLetter($letterInMemory);        
             $em->persist($agendaTemp);
             $em->flush();            
-            return $response;
-            
+            return $response;            
         }
+        
+         //verify rest between Days
+        $dayBefore = $date->modify('yesterday 00:00');
+        $dayAfter = $date->modify('tomorrow 00:00');
+        $arrayDays = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findAllTempBetweenDateByUser($dayBefore, $dayAfter, $agendaTemp->getAgent()->getId(), $user);
+        
+        
+        $timeBeforeDate = $arrayDays[0]->getLetter()->getEndTime();
+        $hBeforeDate = $timeBeforeDate->format('H');        
+        $iBeforeDate = $timeBeforeDate->format('I'); 
+        $dateTimebeforeDate = $arrayDays[0]->getDate()->setTime($hBeforeDate, $iBeforeDate);
+        //dump($dateTimebeforeDate);die;
+        
+        
+        // if $letter = H or R -> prend en arrayDays le 2eme, sinon le jour d'après  
+        if($letter == 'R' || $letter == 'H') {            
+            $time = $arrayDays[2]->getLetter()->getStartTime();
+            $hDate = $time->format('H');        
+            $iDate = $time->format('I');
+            $dateTimeDate = $arrayDays[2]->getDate()->setTime($hDate, $iDate);
+        } else {          
+            $time = $arrayDays[1]->getLetter()->getStartTime();
+            $hDate = $time->format('H');        
+            $iDate = $time->format('I');
+            $dateTimeDate = $arrayDays[1]->getDate()->setTime($hDate, $iDate);
+        }        
+        
+        $interval = $dateTimebeforeDate->diff($dateTimeDate)->format('%H:%I:%S'); 
+        
+         //return error or persist
+        if ($hoursPerWeek > $rule->getMaxHourperWeek()) {  
+            // si la lettre n'éxiste pas renvoie la route agendaTempEdit
+            $response = new Response(json_encode(array(
+            'titre' => 'Erreur :',
+            'description' => 'Le total des heures de la semaine dépasse la durée légale (' . $rule->getMaxHourperWeek() . 'heures/semaine)' 
+            )));
+            $response->headers->set('Content-Type', 'application/json');
+            $agendaTemp->setLetter($letterInMemory);        
+            $em->persist($agendaTemp);
+            $em->flush();            
+            return $response;            
+        }
+        
+        
         
         $agendaTemp->setLetter($letter);        
         $em->persist($agendaTemp);
         $em->flush();
+        
+        
+       
+        
+        
+        
         
         $response = new Response(json_encode([
             'titre' => 'Mise à jour Ok',
@@ -129,6 +187,7 @@ class AgendaTempController extends Controller {
             'startLegalDay' => $startLegalDay->format('D d M H:i:s'),
             'endLegalDay' => $endLegalDay->format('D d M H:i:s'),
             'hoursPerWeek' => $hoursPerWeek,
+            'interval' => $interval,
             'description' => 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agendaTemp->getAgent()->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y')
             ]));
         
@@ -160,7 +219,7 @@ class AgendaTempController extends Controller {
                 }                                
              
          // si agendaTemp n'éxiste pas, on le crée à partir d'une copie de la team dans agenda     
-        $id = 4755;
+        $id = 4662;
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->find($id);
@@ -217,7 +276,27 @@ class AgendaTempController extends Controller {
             $coco = 'haha';
         }
         
-        dump($coco);die;
+        
+         //verify rest between Days
+        $dayBefore = $date->modify('yesterday 00:00');
+        $dayAfter = $date->modify('tomorrow 00:00');
+        $arrayDays = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findAllTempBetweenDateByUser($dayBefore, $dayAfter, $agendaTemp->getAgent()->getId(), $user);
+        
+        $timeBeforeDate = $arrayDays[0]->getLetter()->getEndTime();
+        $hBeforeDate = $timeBeforeDate->format('H');        
+        $iBeforeDate = $timeBeforeDate->format('I'); 
+        $dateTimebeforeDate = $arrayDays[0]->getDate()->setTime($hBeforeDate, $iBeforeDate);
+        //dump($dateTimebeforeDate);die;
+        
+        $time = $arrayDays[1]->getLetter()->getStartTime();
+        $hDate = $time->format('H');        
+        $iDate = $time->format('I');
+        $dateTimeDate = $arrayDays[1]->getDate()->setTime($hDate, $iDate);
+        
+        $interval = $dateTimebeforeDate->diff($dateTimeDate)->format('%H:%I:%S');           
+        
         
         
     }
