@@ -97,7 +97,9 @@ $('.editFor').on( "change paste keyup", function(){
             $( '#startLegalDay' ).text(data.startLegalDay);
             $( '#endLegalDay' ).text(data.endLegalDay);
             $( '#hoursPerWeek' ).text(data.hoursPerWeek);
-            $( '#interval' ).text(data.interval);            
+            $( '#intervalBefore' ).text(data.intervalBefore);
+            $( '#intervalAfter' ).text(data.intervalAfter);
+            $( '#letter' ).text(data.interval); 
         }
     });
 });
