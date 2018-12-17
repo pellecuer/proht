@@ -158,7 +158,7 @@ class AgendaTempController extends Controller {
         if ($hoursPerWeek > $rule->getMaxHourperWeek()) {  
             // si la lettre n'éxiste pas renvoie la route agendaTempEdit
             $response = new Response(json_encode(array(
-            'titre' => 'Erreur :',
+            'titre' => 'Erreur :',           
             'description' => 'Le total des heures de la semaine dépasse la durée légale (' . $rule->getMaxHourperWeek() . 'heures/semaine)' 
             )));
             $response->headers->set('Content-Type', 'application/json');
