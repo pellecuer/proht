@@ -94,14 +94,14 @@ $('.editFor').on( "change paste keyup", function(){
             $( '#description' ).text(data.description);
             $( '#startLegalWeek' ).text(data.startLegalWeek);
             $( '#endLegalWeek' ).text(data.endLegalWeek);
-            $( '#startLegalDay' ).text(data.startLegalDay);
-            $( '#endLegalDay' ).text(data.endLegalDay);
+            $( '#startDay' ).text(data.startDay);
+            $( '#endDay' ).text(data.endDay);
             $( '#hoursPerWeek' ).text(data.hoursPerWeek);
             $( '#intervalBefore' ).text(data.intervalBefore);
             $( '#intervalAfter' ).text(data.intervalAfter);
             $( '#letter' ).text(data.interval);
             $( '#' + id ).text(data.letter);
-            
+           // $( '#' + id ).css({"border": "2px solid red"});
         }
     });
 });

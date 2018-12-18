@@ -192,23 +192,41 @@ class AgendaTempRepository extends EntityRepository
     /**
      * @param $startDate, $endDate, $agendaId, $user  
      */
-    public function findTempBetweenDateByUserForCalcul($startDate, $endDate, $agentId, $user)
+    public function findTempBetweenDateByUserByAgentByLetter($startDate, $endDate, $agent, $user, $letter)
     {
         return $this->createQueryBuilder('agendaTemp')
             ->where('agendaTemp.user = :user')
             ->andWhere('agendaTemp.date > :start')
             ->andWhere('agendaTemp.date <= :end')
-               
-                
-            ->innerJoin('agendaTemp.agent', 'agent')
-            ->addSelect('agent')
-            ->andWhere('agent.id = :id')    
+            ->andWhere('agendaTemp.agent = :agent')
+            ->andWhere('agendaTemp.letter = :letter')                
             
             ->setParameter('user', $user)   
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
-            ->setParameter('id', $agentId)
-            ->orderBy('agendaTemp.date', 'ASC')            
+            ->setParameter('agent', $agent)
+            ->setParameter('letter', $letter)                    
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    
+    
+     /**
+     * @param $startDate, $endDate, $agendaId, $user  
+     */
+    public function findTempByDateByUserByAgentByLetter($date, $agent, $user, $letter)
+    {
+        return $this->createQueryBuilder('agendaTemp')
+            ->where('agendaTemp.user = :user')
+            ->andWhere('agendaTemp.date = :date')            
+            ->andWhere('agendaTemp.agent = :agent')
+            ->andWhere('agendaTemp.letter = :letter')                
+            
+            ->setParameter('user', $user)   
+            ->setParameter('date', $date)            
+            ->setParameter('agent', $agent)
+            ->setParameter('letter', $letter)                    
             ->getQuery()
             ->getResult()
             ;
