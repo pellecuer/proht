@@ -34,10 +34,8 @@ class checkRules {
     
     public function restBetweenDays($agendaTemp, $user, $date, $letter, $arrayDays)
     {
-        $dayBefore = $date->modify('yesterday 00:00');
-        $dayAfter = $date->modify('tomorrow 00:00');
-               
-            
+        //$dayBefore = $date->modify('yesterday 00:00');
+        //$dayAfter = $date->modify('tomorrow 00:00');
         
         //Exceptions if $letter of Day == R or H 
         //Exceptions if $letter of Day Before == R or H
@@ -79,17 +77,14 @@ class checkRules {
             //Important
             $intervalBefore = $dateTimeBeforeDate->diff($dateTimeOnDate)->format('%H:%I:%S');
             $intervalAfter = $dateTimeOffDate->diff($dateTimeAfterDate)->format('%H:%I:%S');
-        }        
-        
-        
+        }   
         
         $interval = [
             $intervalBefore,
             $intervalAfter
         ];
         
-        return $interval;
-        
+        return $interval;        
     }
     
 }

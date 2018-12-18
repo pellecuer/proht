@@ -106,6 +106,7 @@ class AgendaTempController extends Controller {
                 ->findAllTempBetweenDateByUser($dayBefore, $dayAfter, $agendaTemp->getAgent()->getId(), $user);
         
         //This Date Letter Time
+        
         $startTimeForTheDay = $arrayDays[1] ->getLetter()->getStartTime();               
         $hStartTimeForTheDay = $startTimeForTheDay->format('H');        
         $istartTimeForTheDay = $startTimeForTheDay->format('i');
