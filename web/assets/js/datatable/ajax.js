@@ -99,7 +99,9 @@ $('.editFor').on( "change paste keyup", function(){
             $( '#hoursPerWeek' ).text(data.hoursPerWeek);
             $( '#intervalBefore' ).text(data.intervalBefore);
             $( '#intervalAfter' ).text(data.intervalAfter);
-            $( '#letter' ).text(data.interval); 
+            $( '#letter' ).text(data.interval);
+            $( '#' + id ).text(data.letter);
+            
         }
     });
 });

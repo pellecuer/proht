@@ -55,23 +55,26 @@ class checkRules {
         } else {          
             $timeBeforeDate = $arrayDays[0]->getLetter()->getEndTime();
             $hBeforeDate = $timeBeforeDate->format('H');        
-            $iBeforeDate = $timeBeforeDate->format('I'); 
-            $dateTimeBeforeDate = $arrayDays[0]->getDate()->setTime($hBeforeDate, $iBeforeDate);  
+            $iBeforeDate = $timeBeforeDate->format('i');
+            $immutableDay0 = \DateTimeImmutable::createFromMutable($arrayDays[0]->getDate());
+            $dateTimeBeforeDate = $immutableDay0->setTime($hBeforeDate, $iBeforeDate);  
 
             $timeOnDate = $arrayDays[1]->getLetter()->getStartTime();
             $hOnDate = $timeOnDate->format('H');        
-            $iOnDate = $timeOnDate->format('I');
-            $dateTimeOnDate = $arrayDays[1]->getDate()->setTime($hOnDate, $iOnDate);
+            $iOnDate = $timeOnDate->format('i');
+            $immutableDay1 = \DateTimeImmutable::createFromMutable($arrayDays[1]->getDate());
+            $dateTimeOnDate = $immutableDay1->setTime($hOnDate, $iOnDate);
             
             $timeOffDate = $arrayDays[1]->getLetter()->getEndTime();
             $hOffDate = $timeOffDate->format('H');        
-            $iOffDate = $timeOffDate->format('I');
-            $dateTimeOffDate = $arrayDays[1]->getDate()->setTime($hOffDate, $iOffDate);
+            $iOffDate = $timeOffDate->format('i');            
+            $dateTimeOffDate = $immutableDay1->setTime($hOffDate, $iOffDate);
             
             $timeAfterDate = $arrayDays[2]->getLetter()->getStartTime();
             $hAfterDate = $timeAfterDate->format('H');        
-            $iAfterDate = $timeAfterDate->format('I'); 
-            $dateTimeAfterDate = $arrayDays[2]->getDate()->setTime($hAfterDate, $iAfterDate);
+            $iAfterDate = $timeAfterDate->format('i');
+            $immutableDay2 = \DateTimeImmutable::createFromMutable($arrayDays[2]->getDate());
+            $dateTimeAfterDate = $immutableDay2->setTime($hAfterDate, $iAfterDate);
             
             //Important
             $intervalBefore = $dateTimeBeforeDate->diff($dateTimeOnDate)->format('%H:%I:%S');

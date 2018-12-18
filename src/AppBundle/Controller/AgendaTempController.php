@@ -93,7 +93,7 @@ class AgendaTempController extends Controller {
         $em->flush();                        
         
         
-        //LegalDay
+        //LegalDay        
         $startLegalDay = $date->modify('today 00:00'); 
         $endLegalDay = $date->modify('tomorrow 00:00');
         
@@ -105,8 +105,20 @@ class AgendaTempController extends Controller {
                 ->getRepository(AgendaTemp::class)
                 ->findAllTempBetweenDateByUser($dayBefore, $dayAfter, $agendaTemp->getAgent()->getId(), $user);
         
+        //This Date Letter Time
+        $startTimeForTheDay = $arrayDays[1] ->getLetter()->getStartTime();               
+        $hStartTimeForTheDay = $startTimeForTheDay->format('H');        
+        $istartTimeForTheDay = $startTimeForTheDay->format('i');
         
+        $endTimeForTheDay = $arrayDays[1] ->getLetter()->getEndTime();
+        $hEndTimeForTheDay = $endTimeForTheDay->format('H');        
+        $iEndTimeForTheDay = $endTimeForTheDay->format('i');        
         
+        $dateTimeStarForTheDay = $date->setTime($hStartTimeForTheDay, $istartTimeForTheDay);
+        $dateTimeEndForTheDay = $date->setTime($hEndTimeForTheDay, $iEndTimeForTheDay);
+                
+                
+                
         //Get the service checkRules
         $arrayWeeks = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
@@ -124,11 +136,12 @@ class AgendaTempController extends Controller {
         
         
         $response = new Response(json_encode([
-            'titre' => 'Mise à jour Ok',            
+            'titre' => 'Mise à jour Ok',
+            'letter' => $agendaTemp->getLetter()->getLetter(),
             'startLegalWeek' => $startLegalWeek->format('D d M Y H:i:s'),
             'endLegalWeek' => $endLegalWeek->format('D d M Y H:i:s'),
-            'startLegalDay' => $startLegalDay->format('D d M H:i:s'),
-            'endLegalDay' => $endLegalDay->format('D d M H:i:s'),
+            'startLegalDay' => $dateTimeStarForTheDay->format('D d M H:i:s'),
+            'endLegalDay' => $dateTimeEndForTheDay->format('D d M H:i:s'),
             'hoursPerWeek' => $hoursPerWeek,
             'intervalBefore' => $interval[0],
             'intervalAfter' => $interval[1],
