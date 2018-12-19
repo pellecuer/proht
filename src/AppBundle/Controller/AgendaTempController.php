@@ -160,12 +160,14 @@ class AgendaTempController extends Controller {
                 $em->persist($agendaTemp);
                 $em->flush();
         }
-        setlocale (LC_TIME, 'fr_FR.utf8','fra');        
+           
         
         $response = new Response(json_encode([
             'titre' => 'Mise à jour Ok',
             'letter' => $agendaTemp->getLetter()->getLetter(),
             'startLegalWeek' => $startLegalWeek->format('D d M Y H:i:s'),
+            
+            
             'endLegalWeek' => $endLegalWeek->format('D d M Y H:i:s'),
             'startDay' => $dateTimeStarForTheDay->format('D d M H:i:s'),
             'endDay' => $dateTimeEndForTheDay->format('D d M H:i:s'),
