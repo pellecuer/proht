@@ -13,14 +13,14 @@
     <body>
         {% block nav %}
         <div class="container">
-            <div class="row align-items-center">
-                <div class =" col-md-4">
+            <div class="row d-flex align-items-end">
+                <div class =" col-md-4 ">
                     <a class="navbar-brand" href="{{ path('home') }}">
                         <img src="{{ asset('/assets/images/EDF-logo.png') }}" width="auto" height="100px"  alt="">						
                     </a>  
                 </div>
-                <div class =" col-md-4">
-                    <h2>Planning RHAT</h2>
+                <div class =" col-md-4 ">
+                    <h2 class="colorTitle">PLANIFICATION RHAT</h2>
                 </div>
                 <div class =" col-md-4">
                     <a class="navbar-brand" href="{{ path('home') }}">
@@ -28,56 +28,56 @@
                     </a> 
                 </div>
             </div>
-            <div class="row align-items-center justify-content-end" style="background-color: #09357A;">                
+            <div class="row align-items-center justify-content-end" style="background-color: #003366;">                
                 <span class="mr-2 text-white">Bonjour {% if  app.user %} {{ app.user.username }} {% endif %}</span>
                 <span class="mr-2 text-white">
                     {% if  app.user %}
-                        <a class="btn btn-danger mx-1" href="{{ path('logout') }}" role="button">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
+                        <a class="btn redEDf mx-1" href="{{ path('logout') }}" role="button">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
                     {% else %}
-                        <a class="btn btn-success mx-1" href="{{ path('login') }}" role="button"> Connexion<i class="fas fa-sign-in-alt"></i></a>
+                        <a class="btn greenEDf mx-1" href="{{ path('login') }}" role="button"> Connexion <i class="fas fa-sign-in-alt"></i></a>
                     {% endif %}                    
                 </span>
             </div>        
             <div class="row" style="background-color: #e3f2fd;">  
                 <nav class="navbar navbar-expand-lg navbar-light" >               
                     <div class="collapse navbar-collapse" id="navbarNav">
-                          <ul class="navbar-nav align-items-center justify-content-end">                         
-                              <li class="nav-item ">
-                                    <a href="{{ path('home') }}">
-                                        <i class="fas fa-home fa-1x"></i>
-                                    </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('showAgenda') }}">Agenda</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('showrule') }}">Règles</a>
-                              </li>
-                               <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('showagent') }}">Agents</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('showteam') }}">Equipes</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('showletter') }}">Codes</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('showSection') }}">Section</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('ShowService') }}">Service</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('showEvent') }}">Arrêt</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('doc') }}">Doc</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ path('user_index') }}">User</a>
-                              </li>
-                          </ul>
+                        <ul class="navbar-nav align-items-center justify-content-end">                         
+                            <li class="nav-item ">
+                                <a href="{{ path('home') }}">
+                                    <i class="fas fa-home fa-1x"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('showAgenda') }}">Agenda</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('showrule') }}">Règles</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="{{ path('showagent') }}">Agents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('showteam') }}">Equipes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('showletter') }}">Codes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('showSection') }}">Section</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('ShowService') }}">Service</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('showEvent') }}">Arrêt</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('doc') }}">Doc</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('user_index') }}">User</a>
+                            </li>
+                        </ul>
                     </div>
                 </nav>
             </div>                        

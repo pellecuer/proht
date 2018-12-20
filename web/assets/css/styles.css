@@ -2,9 +2,45 @@ body {
 	min-height: 900px;
 }
 
-h1 {
+h1, h2 {
     color: #09357A; 
 }
+
+/* buttons */
+.btn-outline- {
+    color: #09357A;
+}
+
+ /* font awesome */
+
+.fa-sign-out-alt, fa-sign-in-alt {
+    color:#ffffff;
+}
+
+.fa-circle {
+   color: #09357A;
+}
+
+.fa-plus {
+   color: #09357A;
+}
+
+.fa-edit {
+   color: #09357A; 
+}
+.fa-white {
+    color:#ffffff;
+}
+
+.fa-trash-alt {
+    color: #09357A;
+}
+
+.fa-history {
+     color: #09357A;
+}
+
+
 
 .homeCards {
 	position:relative;
@@ -12,7 +48,13 @@ h1 {
 }
 
 .redEDf {
-	color: #FE5815; 
+	background-color: #FE5815;
+        color:#ffffff;
+}
+
+.greenEDf {
+	background-color: #009933;
+        color:#ffffff;
 }
 
 .cardh {
