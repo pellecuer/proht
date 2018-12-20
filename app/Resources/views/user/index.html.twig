@@ -9,7 +9,7 @@
     <div class="container">       
         <header class="text-center py-3">
             <h1 class="bg-white-semi_transparent"><em class="text-dark">Utilisateurs</em></h1>
-            <p>Voici la liste des utilisateurs</p>
+            <p>Voici la liste des utilisateurs de l'application PRHAT</p>
         </header>
         <div class="row">
             <div class="col-md-1">
@@ -27,14 +27,16 @@
                             <th>Nom</th>
                             <th>Email</th>
                             <th>Role</th>
-                            
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>                   
                     <tbody>                        
                         {%for user in users %}
                             <tr>                                                            
                                 <td>{{ user.username }}</td>
-                                <td>{{ user.email }}</td>                          
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.roles.0 }}</td>
                                 <td><a href="{{ path('user_edit', { 'id': user.id }) }}"><i class="fas fa-edit"></i></a></td>
                                 <td><a href="{{ path('user_delete', { 'id': user.id }) }}"><i class="fas fa-trash-alt"></i></a></td>                                
                             </tr>

@@ -190,8 +190,8 @@ class AgendaController extends Controller {
         $interval = new \DateInterval('P1D');
         $arrayDate = [];        
         
-        while ($immutable<=$endDate){
-            $arrayDate[] =  $immutable;            
+        while ($immutable<$endDate){
+            $arrayDate[] = $immutable;            
             $immutable = $immutable->add($interval);
         } 
         

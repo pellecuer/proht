@@ -10,25 +10,24 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% block stylesheets %} {% endblock %}
     </head>
-    <body>
-        {% block nav %}
+    <body>        
         <div class="container">
-            <div class="row d-flex align-items-end">
+            <div class="row d-flex align-items-end my-2">
                 <div class =" col-md-4 ">
-                    <a class="navbar-brand" href="{{ path('home') }}">
+                    <a href="{{ path('home') }}">
                         <img src="{{ asset('/assets/images/EDF-logo.png') }}" width="auto" height="100px"  alt="">						
                     </a>  
                 </div>
                 <div class =" col-md-4 ">
-                    <h2 class="colorTitle">PLANIFICATION RHAT</h2>
+                    <h2 class="colorTitle">PRHAT</h2>
                 </div>
                 <div class =" col-md-4">
-                    <a class="navbar-brand" href="{{ path('home') }}">
+                    <a href="{{ path('home') }}">
                         <img src="{{ asset('/assets/images/logo-site-Saint-Alban.jpg') }}" width="auto" height="100px" alt="">						
                     </a> 
                 </div>
             </div>
-            <div class="row align-items-center justify-content-end" style="background-color: #003366;">                
+            <div class="row align-items-center justify-content-end" style="background-color: #09357A;">                
                 <span class="mr-2 text-white">Bonjour {% if  app.user %} {{ app.user.username }} {% endif %}</span>
                 <span class="mr-2 text-white">
                     {% if  app.user %}
@@ -44,7 +43,7 @@
                         <ul class="navbar-nav align-items-center justify-content-end">                         
                             <li class="nav-item ">
                                 <a href="{{ path('home') }}">
-                                    <i class="fas fa-home fa-1x"></i>
+                                    <i class="fas fa-home fa-1x text-color-blue"></i>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -80,27 +79,23 @@
                         </ul>
                     </div>
                 </nav>
-            </div>                        
-        </div>
-        {% endblock %}
-    
-        <div class="container">
-            <div class = "row my-3">
-               <div class ="col-md-12 ">
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-               </div>
             </div>
-        </div>
-    
-        {% block body %}
-        {% endblock %}
+            <!-- flash bag --> 
+            <div class = "row my-3">
+                <div class ="col-md-12 ">
+                 {% for label, messages in app.flashes %}
+                     {% for message in messages %}
+                         <div class="alert alert-{{ label }}">
+                             {{ message }}
+                         </div>
+                     {% endfor %}
+                 {% endfor %}
+                </div>
+            </div>                
+            {% block body %}
+            {% endblock %}            
+        </div>    
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        {% block javascripts %}{% endblock %}        
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

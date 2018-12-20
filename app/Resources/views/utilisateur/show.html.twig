@@ -27,7 +27,9 @@
                             <th>id</th>
                             <th>Nom</th>
                             <th>NNI</th>
-                            <th>Role</th> 
+                            <th>Role</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>                    
                     <tbody> 
@@ -36,7 +38,7 @@
                                 <td>{{ utilisateur.id }}</td>
                                 <td>{{ utilisateur.name }}</td>
                                 <td>{{ utilisateur.nni }}</td>
-                                 <td>{{ utilisateur.role.name }}</td>
+                                <td>{{ utilisateur.0.role }}</td>
                                 <td><a href="{{ path('editRole', { 'id': utilisateur.id }) }}"><i class="fas fa-edit"></i></a></td>
                                 <td><a href="{{ path('deleteRole', { 'id': utilisateur.id }) }}"><i class="fas fa-trash-alt"></i></a></td>                                 
                             </tr>

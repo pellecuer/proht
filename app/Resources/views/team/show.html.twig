@@ -45,7 +45,7 @@
                                 <td>{{ team.section.name}}</td> 
                                 <td>{{ team.event.startDate|date|localizeddate('none', 'none', 'fr', null, 'E dd MM Y') }}</td>
                                 <td>{{ team.event.endDate|date|localizeddate('none', 'none', 'fr', null, 'E dd MM Y') }}</td>
-                                <td><a href="{{ path('showAgents', { 'id': team.id }) }}"><i class="fas fa-eye"></i></a></td>
+                                <td><a href="{{ path('showAgents', { 'id': team.id }) }}"><i class="fas fa-eye text-color-blue"></i></a></td>
                                 <td><a href="{{ path('editTeam', { 'id': team.id }) }}"><i class="fas fa-edit"></i></a></td>
                                 <td><a href="{{ path('deleteTeam', { 'id': team.id }) }}"><i class="fas fa-trash-alt"></i></a></td>
                                 

@@ -5,9 +5,9 @@
 {% block title %}Agenda{% endblock %}
 {% block body %}    
 <div class="container">
-     <header class="text-center py-3">
-            <h1 class="bg-white-semi_transparent"><em class="text-dark"></em>AGENDA</h1>
-            <p>Consulter, modifier, imprimer la planning de vos équipes</p>
+    <header class="text-center py-3">
+        <h1 class="bg-white-semi_transparent"><em class="text-dark"></em>AGENDA</h1>
+        <p>Consulter, modifier, imprimer la planning de vos équipes</p>
     </header>
     <div class= "row">
         <div class="col-md-12">
@@ -51,21 +51,21 @@
                                 D
                              {% endif %} 
                         {% endfor %}
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
+                        <th scope ="col" class="text-color-blue"></th>
+                        <th scope ="col" class="text-color-blue"></th>
+                        <th scope ="col" class="text-color-blue"></th>
                     </tr>
                     <tr class="bg-muted">
-                        <th scope ="col" class="text-info">Nom</th>
-                        <th scope ="col" class="text-info">Prénom</th>
-                        <th scope ="col" class="text-info">NNI</th>
-                        <th scope ="col" class="text-info">Fonction</th>
+                        <th scope ="col" class="text-color-blue">Nom</th>
+                        <th scope ="col" class="text-color-blue">Prénom</th>
+                        <th scope ="col" class="text-color-blue">NNI</th>
+                        <th scope ="col" class="text-color-blue">Fonction</th>
                         {% for dateBetween in dateBetweens %}
                         <th scope ="col" class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}</th>
                         {% endfor %}
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
+                        <th scope ="col" class="text-color-blue"></th>
+                        <th scope ="col" class="text-color-blue"></th>
+                        <th scope ="col" class="text-color-blue"></th>
                     </tr>                         
                 </thead>
                 <tbody>                        
@@ -87,7 +87,7 @@
                                         ">{{ letter.letter.letter }}
                                 </td>
                             {% endfor %}
-                            <td class="update" scope ="col"><i class="fas fa-edit text-primary"></i></td>
+                            <td class="update" scope ="col"><i class="fas fa-edit"></i></td>
                             <td class="check"><a href=""><i class="fas fa-check text-success"></i></a></td>
                             <td class="trash"><a href="{{ path('deleteAgenda', { 'agentId': agentBetween.0.agent.id }) }}"><i class="fas fa-trash-alt text-danger"></i></a></td>                                                                
                         </tr>

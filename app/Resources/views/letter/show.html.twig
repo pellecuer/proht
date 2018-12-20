@@ -9,7 +9,7 @@
     <div class="container">       
         <header class="text-center py-3">
             <h1 class="bg-white-semi_transparent"><em class="text-dark">Code Planning</em></h1>
-            <p>Voici la liste des Codes planning</p>
+            <p>Horaires remontés pour {{ "now"|date("Y") }}</p>
         </header>
         <div class="row">
             <div class="col-md-1">
@@ -25,8 +25,7 @@
                      <thead class="thead-dark">
                         <tr>
                             <th>id</th>
-                            <th>lettre</th>
-                            <th>TimeRange</th>
+                            <th>Code planning</th>                            
                             <th>Durée effective</th>
                             <th>Heure de début</th>
                             <th>Heure de fin</th>
@@ -36,8 +35,7 @@
                         {%for letter in letters %}
                             <tr>                                                            
                                 <td>{{ letter.id }}</td>
-                                <td>{{ letter.letter }}</td>
-                                <td>A compléter</td> 
+                                <td>{{ letter.letter }}</td>                                 
                                 <td>{{ letter.effectiveDuration}}</td>
                                 <th>{{ letter.starttime|date|localizeddate('none', 'none', 'fr', null, 'H:mm') }}</th>
                                 <th>{{ letter.endtime|date|localizeddate('none', 'none', 'fr', null, 'H:mm')}}</th>

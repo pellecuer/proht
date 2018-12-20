@@ -1,15 +1,25 @@
-body {    
-	min-height: 900px;
+
+
+footer {    
+    position: absolute;   
+    bottom: -40px;
+    width:100%;
 }
 
-h1, h2 {
+h1, h2, h3, h4, h5 {
     color: #09357A; 
 }
 
-/* buttons */
-.btn-outline- {
+.text-color-blue {
     color: #09357A;
 }
+
+/* buttons */
+.btn-custom {
+	background-color: #FE5815;
+        color:white;
+}
+
 
  /* font awesome */
 
@@ -25,9 +35,7 @@ h1, h2 {
    color: #09357A;
 }
 
-.fa-edit {
-   color: #09357A; 
-}
+
 .fa-white {
     color:#ffffff;
 }
@@ -87,3 +95,9 @@ h1, h2 {
     background-color: #008b00;
     border: solid 1px #ffffff;
 }
+
+.bg-b {
+    background-color: #09357A;
+   
+}
+
