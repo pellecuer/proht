@@ -89,21 +89,24 @@ class AgendaTempController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($agendaTemp);
             $em->flush();
-            //ArrayDays
+            
+            //define agendaTempAround as an array of agendaTemp objects around agendaTemp
             $dayBefore = $date->modify('yesterday 00:00');
             $dayAfter = $date->modify('tomorrow 00:00');
-            $arrayDays = $this->getDoctrine()
+            $agendaTempAround = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findAllTempBetweenDateByUser($dayBefore, $dayAfter, $agendaTemp->getAgent()->getId(), $user);
+            
             //This Date Letter Time
-            $startTimeForTheDay = $arrayDays[1]->getLetter()->getStartTime();
+            $startTimeForTheDay = $agendaTempAround[1]->getLetter()->getStartTime();
             $hStartTimeForTheDay = $startTimeForTheDay->format('H');
             $istartTimeForTheDay = $startTimeForTheDay->format('i');
-            $endTimeForTheDay = $arrayDays[1]->getLetter()->getEndTime();
+            $endTimeForTheDay = $agendaTempAround[1]->getLetter()->getEndTime();
             $hEndTimeForTheDay = $endTimeForTheDay->format('H');
             $iEndTimeForTheDay = $endTimeForTheDay->format('i');
             $dateTimeStarForTheDay = $date->setTime($hStartTimeForTheDay, $istartTimeForTheDay);
             $dateTimeEndForTheDay = $date->setTime($hEndTimeForTheDay, $iEndTimeForTheDay);
+            
             //Check if HoursPerWeek is under maximum
             $arrayWeeks = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
@@ -113,11 +116,12 @@ class AgendaTempController extends Controller {
                 $errors['Heures hebdomadaires'] = "Le nombre d'heures hebdomadaires dépasse le maximum légal de 48 heures.";
             }
             //check rest between days
-            $interval = $checkRules->restBetweenDays($agendaTemp, $user, $date, $letter, $arrayDays);
+            $interval = $checkRules->restBetweenDays($agendaTemp, $user, $date, $letter, $agendaTempAround);
             if (!$interval) {
                 $errors['repos journalier'] = "Le nombre d'heures de repos minimum entre deux jours est inférieur à 11 heures.";
             }
-            // check if  one H in the legal week
+            
+            
             $hLetter = $this->getDoctrine()
                 ->getRepository(Letter::class)
                 ->findByLetter('H');
@@ -127,7 +131,10 @@ class AgendaTempController extends Controller {
             $h = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent(), $user, $hLetter);
-            if (!$h) {
+            
+            //Error msg if no H and count days in a Legal week >=7
+            //Mettre dateDiff à la place
+            if (!$h && count($arrayWeeks->getDate())>=7) {
                 $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y');
             }
             // check if  one H with R around
@@ -253,13 +260,6 @@ class AgendaTempController extends Controller {
                 // si l'agendaTemp n'éxiste pas renvoie la route agenda :
                 return $this->redirectToRoute('showAgenda');            
             }
-                   
-                                       
-            //$agentBetweens = $this->getDoctrine()
-               // ->getRepository(AgendaTemp::class)
-               // ->findTempByUserByTeam($team, $user);
-            //dump($agentBetweens);die;
-            
             //crée un array des agents de la team
             $agentId = [];    
             $agents = $team->getAgents();
