@@ -29,7 +29,7 @@
                 <caption class="text-center">Equipe {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
                 <thead class="thead">                        
                     <tr class ="bg-dark">
-                        <th scope ="col" class="text-info"><a class="btn btn-danger btn-sm" href="{{ path('agendaTempEdit2', { 'id': team.id, 'userId': app.user.id}) }}" role="button">Modifier</a></th>
+                        <th scope ="col" class="text-info"><a class="btn btn-danger btn-sm" href="{{ path('agendaTempEdit')}}" role="button">Modifier</a></th>
                         <th scope ="col" class="text-info"></th>
                         <th scope ="col" class="text-info"></th>
                         <th scope ="col" class="text-info"></th>
