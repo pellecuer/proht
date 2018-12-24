@@ -193,7 +193,50 @@ class AgendaTempController extends Controller {
     }
     
      
-    
+    /**
+     * @Route("/edit2/{id}/user/{userId}", name="agendaTempEdit2")
+     * @ParamConverter("user", options={"mapping": {"userId": "id"}})
+     * @Method({"GET", "POST"})
+     */
+    public function copyAgendaAction( Team $team, User $user)
+    {          
+        //check it temp exist for this User and this Team        
+         $agendaTemp = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findTempByUserByTeam($team, $user);
+         //dump($agendaTemp);die;
+        
+        if (!$agendaTemp) {
+                // si l'agendaTemp n'éxiste pas, récupère l'agenda éxistant de la team                
+                $agendas = $this->getDoctrine()
+                    ->getRepository(Agenda::class)
+                    ->findAgendaByTeam($team, $user);                
+                
+                //crée les agendas Temp                
+                foreach ($agendas as $agenda){
+                        $em = $this->getDoctrine()->getManager();
+                        $agendaTemp = new AgendaTemp();
+                        $agendaTemp->setAgent($agenda->getAgent());
+                        $agendaTemp->setLetter($agenda->getLetter());
+                        $agendaTemp->setDate($agenda->getDate());
+                        $agendaTemp->setUser($user);
+                        
+                        //A ajouter ultérieurement
+                        //$agendaTemp->setUtilisateur($agendaToCopy->getUtilisateur());
+                        $em->persist($agendaTemp);
+                        $em->flush();
+                        }
+                        
+                return $this->redirectToRoute('showAgendaTemp', array(
+                    'id' => $team->getId(),
+                    'userId' =>$user->getId()         
+                    ));
+        
+        }  return $this->redirectToRoute('showAgendaTemp', array(
+            'id' => $team->getId(),
+            'userId' =>$user->getId()
+                ));          
+    }  
     
     
      /**
