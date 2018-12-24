@@ -50,10 +50,7 @@
                              {% else %}
                                 D
                              {% endif %} 
-                        {% endfor %}
-                        <th scope ="col" class="text-color-blue"></th>
-                        <th scope ="col" class="text-color-blue"></th>
-                        <th scope ="col" class="text-color-blue"></th>
+                        {% endfor %}                        
                     </tr>
                     <tr class="bg-muted">
                         <th scope ="col" class="text-color-blue">Nom</th>
@@ -62,10 +59,7 @@
                         <th scope ="col" class="text-color-blue">Fonction</th>
                         {% for dateBetween in dateBetweens %}
                         <th scope ="col" class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}</th>
-                        {% endfor %}
-                        <th scope ="col" class="text-color-blue"></th>
-                        <th scope ="col" class="text-color-blue"></th>
-                        <th scope ="col" class="text-color-blue"></th>
+                        {% endfor %}                        
                     </tr>                         
                 </thead>
                 <tbody>                        
@@ -86,21 +80,11 @@
                                     {% endif %}
                                         ">{{ letter.letter.letter }}
                                 </td>
-                            {% endfor %}
-                            <td class="update" scope ="col"><i class="fas fa-edit"></i></td>
-                            <td class="check"><a href=""><i class="fas fa-check text-success"></i></a></td>
-                            <td class="trash"><a href="{{ path('deleteAgenda', { 'agentId': agentBetween.0.agent.id }) }}"><i class="fas fa-trash-alt text-danger"></i></a></td>                                                                
+                            {% endfor %}                                                                
                         </tr>
                    {% endfor %}                        
                 </tbody>                 
-            </table>
-            <h2>Description : <span id="titre"></span></h2>
-            <h2></h2>
-            <h2>Détail : <span id="description"></span></h2>                
-           {# {% for dateBetween in dateBetweens %}
-                <th class="">{{dateBetween.date | date("F jS \\a\\t g:ia", "Europe/Paris") }}</th>
-                {% endfor %}
-            #}
+            </table>             
         </div>
     </div>
 </div> 

@@ -101,6 +101,9 @@ $('.editFor').on( "change paste keyup", function(){
             $( '#intervalAfter' ).text(data.intervalAfter);
             $( '#letter' ).text(data.interval);
             $( '#' + id ).text(data.letter);
+            if (data.bgLetter) {
+                $( '#' + id ).removeClass('table-success').removeClass('table-danger').removeClass('table-info').addClass(data.bgLetter);
+            }
            // $( '#' + id ).css({"border": "2px solid red"});
         }
     });
