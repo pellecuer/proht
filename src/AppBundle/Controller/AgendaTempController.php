@@ -59,7 +59,7 @@ class AgendaTempController extends Controller {
                         ]);
         /* if letter doesn't exist, restore letter*/
         $errors = [];
-        $thanksTo = 'Merci de corriger votre saisie';
+        $thanksTo = 'Merci de refaire votre saisie sur la date du ' . $agendaTemp->getDate()->format ('D d M Y');
         if (!$letter) {
             $errors['Lettre'] = "La lettre ' $letterUpdate ' n’éxiste pas dans le code planning. " . $thanksTo;
             $response = new Response(json_encode(array(
@@ -128,7 +128,7 @@ class AgendaTempController extends Controller {
                 ->getRepository(AgendaTemp::class)
                 ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent(), $user, $hLetter);
             if (!$h) {
-                $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format(('D d M Y'));
+                $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y');
             }
             // check if  one H with R around
             $rBefore = '';
