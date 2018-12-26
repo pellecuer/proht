@@ -110,7 +110,7 @@ class AgendaTempController extends Controller {
             //Check if HoursPerWeek is under maximum
             $arrayWeeks = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent()->getId(), $user);
+                ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent(), $user);
             $hoursPerWeek = $checkRules->HoursPerWeek($agendaTemp, $user, $startLegalWeek, $endLegalWeek, $arrayWeeks);
             if ($hoursPerWeek > '48') {
                 $errors['Heures hebdomadaires'] = "Le nombre d'heures hebdomadaires dépasse le maximum légal de 48 heures.";
@@ -132,10 +132,19 @@ class AgendaTempController extends Controller {
                 ->getRepository(AgendaTemp::class)
                 ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent(), $user, $hLetter);
             
-            //Error msg if no H and count days in a Legal week >=7
-            //Mettre dateDiff à la place
-            if (!$h && count($arrayWeeks->getDate())>=7) {
+            //Error msg if no H and $startLegalweek or $endLegalWeek out of range
+            $AgendaTempStartLegalWeek = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findTempByDateByUserByAgent($startLegalWeek, $agendaTemp->getAgent(), $user);              
+            
+            $AgendaTempEndLegalWeek = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findTempByDateByUserByAgent($endLegalWeek, $agendaTemp->getAgent(), $user);             
+            
+            if (!$h) {
+                if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek){
                 $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y');
+                }
             }
             // check if  one H with R around
             $rBefore = '';
@@ -182,7 +191,7 @@ class AgendaTempController extends Controller {
            
         
         $response = new Response(json_encode([
-            'titre' => $titre,
+            'titre' => $AgendaTempStartLegalWeek,
             'description' => $description,
             'letter' => $updatedLetter,
             'bgLetter' => $bgLetter,
