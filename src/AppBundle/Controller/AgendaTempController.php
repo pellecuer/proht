@@ -107,7 +107,7 @@ class AgendaTempController extends Controller {
             }
             //check rest between days
             $interval = $checkRules->restBetweenDays($agendaTemp, $user, $date, $letter, $agendaTempAround);
-            if (!$interval) {
+            if ($interval[0]<11 || $interval[1] < 11) {
                 $errors['repos journalier'] = "Le nombre d'heures de repos minimum entre deux jours est inférieur à 11 heures.";
             }
             
@@ -154,12 +154,15 @@ class AgendaTempController extends Controller {
                 }
             }
             
-            // check if average of hourPerweek is legal            
-            $averageHourPerWeek = $checkRules->averageHourPerWeek($agendaTemp, $user, $startLegalWeek, $endLegalWeek, $arrayWeeks);
-            $max = $this->getDoctrine()->getRepository(Rule::class)->getMaxAveragePerWeek();
-            if ($averageHourPerWeek> $max) {
+            // check if average of hourPerweek is legal
+            $averageHourPerWeek = $checkRules->averageHourPerWeek($agendaTemp, $checkRules, $user, $arrayWeeks);
+            $max = $this->getDoctrine()->getRepository(Rule::class)
+                ->find(1)->getMaxAveragePerWeek();
+            if ($averageHourPerWeek > $max) {
                 $errors['moyenne d\'heures de travail hebdomadaire trop élevé'] = "La moyenne d\'heures de travail hebdomadaire dépasse la durée légale de " . $max . 'sur la semaine du' . $startLegalWeek->format('D d M Y');
-            }      
+            }
+
+
                    
              
                         
@@ -200,6 +203,7 @@ class AgendaTempController extends Controller {
             'hoursPerWeek' => $hoursPerWeek,
             'intervalBefore' => $interval[0],
             'intervalAfter' => $interval[1],
+            'average' => $averageHourPerWeek,
             ]));
         
         $response->headers->set('Content-Type', 'application/json');

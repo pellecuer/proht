@@ -36,9 +36,9 @@ class initializeAgenda {
             
             $dayWeek =$date->format('w');            
             if ($dayWeek == 6) {                
-                $idLetter = 22;
+                $idLetter = 2;
             } elseif ($dayWeek == 0) {
-                $idLetter = 23;
+                $idLetter = 3;
             } else {
                 $idLetter = 1;
             }

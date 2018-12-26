@@ -163,7 +163,7 @@ class AgendaController extends Controller {
             $dateInterval = new \dateInterval ('P15D');
             $team = $this->getDoctrine()
                 ->getRepository(Team::class)
-                ->find(18);
+                ->find(4);
         }
         
         $startDate = $team->getEvent()->getStartDate();
