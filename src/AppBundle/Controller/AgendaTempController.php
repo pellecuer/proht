@@ -74,16 +74,10 @@ class AgendaTempController extends Controller {
          /* if letter exist */
         else {
             //Define Legal Week
-            $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
-            //if date = sunday, take this sunday
-            if ($date->format('w') == 0) {
-                $startLegalWeek = $date->modify('sunday 00:00');
-                $endLegalWeek = $date->modify('next sunday 00:00');
-            //else take last sunday
-            } else {
-                $startLegalWeek = $date->modify('last sunday 00:00');
-                $endLegalWeek = $date->modify('next sunday 00:00');
-            }
+            $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());            
+            $startLegalWeek = $checkRules->StartLegalWeek($date);
+            $endLegalWeek = $checkRules->SendLegalWeek($date);
+            
             //Persist in db for testing
             $agendaTemp->setLetter($letter);
             $em = $this->getDoctrine()->getManager();
@@ -98,14 +92,10 @@ class AgendaTempController extends Controller {
                 ->findAllTempBetweenDateByUser($dayBefore, $dayAfter, $agendaTemp->getAgent()->getId(), $user);
             
             //This Date Letter Time
-            $startTimeForTheDay = $agendaTempAround[1]->getLetter()->getStartTime();
-            $hStartTimeForTheDay = $startTimeForTheDay->format('H');
-            $istartTimeForTheDay = $startTimeForTheDay->format('i');
-            $endTimeForTheDay = $agendaTempAround[1]->getLetter()->getEndTime();
-            $hEndTimeForTheDay = $endTimeForTheDay->format('H');
-            $iEndTimeForTheDay = $endTimeForTheDay->format('i');
-            $dateTimeStarForTheDay = $date->setTime($hStartTimeForTheDay, $istartTimeForTheDay);
-            $dateTimeEndForTheDay = $date->setTime($hEndTimeForTheDay, $iEndTimeForTheDay);
+            $startTimeForTheDay = $agendaTempAround[1]->getLetter()->getStartTime();            
+            $endTimeForTheDay = $agendaTempAround[1]->getLetter()->getEndTime();            
+            $dateTimeStarForTheDay = $date->setTime($startTimeForTheDay->format('H'), $startTimeForTheDay->format('i'));
+            $dateTimeEndForTheDay = $date->setTime($endTimeForTheDay->format('H'), $endTimeForTheDay->format('i'));
             
             //Check if HoursPerWeek is under maximum
             $arrayWeeks = $this->getDoctrine()
@@ -163,6 +153,14 @@ class AgendaTempController extends Controller {
                 $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date : " . $dateBeforeH->format('D d M Y') . ' ou ' . $dateAfterH->format('D d M Y');
                 }
             }
+            
+            // check if average of hourPerweek is legal            
+            $averageHourPerWeek = $checkRules->averageHourPerWeek($agendaTemp, $user, $startLegalWeek, $endLegalWeek, $arrayWeeks);
+            $max = $this->getDoctrine()->getRepository(Rule::class)->getMaxAveragePerWeek();
+            if ($averageHourPerWeek> $max) {
+                $errors['moyenne d\'heures de travail hebdomadaire trop élevé'] = "La moyenne d\'heures de travail hebdomadaire dépasse la durée légale de " . $max . 'sur la semaine du' . $startLegalWeek->format('D d M Y');
+            }      
+                   
              
                         
             //if $errors, restore $letterInMemory and send $error message
@@ -191,7 +189,7 @@ class AgendaTempController extends Controller {
            
         
         $response = new Response(json_encode([
-            'titre' => $AgendaTempStartLegalWeek,
+            'titre' => $titre,
             'description' => $description,
             'letter' => $updatedLetter,
             'bgLetter' => $bgLetter,

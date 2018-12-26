@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\AgendaTemp;
 use AppBundle\Entity\Event;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AgendaTempRepository")
@@ -167,7 +168,7 @@ class AgendaTempRepository extends EntityRepository
     /**
      * @param $startDate, $endDate, $agentId, $user    
      */
-    public function findAllTempBetweenDateByUser($startDate, $endDate, $agentId, $user)
+    public function findAllTempBetweenDateByUser($startDate, $endDate, $agent, $user)
     {
         return $this->createQueryBuilder('agendaTemp')
             ->where('agendaTemp.user = :user')
@@ -182,7 +183,7 @@ class AgendaTempRepository extends EntityRepository
             ->setParameter('user', $user)   
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
-            ->setParameter('id', $agentId)
+            ->setParameter('id', $agent)
             ->orderBy('agendaTemp.date', 'ASC')            
             ->getQuery()
             ->getResult()

@@ -6,13 +6,34 @@ use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\AgendaTemp;
 
 
-
 class checkRules {
     
     public function __construct(EntityManagerInterface $entityManager)
 {
-    $this->em = $entityManager;
+    $this->em = $entityManager;    
 }
+
+
+
+    public function StartLegalWeek($date)
+    {        
+        if ($date->format('w') == 0) {
+            $startLegalWeek = $date->modify('sunday 00:00');
+        }else {
+            $startLegalWeek = $date->modify('last sunday 00:00');
+        }
+        
+        return $startLegalWeek;
+    }
+    
+    public function SendLegalWeek($date)
+    {        
+        $endLegalWeek = $date->modify('next sunday 00:00');
+        
+        return $endLegalWeek;
+    }
+    
+    
     
     public function HoursPerWeek($agendaTemp, $user, $startLegalWeek, $endLegalWeek, $arrayWeeks)
     {        
@@ -124,6 +145,41 @@ class checkRules {
         
         return $interval;        
     }
+    
+    public function averageHourPerWeek($agendaTemp, $checkRules, $user)
+    {        
+        $startEventDate = $agendaTemp->getAgent()->getTeam()->getEvent()->getStartDate();
+        $endEventDate = $agendaTemp->getAgent()->getTeam()->getEvent()->getEndDate();
+        $dateofWeek = \DateTimeImmutable::createFromMutable($startEventDate);
+        $countEmptyWeek = 0;
+        $SumHoursPerWeek = 0;
+        
+        While($dateofWeek<$endEventDate) {
+            
+            //check if empty Week
+            $startLegalWeek = '';            
+            $AgendaTempStartLegalWeek = $this->em
+                ->getRepository(AgendaTemp::class)
+                ->findTempByDateByUserByAgent($startLegalWeek, $agendaTemp->getAgent(), $user);
+           
+            $endLegalWeek = '';
+            $AgendaTempEndLegalWeek = $this->em
+                ->getRepository(AgendaTemp::class)
+                ->findTempByDateByUserByAgent($endLegalWeek, $agendaTemp->getAgent(), $user);
+            
+             if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek) {
+                    $hoursPerWeek = $checkRules->hoursPerWeek;
+                    $SumHoursPerWeek += $hoursPerWeek;
+                    $countEmptyWeek = $countEmptyWeek + 1;
+                    $dateofWeek-> modify ('+ 7 days');
+            }            
+        }
+        
+        $averageHourPerWeek =  $SumHoursPerWeek / $countEmptyWeek;
+        
+        return $averageHourPerWeek;
+    }
+    
 }
 
 
