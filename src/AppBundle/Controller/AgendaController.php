@@ -159,11 +159,12 @@ class AgendaController extends Controller {
             $dateInterval = $data['interval'];
             $team = $data['Team'];
 
-        } else {            
+        } else {
+            //Default interval 15 days
             $dateInterval = new \dateInterval ('P15D');
             $team = $this->getDoctrine()
                 ->getRepository(Team::class)
-                ->find(18);
+                ->find(1);
         }
         
         $startDate = $team->getEvent()->getStartDate();
@@ -178,15 +179,15 @@ class AgendaController extends Controller {
         }
        
             
-        
+        //find AgendaForAgentTeam
         $agentBetweens = [];
         For ($i=0; $i<count($agentId); $i++){
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
                 ->findAllBetweenDate($startDate, $endDate, $agentId [$i]);
         }
-        //dump($agentBetweens);die;
-        
+
+        //build ArrayDate
         $interval = new \DateInterval('P1D');
         $arrayDate = [];        
         

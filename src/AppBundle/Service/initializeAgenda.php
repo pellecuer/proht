@@ -34,11 +34,15 @@ class initializeAgenda {
             $agenda->setAgent($agent);           
             $agenda->setDate($date);            
             
-            $dayWeek =$date->format('w');            
+            $dayWeek =$date->format('w');
+            //if saturday
             if ($dayWeek == 6) {                
-                $idLetter = 22;
+                $idLetter = 2;
+
+            //if sunday
             } elseif ($dayWeek == 0) {
-                $idLetter = 23;
+                $idLetter = 3;
+
             } else {
                 $idLetter = 1;
             }

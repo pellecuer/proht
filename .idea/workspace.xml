@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="51f7ee11-1f07-49d1-9696-79010becc15c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/agent/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/agent/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/symfony_requirements" beforeDir="false" afterPath="$PROJECT_DIR$/bin/symfony_requirements" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/checkRules.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/checkRules.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/initializeAgenda.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/initializeAgenda.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/assets/js/datatable/ajax.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/assets/js/datatable/ajax.js" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>letter</find>
+      <find>letterInMemory</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/app/config/config.yml" />
+        <option value="$PROJECT_DIR$/app/Resources/views/agent/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Service/initializeAgenda.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php" />
+        <option value="$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig" />
+        <option value="$PROJECT_DIR$/web/assets/js/datatable/ajax.js" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Service/checkRules.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/vendor/sensiolabs/security-checker" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/vendor/incenteev/composer-parameter-handler" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/common" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-cache-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/phpunit-bridge" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php70" />
+      <path value="$PROJECT_DIR$/vendor/symfony/monolog-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/symfony" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-util" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/swiftmailer-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php56" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-icu" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-apcu" />
+      <path value="$PROJECT_DIR$/vendor/sensio/distribution-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sensio/generator-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jdorn/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/sensio/framework-extra-bundle" />
+      <path value="$PROJECT_DIR$/vendor/twig/extensions" />
+      <path value="$PROJECT_DIR$/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/vendor/psr/link" />
+      <path value="$PROJECT_DIR$/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/vendor/fig/link-util" />
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+    </include_path>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="242" />
+    <option name="y" value="130" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="AppBundle" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="AppBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="datatable" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="51f7ee11-1f07-49d1-9696-79010becc15c" name="Default Changelist" comment="" />
+      <created>1545579821759</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1545579821759</updated>
+      <workItem from="1545579822943" duration="2903000" />
+      <workItem from="1545583243273" duration="9000" />
+      <workItem from="1545583269981" duration="24178000" />
+      <workItem from="1545758637286" duration="3569000" />
+      <workItem from="1545765963437" duration="1005000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="31664000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1610404" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/config/config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="41" column="22" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/agent/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="31" column="43" selection-start-line="31" selection-start-column="43" selection-end-line="31" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/base.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="47" selection-start-line="21" selection-start-column="47" selection-end-line="21" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/initializeAgenda.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/date/date_c.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="208" column="20" selection-start-line="208" selection-start-column="20" selection-end-line="208" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="58" selection-start-line="33" selection-start-column="58" selection-end-line="33" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="71" column="47" lean-forward="true" selection-end-line="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/assets/js/datatable/ajax.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="86" column="28" lean-forward="true" selection-end-line="111" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/checkRules.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1860">
+          <caret line="125" column="5" selection-start-line="125" selection-start-column="5" selection-end-line="125" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="181" column="37" selection-start-line="181" selection-start-column="37" selection-end-line="181" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="189" column="25" selection-start-line="189" selection-start-column="25" selection-end-line="189" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2189">
+          <caret line="198" column="41" selection-start-line="198" selection-start-column="41" selection-end-line="198" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
