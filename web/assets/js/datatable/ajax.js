@@ -90,23 +90,7 @@ $('.editFor').on( "change paste keyup", function(){
         success: function (data)
         {
             console.log(data);
-<<<<<<< HEAD
-            $( '#titre' ).text(data.titre);
-            $( '#description' ).text(data.description);
-            $( '#startLegalWeek' ).text(data.startLegalWeek);
-            $( '#endLegalWeek' ).text(data.endLegalWeek);
-            $( '#startDay' ).text(data.startDay);
-            $( '#endDay' ).text(data.endDay);
-            $( '#hoursPerWeek' ).text(data.hoursPerWeek);
-            $( '#intervalBefore' ).text(data.intervalBefore);
-            $( '#intervalAfter' ).text(data.intervalAfter);
-            $( '#letter' ).text(data.interval);
-            $( '#' + id ).text(data.letter);
-            if (data.bgLetter) {
-            $( '#' + id ).removeClass('table-success').removeClass('table-danger').removeClass('table-info').addClass(data.bgLetter);
-            }
-            //$( '#' + id ).css({"border": "2px solid red"});
-=======
+
             $( '#titre').text(data.titre);
             $( '#description').text(data.description);
             $( '#startLegalWeek').text(data.startLegalWeek);
@@ -127,7 +111,7 @@ $('.editFor').on( "change paste keyup", function(){
 
 
            // $( '#' + id ).css({"border": "2px solid red"});
->>>>>>> dev
+
         }
     });
 });
