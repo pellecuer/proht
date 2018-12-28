@@ -25,5 +25,20 @@ class EventRepository extends EntityRepository
             ->getQuery()
             ->getResult()
             ;
-    }  
+    }
+
+    public function findHolidaysByDate($date)
+    {
+        return $this->createQueryBuilder('event')
+            ->where('event.startDate <= :date')
+            ->andWhere('event.endDate >= :date')
+            ->andWhere('event.eventType = :holidays')
+            ->setParameter('date', $date)
+            ->setParameter('holidays', 'Vacances scolaires')
+            ->setMaxResults(10000)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

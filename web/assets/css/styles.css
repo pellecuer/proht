@@ -28,11 +28,11 @@ h1, h2, h3, h4, h5 {
 }
 
 .fa-circle {
-   color: #09357A;
+   color: #ffffff;
 }
 
 .fa-plus {
-   color: #09357A;
+   color: #ffffff;
 }
 
 
@@ -78,6 +78,10 @@ h1, h2, h3, h4, h5 {
 .bg-holidays {
     background-color: #FE5815;
     border: solid 1px #ffffff;
+}
+
+.bg-menu {
+    background-color: #e3f2fd;
 }
 
 .bg-stopTranche {

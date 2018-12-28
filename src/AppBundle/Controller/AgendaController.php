@@ -164,45 +164,70 @@ class AgendaController extends Controller {
             $dateInterval = new \dateInterval ('P15D');
             $team = $this->getDoctrine()
                 ->getRepository(Team::class)
-                ->find(1);
+
+                ->find(4);
+
         }
         
         $startDate = $team->getEvent()->getStartDate();
         $immutable = \DateTimeImmutable::createFromMutable($startDate);           
         $endDate = $immutable->add($dateInterval);
         
-        //build letter Array        
-        $agentId = [];        
+        //build letter Array
         $agents = $team->getAgents();
-        foreach ($agents as $agent) {
-        $agentId[] = $agent->getId();
-        }
-       
-            
-        //find AgendaForAgentTeam
+
+        
+
         $agentBetweens = [];
-        For ($i=0; $i<count($agentId); $i++){
+        For ($i=0; $i<count($agents); $i++){
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
-                ->findAllBetweenDate($startDate, $endDate, $agentId [$i]);
+                ->findAllBetweenDate($startDate, $endDate, $agents[$i]);
         }
 
         //build ArrayDate
         $interval = new \DateInterval('P1D');
-        $arrayDate = [];        
+        $arrayDates = [];
         
         while ($immutable<$endDate){
-            $arrayDate[] = $immutable;            
+            $arrayDates[] = $immutable;
             $immutable = $immutable->add($interval);
-        } 
+        }
+
+
+        //show holidays
+        $holidays = [];
+        foreach ($arrayDates as $arrayDate){
+            $holidays[] = $this->getDoctrine()
+                ->getRepository(Event::class)
+                ->findHolidaysByDate($arrayDate);
+        }
+
+        //show agendas
+        /*$agendas = [];
+        $agendaAll = [];
+
+        foreach ($agents as $agent) {
+            foreach ($arrayDates as $arrayDate){
+                $agendas [] = $this->getDoctrine()
+                    ->getRepository(Agenda::class)
+                    ->findAgendaByDateByAgent($arrayDate, $agent);
+            }
+            $agendaAll []= $agendas;
+        }
+        */
+
+
+        //dump($agendaAll);die;
         
         return $this->render('agenda.html.twig', [
 
-            'dateBetweens' => $arrayDate,
-            'agentBetweens' => $agentBetweens,            
+            'dateBetweens' => $arrayDates,
+            'agentBetweens' => $agentBetweens,
             'team' => $team,
             'startDate' => $startDate,
             'endDate' => $endDate,
+            'holidays' => $holidays,
             'form'=>$form->createView()                
              ]);
         }
@@ -213,7 +238,8 @@ class AgendaController extends Controller {
      * @Route("/delete/{agentId}", name="deleteAgenda")
      * @Method("GET")
      */
-    public function deleteAction(Request $request, $agentId)    {        
+    public function deleteAction(Request $request, $agentId)
+    {
             
         $agent = $this->getDoctrine()
         ->getRepository(Agent::class)                

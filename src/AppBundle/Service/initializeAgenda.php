@@ -39,7 +39,6 @@ class initializeAgenda {
             if ($dayWeek == 6) {                
                 $idLetter = 2;
 
-            //if sunday
             } elseif ($dayWeek == 0) {
                 $idLetter = 3;
 

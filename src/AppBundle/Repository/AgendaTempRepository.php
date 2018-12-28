@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\AgendaTemp;
 use AppBundle\Entity\Event;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AgendaTempRepository")
@@ -165,32 +166,33 @@ class AgendaTempRepository extends EntityRepository
     }
     
     /**
-     * @param $startDate, $endDate, $agendaId, $user    
+     * @param $startDate, $endDate, $agentId, $user    
      */
-    public function findAllTempBetweenDateByUser($startDate, $endDate, $agentId, $user)
+    public function findAllTempBetweenDateByUser($startDate, $endDate, $agent, $user)
     {
         return $this->createQueryBuilder('agendaTemp')
             ->where('agendaTemp.user = :user')
             ->andWhere('agendaTemp.date >= :start')
             ->andWhere('agendaTemp.date <= :end')
-               
-                
-            ->innerJoin('agendaTemp.agent', 'agent')
-            ->addSelect('agent')
-            ->andWhere('agent.id = :id')    
+            ->andWhere('agendaTemp.agent = :agent')
             
             ->setParameter('user', $user)   
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
-            ->setParameter('id', $agentId)
+            ->setParameter('agent', $agent)
             ->orderBy('agendaTemp.date', 'ASC')            
             ->getQuery()
             ->getResult()
             ;
     }
     
+    
+    
+    
+    
+    
     /**
-     * @param $startDate, $endDate, $agendaId, $user  
+     * @param $startDate, $endDate, $agent, $user  
      */
     public function findTempBetweenDateByUserByAgentByLetter($startDate, $endDate, $agent, $user, $letter)
     {
@@ -213,7 +215,7 @@ class AgendaTempRepository extends EntityRepository
     
     
      /**
-     * @param $startDate, $endDate, $agendaId, $user  
+     * @param $startDate, $endDate, $agent, $user  
      */
     public function findTempByDateByUserByAgentByLetter($date, $agent, $user, $letter)
     {
@@ -230,5 +232,24 @@ class AgendaTempRepository extends EntityRepository
             ->getQuery()
             ->getResult()
             ;
-    }    
+    }   
+    
+    
+    /**
+     * @param $startDate, $Date, $agent, $user    
+     */
+    public function findTempByDateByUserByAgent($date, $agent, $user)
+    {
+        return $this->createQueryBuilder('agendaTemp')
+            ->where('agendaTemp.user = :user')
+            ->andWhere('agendaTemp.date = :date')                
+            ->andWhere('agendaTemp.agent = :agent')
+            
+            ->setParameter('user', $user)   
+            ->setParameter('date', $date)    
+            ->setParameter('agent', $agent)                    
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

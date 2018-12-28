@@ -24,7 +24,7 @@
                             <th>Date de changement</th>
                         </tr>
                     </thead>                    
-                    <tbody> 
+                    <tbody>
                        {%for history in historys %}
                             <tr>                                                            
                                 <td>{{ history.id }}</td>
@@ -35,7 +35,7 @@
                                 <td>{{ history.dateChange|localizeddate('full', 'none', 'fr', null, 'E dd MMM Y  H:m')}}</td>
                             </tr>
                         {% endfor %}                       
-                    </body>                    
+                    </tbody>
                 </table>
             </div>
         </div>

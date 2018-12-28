@@ -3,25 +3,22 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/sl-1.2.6/datatables.min.css"/>
 {% endblock %}
-{% block title %}Welcome!{% endblock %}
+{% block title %}Contraintes réglementaires!{% endblock %}
 
 {% block body %}
-    <div class="container">       
+    <div class="container bg-light">
         <header class="text-center py-3">
             <h1 class="bg-white-semi_transparent"><em class="text-dark">Contraintes réglementaires </em></h1>
             <p>Voici la liste des contraintes réglementaires</p>
-        </header>        
-        <div class= "row py-3">
+        </header>
+        <div class="row border border-rounded my-2">
             <div class="col-md-10">
-                <h5>Règlementation du travail :</h5>
-                <ul>
-                    <li>Semaine légale du dimanche 0 heures au samedi 24 heures</li>
-                    <li>Repos hebdomadaire de 35 heures minimum, avec un H de 24 heures minimum, entouré de 11 heures avant ou après ou autour. Les 11 heures peuvent déborder sur la semaine suivante. En revanche pas le H.</li>
-                    <li>Respect de 11 heures de repos entre 2 journées de travail</li>
-                    <li>10 heures par jour max</li>
-                    <li>48 heures max par semaine</li>
-                    <li>44 heures max par semaine en moyenne sur 12 semaines</li>
-                </ul>                 
+                <span class="fa-stack fa-1x my-2">
+                    <i class="fas fa-circle fa-stack-2x text-secondary"></i>
+                    <a href="{{ path('createRule') }}"><i class="fas fa-plus fa-stack-1x fa-inverse text-white"></i></a>
+                </span>
+                <span id="buttonPrint">
+                </span>
             </div>
         </div>
         <div class="row py-3">            
@@ -37,8 +34,6 @@
                             <th>Nombre d'heures maximum en moyenne sur X semaine</th>
                             <th>X semaine</th>
                             <th></th>
-                             <th></th>
-                            
                         </tr>
                     </thead>                    
                     <tbody> 
@@ -54,7 +49,7 @@
                                 <td><a href="{{ path('editRule', { 'id': rule.id }) }}"><i class="fas fa-edit"></i></a></td>                                
                             </tr>
                         {% endfor %}                       
-                    </body>                    
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -67,10 +62,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/sl-1.2.6/datatables.min.js"></script>
-<script type="text/javascript" src="/assets/js/datatable/config.js"></script>
-<script type="text/javascript" src="/assets/js/datatable/ajax.js"></script>
-<script type="text/javascript" src="/assets/js/datatable/addDeleteRow.js"></script>
-
+<script type="text/javascript" src="/assets/js/datatable/configRule.js"></script>
 {% endblock %}
     
 
