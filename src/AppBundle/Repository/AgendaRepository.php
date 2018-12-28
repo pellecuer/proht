@@ -37,7 +37,7 @@ class AgendaRepository extends EntityRepository
     {
         return $this->createQueryBuilder('agenda')
             ->where('agenda.date >= :start')
-            ->andWhere('agenda.date <= :end')
+            ->andWhere('agenda.date < :end')
             ->andWhere('agenda.agent = :agent')
                 
             ->setParameter('start', $startDate)
