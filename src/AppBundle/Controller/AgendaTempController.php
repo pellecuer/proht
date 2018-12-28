@@ -274,39 +274,47 @@ class AgendaTempController extends Controller {
             //crée un array des agents de la team
             $agentId = [];    
             $agents = $team->getAgents();
-            foreach ($agents as $agent) {
-                $agentId[] = $agent->getId();
-            }
+
             
             $startDate = $team->getEvent()->getStartDate();
             $endDate = $team->getEvent()->getEndDate();
             
             //crée un array d'array des agendas
             $agentBetweens = [];
-            For ($i=0; $i<count($agentId); $i++){
+            For ($i=0; $i<count($agents); $i++){
                 $agentBetweens[] = $this->getDoctrine()
                     ->getRepository(AgendaTemp::class)
-                    ->findAllTempBetweenDateByUser($startDate, $endDate, $agentId [$i], $user);
+                    ->findAllTempBetweenDateByUser($startDate, $endDate, $agents[$i], $user);
             }
             //dump ($agentBetweens);die;
             
 
             $interval = new \DateInterval('P1D');
-            $arrayDate = [];
+            $arrayDates = [];
             $immutable = \DateTimeImmutable::createFromMutable($startDate);
 
             while ($immutable<=$endDate){
-                $arrayDate[] =  $immutable;            
+                $arrayDates[] =  $immutable;
                 $immutable = $immutable->add($interval);
             }
 
-            return $this->render('agendaTemp.html.twig', [
+            //show holidays
+            $holidays = [];
+            foreach ($arrayDates as $arrayDate){
+                $holidays[] = $this->getDoctrine()
+                    ->getRepository(Event::class)
+                    ->findHolidaysByDate($arrayDate);
+            }
 
-                'dateBetweens' => $arrayDate,
-                'agentBetweens' => $agentBetweens,                
+
+        return $this->render('agendaTemp.html.twig', [
+
+                'dateBetweens' => $arrayDates,
+                'agentBetweens' => $agentBetweens,
                 'team' => $team,
                 'startDate' => $startDate,
-                'endDate' => $endDate,                                
+                'endDate' => $endDate,
+                'holidays' => $holidays,
                  ]);
     }
     

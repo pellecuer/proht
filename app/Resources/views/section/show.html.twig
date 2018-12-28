@@ -28,7 +28,9 @@
                             <th>Nom</th>
                             <th>Chef</th>
                             <th>Service</th>
-                            <th>Code d'arrêt</th>    
+                            <th>Code d'arrêt</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>                    
                     <tbody> 
@@ -43,7 +45,7 @@
                                 <td><a href="{{ path('deleteSection', { 'id': section.id }) }}"><i class="fas fa-trash-alt"></i></a></td>
                             </tr>
                         {% endfor %}
-                    </body>                    
+                    </tbody>
                 </table>
             </div>
         </div>

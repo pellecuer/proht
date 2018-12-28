@@ -29,6 +29,8 @@
                             <th>Durée effective</th>
                             <th>Heure de début</th>
                             <th>Heure de fin</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>                   
                     <tbody>                        
@@ -43,7 +45,7 @@
                                 <td><a href="{{ path('deleteLetter', { 'id': letter.id }) }}"><i class="fas fa-trash-alt"></i></a></td>                                
                             </tr>
                         {% endfor %}
-                    </body>                    
+                    </tbody>
                 </table>
             </div>
         </div>

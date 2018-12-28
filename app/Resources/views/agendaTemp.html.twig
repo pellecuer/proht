@@ -13,8 +13,24 @@
         <div class="col-md-12">
             <table id="example" class="table table-striped table-hover table-sm shadow-lg" style="width:100%">
                 <caption class="text-center">Equipe {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
-                <thead class="thead">                        
-                    <tr class ="bg-dark">
+                <thead class="thead">
+                <tr class="bg-muted">
+                    <th scope ="col" class="text-success">Vacances</th>
+                    <th scope ="col" class="text-info"></th>
+                    <th scope ="col" class="text-info"></th>
+                    <th scope ="col" class="text-info"></th>
+                    {% for holiday in holidays %}
+                    <th scope ="col"
+                        {% if holiday%}
+                            class="bg-success border border-light">
+                        {% else %}
+                            class="text-light">
+                        {% endif %}
+                        {% endfor %}
+                    </th>
+                </tr>
+
+                <tr class ="bg-dark">
                         <th scope ="col" class="text-info"><a class="btn btn-success btn-sm" href="{{ path('validTemp', { 'id': team.id, 'userId': app.user.id}) }}" role="button">Valider</a></th>
                         <th scope ="col" class="text-info"><a class="btn btn-danger btn-sm" href="{{ path('deleteTemp', { 'id': team.id, 'userId': app.user.id}) }}" role="button">Effacer</a></th>
                         <th scope ="col" class="text-info"></th>

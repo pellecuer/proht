@@ -174,16 +174,12 @@ class AgendaTempRepository extends EntityRepository
             ->where('agendaTemp.user = :user')
             ->andWhere('agendaTemp.date >= :start')
             ->andWhere('agendaTemp.date <= :end')
-               
-                
-            ->innerJoin('agendaTemp.agent', 'agent')
-            ->addSelect('agent')
-            ->andWhere('agent.id = :id')    
+            ->andWhere('agendaTemp.agent = :agent')
             
             ->setParameter('user', $user)   
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
-            ->setParameter('id', $agent)
+            ->setParameter('agent', $agent)
             ->orderBy('agendaTemp.date', 'ASC')            
             ->getQuery()
             ->getResult()

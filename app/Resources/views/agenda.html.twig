@@ -16,18 +16,32 @@
                 {{ form_start(form) }}       
                 {{ form_rest(form) }}
                 {{ form_end(form) }}                
-                </div
+                </div>
             </form>
         </div>
     <div>
-    <div 
 </div>
 <div class="container">               
     <div class= "row">
         <div class="col-md-12">
             <table id="example" class="table table-striped table-hover table-sm shadow-lg" style="width:100%">
                 <caption class="text-center">Equipe {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
-                <thead class="thead">                        
+                <thead class="thead">
+                <tr class="bg-muted">
+                    <th scope ="col" class="text-success">Vacances scolaires</th>
+                    <th scope ="col" class="text-info"></th>
+                    <th scope ="col" class="text-info"></th>
+                    <th scope ="col" class="text-info"></th>
+                    {% for holiday in holidays %}
+                    <th scope ="col"
+                            {% if holiday%}
+                        class="bg-success border border-light">
+                        {% else %}
+                            class="text-light">
+                        {% endif %}
+                        {% endfor %}
+                    </th>
+                </tr>
                     <tr class ="bg-dark">
                         <th scope ="col" class="text-info"><a class="btn btn-danger btn-sm" href="{{ path('agendaTempEdit2', { 'id': team.id, 'userId': app.user.id}) }}" role="button">Modifier</a></th>
                         <th scope ="col" class="text-info"></th>
@@ -49,8 +63,8 @@
                                 V
                              {% else %}
                                 D
-                             {% endif %} 
-                        {% endfor %}                        
+                             {% endif %}
+                        {% endfor %}
                     </tr>
                     <tr class="bg-muted">
                         <th scope ="col" class="text-color-blue">Nom</th>
@@ -59,12 +73,12 @@
                         <th scope ="col" class="text-color-blue">Fonction</th>
                         {% for dateBetween in dateBetweens %}
                         <th scope ="col" class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}</th>
-                        {% endfor %}                        
-                    </tr>                         
+                        {% endfor %}
+                    </tr>
                 </thead>
-                <tbody>                        
+                <tbody>
                     {% for agentBetween in agentBetweens %}
-                        <tr>                               
+                        <tr>
                             <td>{{agentBetween.0.agent.name  }}</td>
                             <td>{{agentBetween.0.agent.firstname  }}</td>
                             <td>{{agentBetween.0.agent.nni  }}</td>
@@ -72,19 +86,19 @@
                            {% for letter in agentBetween %}
                                 <td id = "{{ letter.id }}" class="
                                     {% if letter.letter.letter == 'R' %}
-                                        table-success 
+                                        table-success
                                     {% elseif letter.letter.letter == 'H' %}
                                         table-danger
-                                    {% else %} 
+                                    {% else %}
                                         table-info
                                     {% endif %}
                                         ">{{ letter.letter.letter }}
                                 </td>
-                            {% endfor %}                                                                
+                            {% endfor %}
                         </tr>
                    {% endfor %}                        
                 </tbody>                 
-            </table>             
+            </table>
         </div>
     </div>
 </div> 

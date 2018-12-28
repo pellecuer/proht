@@ -33,46 +33,23 @@ class AgendaRepository extends EntityRepository
     /**
      * @param $startDate, $endDate, $agendaId     
      */
-    public function findAllBetweenDate($startDate, $endDate, $agentId)
+    public function findAllBetweenDate($startDate, $endDate, $agent)
     {
         return $this->createQueryBuilder('agenda')
             ->where('agenda.date >= :start')
-            ->andWhere('agenda.date <= :end')            
-                
-            ->innerJoin('agenda.agent', 'agent')
-            ->addSelect('agent')
-            ->andWhere('agent.id = :id')    
+            ->andWhere('agenda.date <= :end')
+            ->andWhere('agenda.agent = :agent')
                 
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
-            ->setParameter('id', $agentId)
+            ->setParameter('agent', $agent)
             ->orderBy('agenda.date', 'ASC')            
             ->getQuery()
             ->getResult()
             ;
     }
     
-    /**
-     * @param $startDate, $endDate, $agendaId     
-     */
-    public function findAllTempBetweenDate($startDate, $endDate, $agentId)
-    {
-        return $this->createQueryBuilder('agendaTemp')
-            ->where('agendaTemp.date >= :start')
-            ->andWhere('agendaTemp.date <= :end')            
-                
-            ->innerJoin('agendaTemp.agent', 'agent')
-            ->addSelect('agent')
-            ->andWhere('agent.id = :id')    
-                
-            ->setParameter('start', $startDate)
-            ->setParameter('end', $endDate)
-            ->setParameter('id', $agentId)
-            ->orderBy('agendaTemp.date', 'ASC')            
-            ->getQuery()
-            ->getResult()
-            ;
-    }
+
     
     
     /**
@@ -171,6 +148,21 @@ class AgendaRepository extends EntityRepository
             ->setParameter('date', $date)            
             ->setParameter('agent', $agent)
             
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param $team, $user
+     */
+    public function findAgendaByDateByAgent($date, $agent)
+    {
+        return $this->createQueryBuilder('agenda')
+            ->where('agenda.date = :date')
+            ->andWhere('agenda.agent = :agent' )
+            ->setParameter('date', $date)
+            ->setParameter('agent', $agent)
             ->getQuery()
             ->getResult()
             ;

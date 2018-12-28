@@ -2,17 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51f7ee11-1f07-49d1-9696-79010becc15c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/agenda.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/agenda.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Resources/views/agent/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/agent/show.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/symfony_requirements" beforeDir="false" afterPath="$PROJECT_DIR$/bin/symfony_requirements" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/event/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/event/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/history/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/history/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/letter/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/letter/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/role/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/role/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/rule/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/rule/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/section/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/section/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/service/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/service/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/team/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/team/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/team/showAgents.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/team/showAgents.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/user/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/user/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Resources/views/utilisateur/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/utilisateur/show.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/checkRules.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/checkRules.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/initializeAgenda.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/initializeAgenda.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/assets/js/datatable/ajax.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/assets/js/datatable/ajax.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/AgendaRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/AgendaRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/EventRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/EventRepository.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,34 +35,28 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/checkRules.php">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2549">
-              <caret line="184" column="51" selection-start-line="184" selection-start-column="51" selection-end-line="184" selection-end-column="51" />
-              <folding>
-                <element signature="e#37#77#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="339">
+              <caret line="224" column="38" selection-start-line="224" selection-start-column="38" selection-end-line="224" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php">
+        <entry file="file://$PROJECT_DIR$/app/Resources/views/agenda.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="109" column="51" selection-start-line="109" selection-start-column="51" selection-end-line="109" selection-end-column="51" />
-              <folding>
-                <element signature="e#40#97#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="375">
+              <caret line="103" column="40" selection-start-line="103" selection-start-column="40" selection-end-line="103" selection-end-column="40" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/Rule.php">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/AgendaRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="494">
-              <caret line="54" column="58" selection-start-line="54" selection-start-column="6" selection-end-line="54" selection-end-column="58" />
+            <state relative-caret-position="329">
+              <caret line="161" column="42" selection-start-line="161" selection-start-column="42" selection-end-line="161" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -72,19 +75,32 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php" />
         <option value="$PROJECT_DIR$/app/config/config.yml" />
-        <option value="$PROJECT_DIR$/app/Resources/views/agent/show.html.twig" />
-        <option value="$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/initializeAgenda.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php" />
         <option value="$PROJECT_DIR$/web/assets/js/datatable/ajax.js" />
-        <option value="$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Form/Type/RuleType.php" />
-        <option value="$PROJECT_DIR$/app/Resources/views/rule/show.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/Rule.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/checkRules.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Repository/EventRepository.php" />
+        <option value="$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php" />
+        <option value="$PROJECT_DIR$/app/Resources/views/section/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/rule/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/user/index.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/agent/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/event/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/history/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/letter/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/role/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/service/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/team/show.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/team/showAgents.html.twig" />
+        <option value="$PROJECT_DIR$/app/Resources/views/utilisateur/show.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Repository/AgendaRepository.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php" />
+        <option value="$PROJECT_DIR$/app/Resources/views/agenda.html.twig" />
       </list>
     </option>
   </component>
@@ -164,6 +180,13 @@
             <path>
               <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
               <item name="originDav" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
+              <item name="originDav" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -177,22 +200,7 @@
               <item name="originDav" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="AppBundle" type="462c0819:PsiDirectoryNode" />
-              <item name="Entity" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
-              <item name="originDav" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="AppBundle" type="462c0819:PsiDirectoryNode" />
-              <item name="Form" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
-              <item name="originDav" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="AppBundle" type="462c0819:PsiDirectoryNode" />
-              <item name="Form" type="462c0819:PsiDirectoryNode" />
-              <item name="Type" type="462c0819:PsiDirectoryNode" />
+              <item name="Controller" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="originDav" type="b2602c69:ProjectViewProjectNode" />
@@ -221,6 +229,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../originDav" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
@@ -251,12 +260,12 @@
       <workItem from="1545583243273" duration="9000" />
       <workItem from="1545583269981" duration="24178000" />
       <workItem from="1545758637286" duration="3569000" />
-      <workItem from="1545765963437" duration="10968000" />
+      <workItem from="1545765963437" duration="23987000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41627000" />
+    <option name="totallyTimeSpent" value="54646000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -271,7 +280,7 @@
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1610404" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1610404" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -284,7 +293,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -310,13 +319,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2189">
-          <caret line="198" column="41" selection-start-line="198" selection-start-column="41" selection-end-line="198" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/config/parameters.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -334,20 +336,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="33" column="58" selection-start-line="33" selection-start-column="58" selection-end-line="33" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1755">
-          <caret line="165" column="26" selection-start-line="165" selection-start-column="26" selection-end-line="165" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/AgendaTemp.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
@@ -362,20 +350,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/event/show.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="41" column="127" lean-forward="true" selection-start-line="41" selection-start-column="70" selection-end-line="41" selection-end-column="127" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1305">
-          <caret line="91" column="23" selection-start-line="91" selection-start-column="23" selection-end-line="91" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/Type/RuleType.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
@@ -383,13 +357,6 @@
           <folding>
             <element signature="e#39#79#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/rule/show.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="50" column="58" lean-forward="true" selection-start-line="50" selection-start-column="58" selection-end-line="50" selection-end-column="58" />
         </state>
       </provider>
     </entry>
@@ -410,13 +377,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/letter/show.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="39" column="108" selection-start-line="39" selection-start-column="104" selection-end-line="39" selection-end-column="108" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/Rule.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
@@ -424,16 +384,138 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/agent/show.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/AgendaTempRepository.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
-          <caret line="46" column="62" selection-start-line="46" selection-start-column="62" selection-end-line="46" selection-end-column="62" />
+          <caret line="181" column="43" selection-start-line="181" selection-start-column="43" selection-end-line="181" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/user/edit.html.twig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/user/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="645">
+          <caret line="43" column="34" selection-start-line="43" selection-start-column="34" selection-end-line="43" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/agent/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/default/codes.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-225" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/codeplanning/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/history/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/event/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/agent/showOne.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/letter/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="32" column="37" selection-start-line="32" selection-start-column="37" selection-end-line="32" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/letter/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/role/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="41" column="28" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/rule/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="39" column="37" lean-forward="true" selection-start-line="38" selection-start-column="28" selection-end-line="39" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/section/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="47" column="28" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/service/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="47" column="23" selection-start-line="47" selection-start-column="23" selection-end-line="47" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/team/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="53" column="28" lean-forward="true" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/utilisateur/show.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="45" column="28" lean-forward="true" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/team/showAgents.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="47" column="23" selection-start-line="47" selection-start-column="23" selection-end-line="47" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/agendaTemp.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-570">
+          <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="298" column="13" lean-forward="true" selection-start-line="298" selection-start-column="13" selection-end-line="298" selection-end-column="13" />
+          <folding>
+            <element signature="e#40#97#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/checkRules.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2549">
+        <state relative-caret-position="1095">
           <caret line="184" column="51" selection-start-line="184" selection-start-column="51" selection-end-line="184" selection-end-column="51" />
           <folding>
             <element signature="e#37#77#0#PHP" expanded="true" />
@@ -441,13 +523,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AgendaTempController.php">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/EventRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="109" column="51" selection-start-line="109" selection-start-column="51" selection-end-line="109" selection-end-column="51" />
-          <folding>
-            <element signature="e#40#97#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="459">
+          <caret line="41" column="5" lean-forward="true" selection-start-line="29" selection-start-column="3" selection-end-line="41" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/AgendaRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="161" column="42" selection-start-line="161" selection-start-column="42" selection-end-line="161" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AgendaController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="224" column="38" selection-start-line="224" selection-start-column="38" selection-end-line="224" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/agenda.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="103" column="40" selection-start-line="103" selection-start-column="40" selection-end-line="103" selection-end-column="40" />
         </state>
       </provider>
     </entry>
