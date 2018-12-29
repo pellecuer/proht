@@ -44,16 +44,41 @@ class AgendaTempController extends Controller {
     {
 
 
-        /*  Get the object agendaTemp send by Ajax */
+        /*  Get the object agendaTemp send by Ajax with the id */
         $id = $request->request->get('id');
-        $agendaTemp = $this->getDoctrine()
-            ->getRepository(AgendaTemp::class)
-            ->find($id);
-        $letterInMemo = $agendaTemp->getLetter();
-
-
         /* Get the letter send by Ajax */
         $letterUpdate = strtoupper($request->request->get('letter'));
+
+
+        if ($id){
+            $agendaTemp = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->find($id);
+        $letterInMemo = $agendaTemp->getLetter();
+        }
+
+        /*  if empty cel, Get the object agendaTemp send by date, by $agent
+       else {
+
+            $date = $request->request->get('date');
+            $nni =  $request->request->get('nni');
+            $agent = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findOneBy([
+                    'nni' => $nni]
+                );
+
+            $agendaTemp = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findOneBy([
+                    'date' => $date,
+                    '$agent' => $agent,
+                ]);
+
+        }*/
+
+
+
         
         /* check if letter exist */
         $letter = $this
@@ -287,24 +312,16 @@ class AgendaTempController extends Controller {
                 // si l'agendaTemp n'éxiste pas renvoie la route agenda :
                 return $this->redirectToRoute('showAgenda');            
             }
-            //crée un array des agents de la team
-            $agentId = [];    
-            $agents = $team->getAgents();
 
-            
+
+
+            //crée un array d'array des agendas
             $startDate = $team->getEvent()->getStartDate();
             $endDate = $team->getEvent()->getEndDate();
-            
-            //crée un array d'array des agendas
-            $agentBetweens = [];
-            For ($i=0; $i<count($agents); $i++){
-                $agentBetweens[] = $this->getDoctrine()
-                    ->getRepository(AgendaTemp::class)
-                    ->findAllTempBetweenDateByUser($startDate, $endDate, $agents[$i], $user);
-            }
-            //dump ($agentBetweens);die;
-            
 
+
+            
+            //build calendar
             $interval = new \DateInterval('P1D');
             $arrayDates = [];
             $immutable = \DateTimeImmutable::createFromMutable($startDate);
@@ -321,6 +338,26 @@ class AgendaTempController extends Controller {
                     ->getRepository(Event::class)
                     ->findHolidaysByDate($arrayDate);
             }
+
+            //Showagendas
+            $agents = $team->getAgents();
+            $agentBetweens = [];
+            foreach ($agents as $agent) {
+                $agendaDate = [];
+                foreach ($arrayDates as $arrayDate) {
+                    $agendaDate[] = $this->getDoctrine()
+                        ->getRepository(Agenda::class)
+                        ->findOneBy([
+                            'agent' => $agent,
+                            'date' => $arrayDate,
+                        ],  ['date' => 'ASC']);
+                }
+                $agentBetweens[] = $agendaDate;
+            }
+
+
+
+
 
 
         return $this->render('agendaTemp.html.twig', [

@@ -232,24 +232,5 @@ class AgendaTempRepository extends EntityRepository
             ->getQuery()
             ->getResult()
             ;
-    }   
-    
-    
-    /**
-     * @param $startDate, $Date, $agent, $user    
-     */
-    public function findTempByDateByUserByAgent($date, $agent, $user)
-    {
-        return $this->createQueryBuilder('agendaTemp')
-            ->where('agendaTemp.user = :user')
-            ->andWhere('agendaTemp.date = :date')                
-            ->andWhere('agendaTemp.agent = :agent')
-            
-            ->setParameter('user', $user)   
-            ->setParameter('date', $date)    
-            ->setParameter('agent', $agent)                    
-            ->getQuery()
-            ->getResult()
-            ;
     }
 }

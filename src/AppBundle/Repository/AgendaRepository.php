@@ -153,19 +153,5 @@ class AgendaRepository extends EntityRepository
             ;
     }
 
-    /**
-     * @param $team, $user
-     */
-    public function findAgendaByDateByAgent($date, $agent)
-    {
-        return $this->createQueryBuilder('agenda')
-            ->where('agenda.date = :date')
-            ->andWhere('agenda.agent = :agent' )
-            ->setParameter('date', $date)
-            ->setParameter('agent', $agent)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-    
+
 }

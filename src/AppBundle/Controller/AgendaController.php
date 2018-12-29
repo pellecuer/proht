@@ -176,14 +176,13 @@ class AgendaController extends Controller {
         //build letter Array
         $agents = $team->getAgents();
 
-        
-
-        $agentBetweens = [];
+        /*$agentBetweens = [];
         For ($i=0; $i<count($agents); $i++){
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
                 ->findAllBetweenDate($startDate, $endDate, $agents[$i]);
-        }
+        }*/
+        //dump($agentBetweens);die;
 
         //build ArrayDate
         $interval = new \DateInterval('P1D');
@@ -203,22 +202,26 @@ class AgendaController extends Controller {
                 ->findHolidaysByDate($arrayDate);
         }
 
-        //show agendas
-        /*$agendas = [];
-        $agendaAll = [];
 
+
+        //Show2
+        $agentBetweens = [];
         foreach ($agents as $agent) {
-            foreach ($arrayDates as $arrayDate){
-                $agendas [] = $this->getDoctrine()
-                    ->getRepository(Agenda::class)
-                    ->findAgendaByDateByAgent($arrayDate, $agent);
+            $agendaDate = [];
+            foreach ($arrayDates as $arrayDate) {
+            $agendaDate[] = $this->getDoctrine()
+                ->getRepository(Agenda::class)
+                ->findOneBy([
+                    'agent' => $agent,
+                    'date' => $arrayDate,
+                ],  ['date' => 'ASC']);
             }
-            $agendaAll []= $agendas;
+            $agentBetweens[] = $agendaDate;
         }
-        */
+
+        //dump($agendaAlls);die;
 
 
-        //dump($agendaAll);die;
         
         return $this->render('agenda.html.twig', [
 

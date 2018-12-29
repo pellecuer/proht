@@ -7,7 +7,7 @@
 {% block body %}    
 <div class="container bg-light">
     <header class="text-center py-3">
-        <h1 class="bg-white-semi_transparent"><em class="text-dark"></em>AGENDA</h1>
+        <h1 class="bg-white-semi_transparent"><em class="text-dark"></em>Agenda</h1>
         <p>Consulter, modifier, imprimer la planning de vos équipes</p>
     </header>
     <div class="row border border-rounded my-2">
@@ -43,10 +43,7 @@
                 <caption class="text-center">Equipe {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
                 <thead class="thead">
                     <tr class="bg-muted">
-                        <th scope ="col" class="text-success">Vacances</th>
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
+                        <th scope ="col" colspan="4" class="text-success">Vacances scolaires</th>
                         {% for holiday in holidays %}
                         <th scope ="col"
                                 {% if holiday%}
@@ -92,7 +89,7 @@
                         <th scope ="col" class="text-color-blue">NNI</th>
                         <th scope ="col" class="text-color-blue">Fonction</th>
                         {% for dateBetween in dateBetweens %}
-                        <th scope ="col" class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}</th>
+                            <th scope ="col" class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}</th>
                         {% endfor %}
                         <th scope ="col" class="text-info"></th>
                         <th scope ="col" class="text-info"></th>
@@ -106,17 +103,21 @@
                         <td>{{agentBetween.0.agent.firstname  }}</td>
                         <td>{{agentBetween.0.agent.nni  }}</td>
                         <td>{{agentBetween.0.agent.function  }}</td>
-                        {% for letter in agentBetween %}
-                            <td id = "{{ letter.id }}" class="editFor
-                                    {% if letter.letter.letter == 'R' %}
-                                        table-success
-                                    {% elseif letter.letter.letter == 'H' %}
-                                        table-danger
-                                    {% else %}
-                                        table-info
-                                    {% endif %}
-                                        ">{{ letter.letter.letter }}
-                            </td>
+                        {% for agenda in agentBetween %}
+                            {% if agenda %}
+                                <td id = "{{ agenda.id }}" class="
+                                        {% if agenda.letter.letter == 'R' %}
+                                            table-success
+                                        {% elseif agenda.letter.letter == 'H' %}
+                                            table-danger
+                                        {% else %}
+                                            table-info
+                                        {% endif %}
+                                            ">{{ agenda.letter.letter }}
+                                </td>
+                            {% else  %}
+                                <td class="editFor border border-dark"></td>
+                            {% endif  %}
                         {% endfor %}
                         <td class="update" scope ="col"><i class="fas fa-edit text-color-blue"></i></td>
                         <td class="check"><a href=""><i class="fas fa-check text-success"></i></a></td>

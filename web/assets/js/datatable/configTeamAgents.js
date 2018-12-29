@@ -27,6 +27,23 @@ var table =
                 "visible": true,
                 "searchable": true
             },
+            {
+                "targets": [ 4 ],
+                "visible": true,
+                "searchable": false
+            },
+            {
+                "targets": [ 5 ],
+                "visible": true,
+                "searchable": false
+            },
+            {
+                "targets": [ 6 ],
+                "visible": true,
+                "searchable": false
+            },
+
+
         ],
 
 
@@ -86,6 +103,8 @@ new $.fn.dataTable.Buttons( table, {
             pageSize: 'LEGAL'
         }
     ],
+
+
 } );
 
 table.buttons( 0, null ).containers().appendTo( '#buttonPrint' );

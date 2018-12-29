@@ -74,9 +74,29 @@ var table =
 
 new $.fn.dataTable.Buttons( table, {
     name: 'commands',
+
+
     buttons: [
-        'copy', 'excel', 'pdf'
-    ]
+        {
+            extend: 'print',
+            text: 'Imprimer',
+            autoPrint: true
+        },
+        {
+            extend: 'copyHtml5',
+            text: 'Copier'
+        },
+        {
+            extend: 'excelHtml5',
+            text: 'Excel'
+        },
+        {
+            extend: 'pdfHtml5',
+            text: 'PDF',
+            orientation: 'landscape',
+            pageSize: 'LEGAL'
+        }
+    ],
 } );
 
 table.buttons( 0, null ).containers().appendTo( '#buttonPrint' );
