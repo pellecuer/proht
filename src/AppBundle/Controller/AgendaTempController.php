@@ -320,7 +320,7 @@ class AgendaTempController extends Controller {
                 $agendaDate = [];
                 foreach ($arrayDates as $arrayDate) {
                     $agendaDate[] = $this->getDoctrine()
-                        ->getRepository(Agenda::class)
+                        ->getRepository(AgendaTemp::class)
                         ->findOneBy([
                             'agent' => $agent,
                             'date' => $arrayDate,
