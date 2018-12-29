@@ -1,6 +1,6 @@
 //Event handlers
 $(".editFor" ).on( "mouseenter", function(){
-   // $( this).css( "background-color", "#C6E2FF");
+    // $( this).css( "background-color", "#C6E2FF");
     //$('html,body').css('cursor','crosshair');
     $(this).attr('contenteditable', 'true');
 });
@@ -78,20 +78,13 @@ $('.update').on( "click", function(){
 $('.editFor').on( "change paste keyup", function(){
     var id = $(this).attr('id');
     var letter = $(this).html();
-    /*var nni = $(this).closest('tr').find('id').html();
-    var colIndex = $(this).index();
-    look for tr date
-    var date = $('.dateIndex').find("th:nth-child(colIndex)").attr('id');*/
-
     $.ajax({
         url:'/agendaTemp/edit',
         type: "POST",
         dataType: "json",
         data: {
             "id": id,
-            "letter": letter,
-            "nni": nni,
-            "date": date
+            "letter": letter
         },
         async: true,
         success: function (data)
@@ -113,7 +106,11 @@ $('.editFor').on( "change paste keyup", function(){
             if (data.bgLetter) {
                 $( '#' + id ).removeClass('table-success').removeClass('table-danger').removeClass('table-info').addClass(data.bgLetter);
             }
-           // $( '#' + id ).css({"border": "2px solid red"});
+
+
+
+
+            // $( '#' + id ).css({"border": "2px solid red"});
 
         }
     });

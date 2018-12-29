@@ -35,57 +35,31 @@ use AppBundle\Service\checkRules;
  * @Route("agendaTemp")
  */
 class AgendaTempController extends Controller {
-    
-    
+
+
     /**
      * @Route("/edit", name="agendaTempEdit")
      */
     public function editAjaxAction(Request $request, UserInterface $user, checkRules $checkRules)
     {
 
-
-        /*  Get the object agendaTemp send by Ajax with the id */
+        /*  Get the object agendaTemp send by Ajax */
         $id = $request->request->get('id');
+        $agendaTemp = $this->getDoctrine()
+            ->getRepository(AgendaTemp::class)
+            ->find($id);
+        $letterInMemo = $agendaTemp->getLetter();
+
+
         /* Get the letter send by Ajax */
         $letterUpdate = strtoupper($request->request->get('letter'));
 
-
-        if ($id){
-            $agendaTemp = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->find($id);
-        $letterInMemo = $agendaTemp->getLetter();
-        }
-
-        /*  if empty cel, Get the object agendaTemp send by date, by $agent
-       else {
-
-            $date = $request->request->get('date');
-            $nni =  $request->request->get('nni');
-            $agent = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findOneBy([
-                    'nni' => $nni]
-                );
-
-            $agendaTemp = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findOneBy([
-                    'date' => $date,
-                    '$agent' => $agent,
-                ]);
-
-        }*/
-
-
-
-        
         /* check if letter exist */
         $letter = $this
-                ->getDoctrine()
-                ->getRepository(Letter::class)->findOneBy([
-                        'letter' => $letterUpdate
-                        ]);
+            ->getDoctrine()
+            ->getRepository(Letter::class)->findOneBy([
+                'letter' => $letterUpdate
+            ]);
 
         /* if letter doesn't exist, restore letter*/
         $errors = [];
@@ -94,22 +68,22 @@ class AgendaTempController extends Controller {
             $errors['Lettre'] = "La lettre ' $letterUpdate ' n’éxiste pas dans le code planning. " . $thanksTo;
             $response = new Response(json_encode(array(
 
-                 'letter' => $letterInMemo->getLetter(),
-                 'bgLetter' => '',
-                 'titre' => 'Erreur :',
-                 'description' =>  $errors['Lettre']
-             )));
-             $response->headers->set('Content-Type', 'application/json');
-             return $response;
+                'letter' => $letterInMemo->getLetter(),
+                'bgLetter' => '',
+                'titre' => 'Erreur :',
+                'description' =>  $errors['Lettre']
+            )));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
 
         }
-         /* if letter exist */
+        /* if letter exist */
         else {
             //Define Legal Week
-            $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());            
+            $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
             $startLegalWeek = $checkRules->StartLegalWeek($date);
             $endLegalWeek = $checkRules->SendLegalWeek($date);
-            
+
 
             //Persist in db for testing
             $agendaTemp->setLetter($letter);
@@ -117,20 +91,20 @@ class AgendaTempController extends Controller {
             $em->persist($agendaTemp);
             $em->flush();
 
-            
+
             //define agendaTempAround as an array of agendaTemp objects around agendaTemp
             $dayBefore = $date->modify('yesterday 00:00');
             $dayAfter = $date->modify('tomorrow 00:00');
             $agendaTempAround = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findAllTempBetweenDateByUser($dayBefore, $dayAfter, $agendaTemp->getAgent()->getId(), $user);
-            
+
             //This Date Letter Time
-            $startTimeForTheDay = $agendaTempAround[1]->getLetter()->getStartTime();            
-            $endTimeForTheDay = $agendaTempAround[1]->getLetter()->getEndTime();            
+            $startTimeForTheDay = $agendaTempAround[1]->getLetter()->getStartTime();
+            $endTimeForTheDay = $agendaTempAround[1]->getLetter()->getEndTime();
             $dateTimeStarForTheDay = $date->setTime($startTimeForTheDay->format('H'), $startTimeForTheDay->format('i'));
             $dateTimeEndForTheDay = $date->setTime($endTimeForTheDay->format('H'), $endTimeForTheDay->format('i'));
-            
+
             //Check if HoursPerWeek is under maximum
             $arrayWeeks = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
@@ -146,8 +120,8 @@ class AgendaTempController extends Controller {
             if ($interval[0]<11 || $interval[1] < 11) {
                 $errors['repos journalier'] = "Le nombre d'heures de repos minimum entre deux jours est inférieur à 11 heures.";
             }
-            
-            
+
+
             $hLetter = $this->getDoctrine()
                 ->getRepository(Letter::class)
                 ->findByLetter('H');
@@ -157,19 +131,19 @@ class AgendaTempController extends Controller {
             $h = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent(), $user, $hLetter);
-            
+
             //Error msg if no H and $startLegalweek or $endLegalWeek out of range
             $AgendaTempStartLegalWeek = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($startLegalWeek, $agendaTemp->getAgent(), $user);              
-            
+                ->findTempByDateByUserByAgent($startLegalWeek, $agendaTemp->getAgent(), $user);
+
             $AgendaTempEndLegalWeek = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($endLegalWeek, $agendaTemp->getAgent(), $user);             
-            
+                ->findTempByDateByUserByAgent($endLegalWeek, $agendaTemp->getAgent(), $user);
+
             if (!$h) {
                 if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek){
-                $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y');
+                    $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y');
                 }
             }
             // check if  one H with R around
@@ -184,12 +158,12 @@ class AgendaTempController extends Controller {
                 $rAfter = $this->getDoctrine()
                     ->getRepository(AgendaTemp::class)
                     ->findTempByDateByUserByAgentByLetter($dateAfterH, $agendaTemp->getAgent(), $user, $rLetter);
-                
+
                 if (!$rBefore && !$rAfter)  {
-                $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date : " . $dateBeforeH->format('D d M Y') . ' ou ' . $dateAfterH->format('D d M Y');
+                    $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date : " . $dateBeforeH->format('D d M Y') . ' ou ' . $dateAfterH->format('D d M Y');
                 }
             }
-            
+
             // check if average of hourPerweek is legal
             $averageHourPerWeek = $checkRules->averageHourPerWeek($agendaTemp, $checkRules, $user, $arrayWeeks);
             $max = $this->getDoctrine()->getRepository(Rule::class)
@@ -199,9 +173,9 @@ class AgendaTempController extends Controller {
             }
 
 
-                   
-             
-                        
+
+
+
             //if $errors, restore $letterInMemory and send $error message
             if (!$errors) {
                 $titre = 'Mise à jour Ok';
@@ -215,7 +189,7 @@ class AgendaTempController extends Controller {
                 $em->flush();
             }
 
-            
+
             //Change background if letter change
             $updatedLetter = $agendaTemp->getLetter()->getLetter();
             if ($updatedLetter == 'R') {
@@ -228,8 +202,8 @@ class AgendaTempController extends Controller {
 
         }
 
-           
-        
+
+
         $response = new Response(json_encode([
             'titre' => $titre,
             'description' => $description,
@@ -245,8 +219,8 @@ class AgendaTempController extends Controller {
 
             'average' => $averageHourPerWeek,
 
-            ]));
-        
+        ]));
+
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }

@@ -7,7 +7,7 @@
 {% block body %}    
 <div class="container">
     <header class="text-center py-3">
-        <h1 class="bg-white-semi_transparent">Agenda<em class="text-dark"></em> Brouillongit </h1>
+        <h1 class="bg-white-semi_transparent">Agenda<em class="text-dark"></em> Brouillon </h1>
         <p>Modifier votre planning ou celui de vos équipes</p>
     </header>
     <div class="row border border-rounded my-2">
@@ -44,7 +44,7 @@
                         <th scope ="col" class="text-info"></th>
                         <th scope ="col" class="text-info"></th>
                         {% for dateBetween in dateBetweens %}
-                        <th scope ="col" class="text-light date"}}>
+                        <th scope ="col" class="text-light date">
                             {% if dateBetween.date|localizeddate('none', 'none', 'fr', null, 'e')  == 6 %}
                                 S
                             {% elseif dateBetween.date|localizeddate('none', 'none', 'fr', null, 'e')  == 1 %}
