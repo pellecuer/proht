@@ -90,10 +90,14 @@ class AgendaTempController extends Controller {
 
             $HLetter = $this->getDoctrine()
                 ->getRepository(Letter::class)
-                ->findByLetter('H');
+                ->findOneBy([
+                    'letter' =>'H',
+                ]);
             $RLetter = $this->getDoctrine()
                 ->getRepository(Letter::class)
-                ->findByLetter('R');
+                ->findOneBy([
+                    'letter' =>'R',
+                ]);
 
 
             //Persist in db for testing
@@ -110,7 +114,7 @@ class AgendaTempController extends Controller {
             }
 
             //check rest between days is under minimmum legal
-            $interval = $checkRules->RestBetweenDays($date, $user, $agent, $agendaTemp);
+            $interval = $checkRules->RestBetweenDays($user, $agent, $agendaTemp);
             $rule = $this->getDoctrine()
                 ->getRepository(Rule::class)
                 ->find(1);
