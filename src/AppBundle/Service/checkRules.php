@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\AgendaTemp;
-
+use AppBundle\Entity\Letter;
 
 
 class checkRules {
@@ -104,10 +104,10 @@ class checkRules {
             ]);
 
         //if no DayBefore or if letter before = R Or H, set intervalBefore to minimum legal (11h)
-        $HLetter = $this->getDoctrine()
+        $HLetter = $this->em
             ->getRepository(Letter::class)
             ->findByLetter('H');
-        $RLetter = $this->getDoctrine()
+        $RLetter = $this->em
             ->getRepository(Letter::class)
             ->findByLetter('R');
 
