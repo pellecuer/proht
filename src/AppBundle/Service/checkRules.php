@@ -36,9 +36,10 @@ class checkRules {
     
     
     
-    public function HoursPerWeek($agendaTemp, $user, $startLegalWeek, $endLegalWeek, $arrayWeeks)
-    {        
-        $hoursPerWeek = 0;        
+    public function HoursPerWeek($arrayWeeks)
+    {
+
+        $hoursPerWeek = 0;
         foreach ($arrayWeeks as $arrayWeek){
             if ($arrayWeek->getLetter()->getLetter() == 'R' || $arrayWeek->getLetter()->getLetter() == 'H') {
                 $effectiveDuration = 0;
@@ -51,103 +52,6 @@ class checkRules {
         return $hoursPerWeek;
     }
 
-    
-    
-    
-    public function restBetweenDays($agendaTemp, $user, $date, $letter, $agendaTempAround)
-    {            
-        //if DateTemp is the first record of the the period, set $dateTimeBeforeDate to -11h        
-        if ($agendaTemp->getDate() == $agendaTemp->getAgent()->getTeam()->getEvent()->getStartDate()){
-        
-            //Define startTime of the date
-            $timeOnDate = $agendaTempAround[0]->getLetter()->getStartTime();
-            $hOnDate = $timeOnDate->format('H');        
-            $iOnDate = $timeOnDate->format('i');
-            $immutableDay1 = \DateTimeImmutable::createFromMutable($agendaTempAround[0]->getDate());
-            $dateTimeOnDate = $immutableDay1->setTime($hOnDate, $iOnDate);
-            
-            //Define EndTime of the date before
-            $dateTimeBeforeDate = $dateTimeOnDate->modify('-11 hour');
-            
-            //Define endTime of the Date
-            $timeOffDate = $agendaTempAround[0]->getLetter()->getEndTime();
-            $hOffDate = $timeOffDate->format('H');        
-            $iOffDate = $timeOffDate->format('i');            
-            $dateTimeOffDate = $immutableDay1->setTime($hOffDate, $iOffDate);
-            
-            //Define startTime of the date After
-            $timeAfterDate = $agendaTempAround[1]->getLetter()->getStartTime();
-            $hAfterDate = $timeAfterDate->format('H');        
-            $iAfterDate = $timeAfterDate->format('i');
-            $immutableDay2 = \DateTimeImmutable::createFromMutable($agendaTempAround[1]->getDate());
-            $dateTimeAfterDate = $immutableDay2->setTime($hAfterDate, $iAfterDate);            
-        }
-        
-        //if DateTemp is the last record of the the period, set $dateTimeAfterDate to +11h        
-        elseif ($agendaTemp->getDate() == $agendaTemp->getAgent()->getTeam()->getEvent()->getEndDate()){    
-            
-            //Define endTime before Date
-            $timeBeforeDate = $agendaTempAround[0]->getLetter()->getEndTime();
-            $hBeforeDate = $timeBeforeDate->format('H');        
-            $iBeforeDate = $timeBeforeDate->format('i');
-            $immutableDay0 = \DateTimeImmutable::createFromMutable($agendaTempAround[0]->getDate());
-            $dateTimeBeforeDate = $immutableDay0->setTime($hBeforeDate, $iBeforeDate);  
-            
-            //Define startTime of the date
-            $timeOnDate = $agendaTempAround[1]->getLetter()->getStartTime();
-            $hOnDate = $timeOnDate->format('H');        
-            $iOnDate = $timeOnDate->format('i');
-            $immutableDay1 = \DateTimeImmutable::createFromMutable($agendaTempAround[1]->getDate());
-            $dateTimeOnDate = $immutableDay1->setTime($hOnDate, $iOnDate);
-            
-            //Define endTime of the Date
-            $timeOffDate = $agendaTempAround[1]->getLetter()->getEndTime();
-            $hOffDate = $timeOffDate->format('H');        
-            $iOffDate = $timeOffDate->format('i');            
-            $dateTimeOffDate = $immutableDay1->setTime($hOffDate, $iOffDate);  
-            
-            //Define startTime after Date
-            $dateTimeAfterDate = $dateTimeOffDate->modify('+11 hour');
-        }
-        
-        // Defines variable between array[0,1,2]
-        else {
-            $timeBeforeDate = $agendaTempAround[0]->getLetter()->getEndTime();
-            $hBeforeDate = $timeBeforeDate->format('H');        
-            $iBeforeDate = $timeBeforeDate->format('i');
-            $immutableDay0 = \DateTimeImmutable::createFromMutable($agendaTempAround[0]->getDate());
-            $dateTimeBeforeDate = $immutableDay0->setTime($hBeforeDate, $iBeforeDate);   
-
-            $timeOnDate = $agendaTempAround[1]->getLetter()->getStartTime();
-            $hOnDate = $timeOnDate->format('H');
-            $iOnDate = $timeOnDate->format('i');
-            $immutableDay1 = \DateTimeImmutable::createFromMutable($agendaTempAround[1]->getDate());
-            $dateTimeOnDate = $immutableDay1->setTime($hOnDate, $iOnDate);
-
-            $timeOffDate = $agendaTempAround[1]->getLetter()->getEndTime();
-
-            $hOffDate = $timeOffDate->format('H');
-            $iOffDate = $timeOffDate->format('i');
-            $dateTimeOffDate = $immutableDay1->setTime($hOffDate, $iOffDate);
-
-            $timeAfterDate = $agendaTempAround[2]->getLetter()->getStartTime();
-            $hAfterDate = $timeAfterDate->format('H');
-            $iAfterDate = $timeAfterDate->format('i');
-            $immutableDay2 = \DateTimeImmutable::createFromMutable($agendaTempAround[2]->getDate());
-            $dateTimeAfterDate = $immutableDay2->setTime($hAfterDate, $iAfterDate);
-        }
-
-        //Important
-        $intervalBefore = $dateTimeBeforeDate->diff($dateTimeOnDate)->format('%H:%I:%S');
-        $intervalAfter = $dateTimeOffDate->diff($dateTimeAfterDate)->format('%H:%I:%S');
-
-        $interval = [
-            $intervalBefore,
-            $intervalAfter
-        ];
-
-        return $interval;
-    }
 
     
     public function averageHourPerWeek($agendaTemp, CheckRules $checkRules, $user, $arrayWeeks)
@@ -157,9 +61,6 @@ class checkRules {
         $dateofWeek = \DateTimeImmutable::createFromMutable($startEventDate);
         $countEmptyWeek = 0;
         $SumHoursPerWeek = 0;
-        //ok
-
-
 
             //check if empty Week
             if ($dateofWeek->format('w') == 0) {
@@ -187,6 +88,96 @@ class checkRules {
 
             $averageHourPerWeek =  $SumHoursPerWeek;
             return $averageHourPerWeek;
+    }
+
+
+    public function RestBetweenDays($date, $user, $agent, $agendaTemp)
+    {
+        //check the dateBefore
+        $dayBefore = $date->modify('yesterday');
+        $AgendaTempBefore = $this->em
+            ->getRepository(AgendaTemp::class)
+            ->findOneBy([
+                'agent' => $agent,
+                'date' => $dayBefore,
+                'user' => $user
+            ]);
+
+        //if no DayBefore or if letter before = R Or H, set intervalBefore to minimum legal (11h)
+        $HLetter = $this->getDoctrine()
+            ->getRepository(Letter::class)
+            ->findByLetter('H');
+        $RLetter = $this->getDoctrine()
+            ->getRepository(Letter::class)
+            ->findByLetter('R');
+
+        if (!$AgendaTempBefore || $AgendaTempBefore->getLetter()->getLetter() == 'H' || $AgendaTempBefore->getLetter()->getLetter() == 'R')  {
+        $intervalBefore =  new \DateInterval('PT11H');
+        }
+
+         //check the dateAfter
+        $dayAfter = $date->modify('tomorrow');
+        $AgendaTempAfter = $this->em
+             ->getRepository(AgendaTemp::class)
+             ->findOneBy([
+                 'agent' => $agent,
+                 'date' => $dayAfter,
+                 'user' => $user
+             ]);
+
+         //if no DayAfter or if letter before = R Or H, set intervalBefore to minimum legal (11h)
+        if (!$AgendaTempAfter || $AgendaTempAfter->getLetter() == $HLetter || $AgendaTempAfter->getLetter()->getLetter() == $RLetter)  {
+        $intervalAfter =  new \DateInterval('PT11H');
+        }
+
+
+        //in other cases check interval before and after
+        if (!isset ($intervalBefore) || !isset ($intervalAfter)) {
+
+            $immutableDay = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
+
+            //set startDateTime Day on date
+            $startTimeDate = $agendaTemp->getLetter()->getStartTime();
+            $hourStartTimeDate = $startTimeDate->format('H');
+            $minuteStartTimeDate = $startTimeDate->format('i');
+            $startDateTimeDay = $immutableDay->setTime($hourStartTimeDate, $minuteStartTimeDate);
+
+            //set endDateTime Day on date
+            $endTimeDate = $agendaTemp->getLetter()->getEndTime();
+            $hourEndTimeDate = $endTimeDate->format('H');
+            $minuteEndTimeDate = $endTimeDate->format('i');
+            $endDateTimeDay = $immutableDay->setTime($hourEndTimeDate, $minuteEndTimeDate);
+
+            //set endDateTime Day on dateBefore
+            $endTimeDateBefore = $AgendaTempBefore->getLetter()->getEndTime();
+            $hourStartTimeDateBefore = $endTimeDateBefore->format('H');
+            $minuteStartTimeDateBefore = $endTimeDateBefore->format('i');
+            $endDateTimeDayBefore = $immutableDay
+                ->modify('-1 day')
+                ->setTime($hourStartTimeDateBefore, $minuteStartTimeDateBefore);
+
+            //set StartDateTime Day on dateAfter
+            $startTimeDateAfter = $AgendaTempAfter->getLetter()->getStartTime();
+            $hourStartTimeDateAfter = $startTimeDateAfter->format('H');
+            $minuteStartTimeDateAfter = $startTimeDateAfter->format('i');
+            $startDateTimeDayAfter = $immutableDay
+                ->modify('+1 day')
+                ->setTime($hourStartTimeDateAfter, $minuteStartTimeDateAfter);
+
+            //Check intervalBefore and intervalAfter
+            $intervalBefore = $endDateTimeDayBefore->diff($startDateTimeDay)->format('%H:%I:%S');
+            $intervalAfter = $endDateTimeDay->diff($startDateTimeDayAfter)->format('%H:%I:%S');
+
+            $interval = [
+                $intervalBefore,
+                $intervalAfter,
+                $startDateTimeDay,
+                $endDateTimeDay
+            ];
+
+            return $interval;
+        }
+
     }
 
 }

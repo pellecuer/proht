@@ -48,6 +48,7 @@ class AgendaTempController extends Controller {
         $agendaTemp = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
             ->find($id);
+        $agent = $agendaTemp->getAgent();
         $letterInMemo = $agendaTemp->getLetter();
 
 
@@ -79,10 +80,20 @@ class AgendaTempController extends Controller {
         }
         /* if letter exist */
         else {
-            //Define Legal Week
+            //Define Legal Week and varaibles
             $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
             $startLegalWeek = $checkRules->StartLegalWeek($date);
             $endLegalWeek = $checkRules->SendLegalWeek($date);
+            $arrayWeeks = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agent, $user);
+
+            $HLetter = $this->getDoctrine()
+                ->getRepository(Letter::class)
+                ->findByLetter('H');
+            $RLetter = $this->getDoctrine()
+                ->getRepository(Letter::class)
+                ->findByLetter('R');
 
 
             //Persist in db for testing
@@ -92,56 +103,39 @@ class AgendaTempController extends Controller {
             $em->flush();
 
 
-            //define agendaTempAround as an array of agendaTemp objects around agendaTemp
-            $dayBefore = $date->modify('yesterday 00:00');
-            $dayAfter = $date->modify('tomorrow 00:00');
-            $agendaTempAround = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findAllTempBetweenDateByUser($dayBefore, $dayAfter, $agendaTemp->getAgent()->getId(), $user);
-
-            //This Date Letter Time
-            $startTimeForTheDay = $agendaTempAround[1]->getLetter()->getStartTime();
-            $endTimeForTheDay = $agendaTempAround[1]->getLetter()->getEndTime();
-            $dateTimeStarForTheDay = $date->setTime($startTimeForTheDay->format('H'), $startTimeForTheDay->format('i'));
-            $dateTimeEndForTheDay = $date->setTime($endTimeForTheDay->format('H'), $endTimeForTheDay->format('i'));
-
             //Check if HoursPerWeek is under maximum
-            $arrayWeeks = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent(), $user);
-
-            $hoursPerWeek = $checkRules->HoursPerWeek($agendaTemp, $user, $startLegalWeek, $endLegalWeek, $arrayWeeks);
+            $hoursPerWeek = $checkRules-> HoursPerWeek($arrayWeeks);
             if ($hoursPerWeek > '48') {
                 $errors['Heures hebdomadaires'] = "Le nombre d'heures hebdomadaires dépasse le maximum légal de 48 heures.";
             }
 
-            //check rest between days
-            $interval = $checkRules->restBetweenDays($agendaTemp, $user, $date, $letter, $agendaTempAround);
-            if ($interval[0]<11 || $interval[1] < 11) {
+            //check rest between days is under minimmum legal
+            $interval = $checkRules->RestBetweenDays($date, $user, $agent, $agendaTemp);
+            $rule = $this->getDoctrine()
+                ->getRepository(Rule::class)
+                ->find(1);
+            $LegalRestBetweenDays =  $rule->getMinRestBetweenDays();
+            if ($interval[0] < $LegalRestBetweenDays || $interval[1]< $LegalRestBetweenDays) {
                 $errors['repos journalier'] = "Le nombre d'heures de repos minimum entre deux jours est inférieur à 11 heures.";
             }
 
 
-            $hLetter = $this->getDoctrine()
-                ->getRepository(Letter::class)
-                ->findByLetter('H');
-            $rLetter = $this->getDoctrine()
-                ->getRepository(Letter::class)
-                ->findByLetter('R');
-            $h = $this->getDoctrine()
+            //Check if H in legal week
+
+            $H = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agendaTemp->getAgent(), $user, $hLetter);
+                ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);
 
             //Error msg if no H and $startLegalweek or $endLegalWeek out of range
             $AgendaTempStartLegalWeek = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($startLegalWeek, $agendaTemp->getAgent(), $user);
+                ->findTempByDateByUserByAgent($startLegalWeek, $agent, $user);
 
             $AgendaTempEndLegalWeek = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($endLegalWeek, $agendaTemp->getAgent(), $user);
+                ->findTempByDateByUserByAgent($endLegalWeek, $agent, $user);
 
-            if (!$h) {
+            if (!$H) {
                 if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek){
                     $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y');
                 }
@@ -149,15 +143,15 @@ class AgendaTempController extends Controller {
             // check if  one H with R around
             $rBefore = '';
             $rAfter = '';
-            if ($h) {
-                $dateBeforeH = \DateTimeImmutable::createFromMutable($h[0]->getDate()->modify('-1 day'));
-                $dateAfterH = \DateTimeImmutable::createFromMutable($h[0]->getDate()->modify('+2 day'));
+            if ($H) {
+                $dateBeforeH = \DateTimeImmutable::createFromMutable($H[0]->getDate()->modify('-1 day'));
+                $dateAfterH = \DateTimeImmutable::createFromMutable($H[0]->getDate()->modify('+2 day'));
                 $rBefore = $this->getDoctrine()
                     ->getRepository(AgendaTemp::class)
-                    ->findTempByDateByUserByAgentByLetter($dateBeforeH, $agendaTemp->getAgent(), $user, $rLetter);
+                    ->findTempByDateByUserByAgentByLetter($dateBeforeH, $agent, $user, $RLetter);
                 $rAfter = $this->getDoctrine()
                     ->getRepository(AgendaTemp::class)
-                    ->findTempByDateByUserByAgentByLetter($dateAfterH, $agendaTemp->getAgent(), $user, $rLetter);
+                    ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);
 
                 if (!$rBefore && !$rAfter)  {
                     $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date : " . $dateBeforeH->format('D d M Y') . ' ou ' . $dateAfterH->format('D d M Y');
@@ -179,7 +173,7 @@ class AgendaTempController extends Controller {
             //if $errors, restore $letterInMemory and send $error message
             if (!$errors) {
                 $titre = 'Mise à jour Ok';
-                $description = 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agendaTemp->getAgent()->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y');
+                $description = 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agent->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y');
 
             } else {
                 $titre = 'Erreur';
@@ -211,8 +205,8 @@ class AgendaTempController extends Controller {
             'bgLetter' => $bgLetter,
             'startLegalWeek' => $startLegalWeek->format('D d M Y H:i:s'),
             'endLegalWeek' => $endLegalWeek->format('D d M Y H:i:s'),
-            'startDay' => $dateTimeStarForTheDay->format('D d M H:i:s'),
-            'endDay' => $dateTimeEndForTheDay->format('D d M H:i:s'),
+            'startDay' => $interval[2]->format('D d M H:i:s'),
+            'endDay' => $interval[3]->format('D d M H:i:s'),
             'hoursPerWeek' => $hoursPerWeek,
             'intervalBefore' => $interval[0],
             'intervalAfter' => $interval[1],
