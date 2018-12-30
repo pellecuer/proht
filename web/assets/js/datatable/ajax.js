@@ -100,6 +100,8 @@ $('.editFor').on( "change paste keyup", function(){
             $( '#hoursPerWeek').text(data.hoursPerWeek);
             $( '#intervalBefore').text(data.intervalBefore);
             $( '#intervalAfter').text(data.intervalAfter);
+            $( '#DateTimeBefore').text(data.DateTimeBefore);
+            $( '#DateTimeAfter').text(data.DateTimeAfter);
             $( '#letter').text(data.interval);
             $( '#average').text(data.average);
             $( '#' + id).text(data.letter);

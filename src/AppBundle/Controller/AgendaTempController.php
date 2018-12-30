@@ -210,6 +210,8 @@ class AgendaTempController extends Controller {
             'hoursPerWeek' => $hoursPerWeek,
             'intervalBefore' => $interval[0],
             'intervalAfter' => $interval[1],
+            'DateTimeBefore' => $interval[4]->format('D d M H:i:s'),
+            'DateTimeAfter' => $interval[5]->format('D d M H:i:s'),
 
             'average' => $averageHourPerWeek,
 

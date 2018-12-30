@@ -7,6 +7,7 @@ use AppBundle\Entity\AgendaTemp;
 use AppBundle\Entity\Letter;
 
 
+
 class checkRules {
     
     public function __construct(EntityManagerInterface $entityManager)
@@ -55,9 +56,8 @@ class checkRules {
 
     
     public function averageHourPerWeek($agendaTemp, CheckRules $checkRules, $user, $arrayWeeks)
-    {        
+    {
         $startEventDate = $agendaTemp->getAgent()->getTeam()->getEvent()->getStartDate();
-        $endEventDate = $agendaTemp->getAgent()->getTeam()->getEvent()->getEndDate();
         $dateofWeek = \DateTimeImmutable::createFromMutable($startEventDate);
         $countEmptyWeek = 0;
         $SumHoursPerWeek = 0;
@@ -80,7 +80,7 @@ class checkRules {
 
 
             if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek) {
-                $hoursPerWeek = $checkRules->HoursPerWeek($agendaTemp, $user, $startLegalWeek, $endLegalWeek, $arrayWeeks);
+                $hoursPerWeek = $checkRules->HoursPerWeek($arrayWeeks);
                 $SumHoursPerWeek += $hoursPerWeek;
                 $countEmptyWeek = $countEmptyWeek + 1;
                 $dateofWeek->modify('+ 7 days');
@@ -168,15 +168,20 @@ class checkRules {
             $intervalBefore = $endDateTimeDayBefore->diff($startDateTimeDay)->format('%H:%I:%S');
             $intervalAfter = $endDateTimeDay->diff($startDateTimeDayAfter)->format('%H:%I:%S');
 
-            $interval = [
-                $intervalBefore,
-                $intervalAfter,
-                $startDateTimeDay,
-                $endDateTimeDay
-            ];
 
-            return $interval;
         }
+
+        $interval = [
+            $intervalBefore,
+            $intervalAfter,
+            $startDateTimeDay,
+            $endDateTimeDay,
+            $endDateTimeDayBefore,
+            $startDateTimeDayAfter
+        ];
+
+
+         return $interval;
 
     }
 
