@@ -124,34 +124,29 @@ class AgendaTempController extends Controller {
             }
 
             
-            $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);
-            //Error msg if no H because week is cut at the beginning or at the end of the Event Arret de tranche
-            $AgendaTempStartLegalWeek = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($startLegalWeek, $agent, $user);
-
-            $AgendaTempEndLegalWeek = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($endLegalWeek, $agent, $user);
-
-            if (!$H) {
-                if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek){
-                    $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y');
-                }                
-                
-            } else {
-                // check if  one H with R around         
-                $RaroundH = $checkRules->RaroundH($H, $agent, $user, $RLetter);
-                                
-                //Check in R around next H
-                $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);
-                $RaroundNextH = $checkRules->RaroundH($nxtH, $agent, $user, $RLetter);
-                                
-                if (!$RaroundH['rBefore'] && !$RaroundH['rAfter']) {
-                $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date du : " . $H[0]->GetDate()->format('D d M Y'). " ou la date du : " . $nxtH[0]->GetDate()->format('D d M Y') ;
+            //check if H in Legal Week and Legal Week is full
+            $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);         
+                        
+            if (!$H){
+                //check if H in Legal Week and Legal Week is full
+                if ($checkRules->isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)) {               
+                $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y'); 
                 }
             }
             
+            if ($H) {
+                    $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter); 
+                    // check if R around H     
+                    $RaroundH = $checkRules->RaroundH($H, $agent, $user, $RLetter);
+
+                    //Check if R around next H
+                    $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);                    
+                    $RaroundNextH = $checkRules->RaroundH($nxtH, $agent, $user, $RLetter);   
+            }
+                
+            if (!$RaroundH || !$RaroundNextH) {
+                $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date du : " . $H[0]->GetDate()->format('D d M Y'). " ou la date du : " . $nxtH[0]->GetDate()->format('D d M Y') ;
+            }
 
             // check if average of hourPerweek is legal
             $averageHourPerWeek = $checkRules->averageHourPerWeek($agendaTemp, $checkRules, $user, $arrayWeeks);

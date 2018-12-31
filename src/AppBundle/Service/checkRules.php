@@ -35,11 +35,27 @@ class checkRules {
         return $endLegalWeek;
     }
     
+    public function isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)
+    {        
+        $AgendaTempStartLegalWeek = $this->em
+            ->getRepository(AgendaTemp::class)
+            ->findTempByDateByUserByAgent($startLegalWeek, $agent, $user);
+
+        $AgendaTempEndLegalWeek = $this->em
+            ->getRepository(AgendaTemp::class)
+            ->findTempByDateByUserByAgent($endLegalWeek, $agent, $user);
+        
+        if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     
     
     public function HoursPerWeek($arrayWeeks)
     {
-
         $hoursPerWeek = 0;
         foreach ($arrayWeeks as $arrayWeek){
             if ($arrayWeek->getLetter()->getLetter() == 'R' || $arrayWeek->getLetter()->getLetter() == 'H') {
