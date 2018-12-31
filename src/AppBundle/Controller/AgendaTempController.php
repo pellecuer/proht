@@ -108,7 +108,7 @@ class AgendaTempController extends Controller {
 
 
             //Check if HoursPerWeek is under maximum
-            $hoursPerWeek = $checkRules-> HoursPerWeek($arrayWeeks);
+            $hoursPerWeek = $checkRules->HoursPerWeek($arrayWeeks);
             if ($hoursPerWeek > '48') {
                 $errors['Heures hebdomadaires'] = "Le nombre d'heures hebdomadaires dépasse le maximum légal de 48 heures.";
             }
@@ -123,14 +123,9 @@ class AgendaTempController extends Controller {
                 $errors['repos journalier'] = "Le nombre d'heures de repos minimum entre deux jours est inférieur à 11 heures.";
             }
 
-
-            //Check if H in legal week
-
-            $H = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);
-
-            //Error msg if no H and $startLegalweek or $endLegalWeek out of range
+            
+            $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);
+            //Error msg if no H because week is cut at the beginning or at the end of the Event Arret de tranche
             $AgendaTempStartLegalWeek = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findTempByDateByUserByAgent($startLegalWeek, $agent, $user);
@@ -142,25 +137,21 @@ class AgendaTempController extends Controller {
             if (!$H) {
                 if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek){
                     $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y');
+                }                
+                
+            } else {
+                // check if  one H with R around         
+                $RaroundH = $checkRules->RaroundH($H, $agent, $user, $RLetter);
+                                
+                //Check in R around next H
+                $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);
+                $RaroundNextH = $checkRules->RaroundH($nxtH, $agent, $user, $RLetter);
+                                
+                if (!$RaroundH['rBefore'] && !$RaroundH['rAfter']) {
+                $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date du : " . $H[0]->GetDate()->format('D d M Y'). " ou la date du : " . $nxtH[0]->GetDate()->format('D d M Y') ;
                 }
             }
-            // check if  one H with R around
-            $rBefore = '';
-            $rAfter = '';
-            if ($H) {
-                $dateBeforeH = \DateTimeImmutable::createFromMutable($H[0]->getDate()->modify('-1 day'));
-                $dateAfterH = \DateTimeImmutable::createFromMutable($H[0]->getDate()->modify('+2 day'));
-                $rBefore = $this->getDoctrine()
-                    ->getRepository(AgendaTemp::class)
-                    ->findTempByDateByUserByAgentByLetter($dateBeforeH, $agent, $user, $RLetter);
-                $rAfter = $this->getDoctrine()
-                    ->getRepository(AgendaTemp::class)
-                    ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);
-
-                if (!$rBefore && !$rAfter)  {
-                    $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date : " . $dateBeforeH->format('D d M Y') . ' ou ' . $dateAfterH->format('D d M Y');
-                }
-            }
+            
 
             // check if average of hourPerweek is legal
             $averageHourPerWeek = $checkRules->averageHourPerWeek($agendaTemp, $checkRules, $user, $arrayWeeks);
@@ -169,10 +160,6 @@ class AgendaTempController extends Controller {
             if ($averageHourPerWeek > $max) {
                 $errors['moyenne d\'heures de travail hebdomadaire trop élevé'] = "La moyenne d\'heures de travail hebdomadaire dépasse la durée légale de " . $max . 'sur la semaine du' . $startLegalWeek->format('D d M Y');
             }
-
-
-
-
 
             //if $errors, restore $letterInMemory and send $error message
             if (!$errors) {

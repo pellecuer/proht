@@ -37,15 +37,21 @@ class initializeAgenda {
             $dayWeek =$date->format('w');
             //if saturday
             if ($dayWeek == 6) {                
-                $idLetter = 2;
-
+                $letterName = 'R';
+            
+            //if sunday    
             } elseif ($dayWeek == 0) {
-                $idLetter = 3;
-
+                $letterName = 'H';
+                
+            //other dayw        
             } else {
-                $idLetter = 1;
+                $letterName = 'J';
             }
-            $letter = $this->em->getRepository(Letter::class)->find($idLetter);
+            $letter = $this->em
+                    ->getRepository(Letter::class)
+                    ->findOneBy([
+                        'letter' => $letterName
+                        ]);
                  
            $agenda->setletter($letter);
            $this->em->persist($agenda);

@@ -52,6 +52,56 @@ class checkRules {
         
         return $hoursPerWeek;
     }
+    
+    
+    public function LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter)
+    {
+        //Check if H in legal week
+        $H = $this->em
+            ->getRepository(AgendaTemp::class)
+            ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);       
+        
+        return $H;
+    }
+    
+    public function LookForNextH($endLegalWeek, $agent, $user, $HLetter)
+    {        
+        //Check if H in legal week + 7
+        $nextStartLegalWeek = $endLegalWeek;
+        $nextEndLegalWeek = $endLegalWeek->modify('next sunday 00:00');
+        
+        $nxtH = $this->em
+            ->getRepository(AgendaTemp::class)
+            ->findTempBetweenDateByUserByAgentByLetter($nextStartLegalWeek, $nextEndLegalWeek, $agent, $user, $HLetter);       
+        
+        return $nxtH;
+    }    
+    
+     
+    
+    public function RaroundH($H, $agent, $user, $RLetter)
+    {        
+        $dateH =  \DateTimeImmutable::createFromMutable($H[0]->getDate());        
+        $dateBeforeH = $dateH->modify('-1 day');
+        $dateAfterH = $dateBeforeH->modify('+2 day');
+        $rBefore = $this->em
+            ->getRepository(AgendaTemp::class)
+            ->findTempByDateByUserByAgentByLetter($dateBeforeH, $agent, $user, $RLetter);
+            
+            $rAfter = $this->em
+                ->getRepository(AgendaTemp::class)
+                ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);             
+        
+                 
+        $RaroundH = [
+            'rBefore' => $rBefore,
+            'rAfter' => $rAfter,
+                ];
+        
+        return $RaroundH; 
+    }
+    
+    
 
 
     
