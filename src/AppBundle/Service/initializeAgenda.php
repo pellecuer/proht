@@ -25,8 +25,7 @@ class initializeAgenda {
     {
         //build the arrayDate
         $startDate = $team->getEvent()->getStartDate();        
-        $endDate = $team->getEvent()->getEndDate();
-        
+        $endDate = $team->getEvent()->getEndDate();        
         $date = $startDate;        
         
         while ($startDate<=$endDate){ 

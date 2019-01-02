@@ -251,5 +251,6 @@ class AgendaTempRepository extends EntityRepository
             ->getQuery()
             ->getResult()
             ;
-    }
+    }    
+    
 }

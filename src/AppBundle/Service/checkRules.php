@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\AgendaTemp;
 use AppBundle\Entity\Letter;
+use AppBundle\Entity\Rule;
 
 
 
@@ -51,6 +52,15 @@ class checkRules {
             return false;
         }
     }
+    
+     public function ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user)
+    {        
+       $arrayWeek = $this->em
+                    ->getRepository(AgendaTemp::class)
+                    ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agent, $user);
+       
+       return $arrayWeek;
+    } 
     
     
     
@@ -121,40 +131,39 @@ class checkRules {
 
 
     
-    public function averageHourPerWeek(AgendaTemp $agendaTemp, CheckRules $checkRules, $user, $arrayWeeks)
+    public function averageHourPerWeek($startLegalWeek, $agent, $user, $checkRules)
     {
-        $startEventDate = $agendaTemp->getAgent()->getTeam()->getEvent()->getStartDate();
-        $dateofWeek = \DateTimeImmutable::createFromMutable($startEventDate);
-        $countEmptyWeek = 0;
-        $SumHoursPerWeek = 0;
-
-            //check if empty Week
-            if ($dateofWeek->format('w') == 0) {
-                $startLegalWeek = $dateofWeek->modify('sunday 00:00');
-            } else {
-                $startLegalWeek = $dateofWeek->modify('last sunday 00:00');
+        //find date - 12 semaines
+        $LegalMaxAveragePerWeek = $this->em
+            ->getRepository(Rule::class)
+            ->find(1)
+            ->getMaxAveragePerWeek();
+        $startAverageDate = $startLegalWeek->modify("-12 week");        
+        $beCareful = [];
+        $totalHours = 0;
+        $countWeeks = 0;
+                
+        if (!$startAverageDate) {
+             $beCareful['Nombre de semaines'] = "Le nombre de semaine comprise dans l'arrêt de tranche est inférieur à $LegalMaxAveragePerWeek. Impossible de calculer le moyenne";
+             
+        } else {            
+            $newDate = \DateTimeImmutable::createFromMutable($startAverageDate);
+            while ($newDate <= $startLegalWeek) {
+               $startLegalWeek =  $checkRules->StartLegalWeek($newDate);
+               $endLegalWeek = $checkRules->EndLegalWeek($newDate); 
+                if ($checkRules->isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)){
+                    $arrayWeeks += $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user);                    
+                    $totalHours += $checkRules->HoursPerWeek($arrayWeeks);
+                    $countWeeks +=1;                
+                    $newDate->modify('+ 1 week');
+                }
             }
-            $endLegalWeek = $dateofWeek->modify('next sunday 00:00');
-
-            $AgendaTempStartLegalWeek = $this->em
-                ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($startLegalWeek, $agendaTemp->getAgent(), $user);
-
-            $AgendaTempEndLegalWeek = $this->em
-                ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($endLegalWeek, $agendaTemp->getAgent(), $user);
-
-
-            if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek) {
-                $hoursPerWeek = $checkRules->HoursPerWeek($arrayWeeks);
-                $SumHoursPerWeek += $hoursPerWeek;
-                $countEmptyWeek = $countEmptyWeek + 1;
-                $dateofWeek->modify('+ 7 days');
-            }
-
-            $averageHourPerWeek =  $SumHoursPerWeek;
-            return $averageHourPerWeek;
+        }
+        $averageHoursPerWeek = $totalHours / $countWeeks;
+        return $averageHoursPerWeek;
     }
+        
+        
 
 
     public function RestBetweenDays($user, $agent, $agendaTemp)

@@ -84,9 +84,7 @@ class AgendaTempController extends Controller {
             $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
             $startLegalWeek = $checkRules->StartLegalWeek($date);
             $endLegalWeek = $checkRules->SendLegalWeek($date);
-            $arrayWeeks = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agent, $user);
+            $arrayWeeks = $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user);
 
             $HLetter = $this->getDoctrine()
                 ->getRepository(Letter::class)
@@ -134,8 +132,7 @@ class AgendaTempController extends Controller {
                 }
             }
             
-            if ($H) {
-                    $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter); 
+            if ($H) {                    
                     // check if R around H     
                     $RaroundH = $checkRules->RaroundH($H, $agent, $user, $RLetter);
 
@@ -149,7 +146,7 @@ class AgendaTempController extends Controller {
             }
 
             // check if average of hourPerweek is legal
-            $averageHourPerWeek = $checkRules->averageHourPerWeek($agendaTemp, $checkRules, $user, $arrayWeeks);
+           $averageHourPerWeek = $checkRules->averageHourPerWeek($startLegalWeek, $agent, $user, $checkRules);
             $max = $this->getDoctrine()->getRepository(Rule::class)
                 ->find(1)->getMaxAveragePerWeek();
             if ($averageHourPerWeek > $max) {
@@ -169,7 +166,6 @@ class AgendaTempController extends Controller {
                 $em->flush();
             }
 
-
             //Change background if letter change
             $updatedLetter = $agendaTemp->getLetter()->getLetter();
             if ($updatedLetter == 'R') {
@@ -179,11 +175,8 @@ class AgendaTempController extends Controller {
             } else {
                 $bgLetter = 'table-info';
             }
-
         }
-
-
-
+        
         $response = new Response(json_encode([
             'titre' => $titre,
             'description' => $description,
@@ -198,7 +191,6 @@ class AgendaTempController extends Controller {
             'intervalAfter' => $interval[1],
             'DateTimeBefore' => $interval[4]->format('D d M H:i:s'),
             'DateTimeAfter' => $interval[5]->format('D d M H:i:s'),
-
             'average' => $averageHourPerWeek,
 
         ]));
@@ -215,37 +207,38 @@ class AgendaTempController extends Controller {
      */
     public function copyAgendaAction( Team $team, User $user)
     {          
-        //check it temp exist for this User and this Team        
-         $agendaTemp = $this->getDoctrine()
+        //check it temp exist for this User and this Agent        
+        $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findTempByUserByTeam($team, $user);
-         //dump($agendaTemp);die;
+                 //->findTempByUserByTeam($team, $user);
+         
         
         if (!$agendaTemp) {
-                // si l'agendaTemp n'éxiste pas, récupère l'agenda éxistant de la team                
-                $agendas = $this->getDoctrine()
-                    ->getRepository(Agenda::class)
-                    ->findAgendaByTeam($team, $user);                
-                
-                //crée les agendas Temp                
-                foreach ($agendas as $agenda){
-                        $em = $this->getDoctrine()->getManager();
-                        $agendaTemp = new AgendaTemp();
-                        $agendaTemp->setAgent($agenda->getAgent());
-                        $agendaTemp->setLetter($agenda->getLetter());
-                        $agendaTemp->setDate($agenda->getDate());
-                        $agendaTemp->setUser($user);
-                        
-                        //A ajouter ultérieurement
-                        //$agendaTemp->setUtilisateur($agendaToCopy->getUtilisateur());
-                        $em->persist($agendaTemp);
-                        $em->flush();
-                        }
-                        
-                return $this->redirectToRoute('showAgendaTemp', array(
-                    'id' => $team->getId(),
-                    'userId' =>$user->getId()         
-                    ));
+            // si l'agendaTemp n'éxiste pas, récupère l'agenda éxistant de la team                
+            $agendas = $this->getDoctrine()
+                ->getRepository(Agenda::class)
+                ->findAgendaByTeam($team, $user);                
+
+            //crée les agendas Temp                
+            foreach ($agendas as $agenda){
+                    $em = $this->getDoctrine()->getManager();
+                    $agendaTemp = new AgendaTemp();
+                    $agendaTemp->setAgent($agenda->getAgent());
+                    $agendaTemp->setLetter($agenda->getLetter());
+                    $agendaTemp->setDate($agenda->getDate());
+                    $agendaTemp->setUser($user);
+
+                    //A ajouter ultérieurement
+                    //$agendaTemp->setUtilisateur($agendaToCopy->getUtilisateur());
+                    $em->persist($agendaTemp);
+                    $em->flush();
+                    }
+
+            return $this->redirectToRoute('showAgendaTemp', array(
+                'id' => $team->getId(),
+                'userId' =>$user->getId()         
+                ));
         
         }  return $this->redirectToRoute('showAgendaTemp', array(
             'id' => $team->getId(),
@@ -262,20 +255,17 @@ class AgendaTempController extends Controller {
     {        
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByUserByTeam($team, $user);              
-
+                ->findTempByUserByTeam($team, $user);
+        
             if (!$agendaTemp) {
                 // si l'agendaTemp n'éxiste pas renvoie la route agenda :
                 return $this->redirectToRoute('showAgenda');            
             }
 
 
-
             //crée un array d'array des agendas
             $startDate = $team->getEvent()->getStartDate();
             $endDate = $team->getEvent()->getEndDate();
-
-
             
             //build calendar
             $interval = new \DateInterval('P1D');
@@ -310,11 +300,6 @@ class AgendaTempController extends Controller {
                 }
                 $agentBetweens[] = $agendaDate;
             }
-
-
-
-
-
 
         return $this->render('agendaTemp.html.twig', [
 
