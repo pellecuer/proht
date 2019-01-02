@@ -77,14 +77,15 @@ class AgendaTempController extends Controller {
             $response->headers->set('Content-Type', 'application/json');
             return $response;
 
-        }
-        /* if letter exist */
-        else {
+        } else {
             //Define Legal Week and varaibles
             $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
             $startLegalWeek = $checkRules->StartLegalWeek($date);
-            $endLegalWeek = $checkRules->SendLegalWeek($date);
+            $endLegalWeek = $checkRules->EndLegalWeek($date);
             $arrayWeeks = $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user);
+
+
+
 
             $HLetter = $this->getDoctrine()
                 ->getRepository(Letter::class)
@@ -95,7 +96,9 @@ class AgendaTempController extends Controller {
                 ->getRepository(Letter::class)
                 ->findOneBy([
                     'letter' =>'R',
-                ]);       
+                ]);
+
+            //ok
 
             //Persist in db for testing
             $agendaTemp->setLetter($letter);
@@ -106,14 +109,15 @@ class AgendaTempController extends Controller {
 
             //Check if HoursPerWeek is under maximum
             $hoursPerWeek = $checkRules->HoursPerWeek($arrayWeeks);
-            
-             
+
+            //ok
+
             
             if ($hoursPerWeek > '48') {
                 $errors['Heures hebdomadaires'] = "Le nombre d'heures hebdomadaires dépasse le maximum légal de 48 heures.";
             }
 
-            //check rest between days is under minimmum legal
+            //check if rest between days is under minimmum legal
             $interval = $checkRules->RestBetweenDays($user, $agent, $agendaTemp);
             $rule = $this->getDoctrine()
                 ->getRepository(Rule::class)
@@ -122,43 +126,66 @@ class AgendaTempController extends Controller {
             if ($interval[0] < $LegalRestBetweenDays || $interval[1]< $LegalRestBetweenDays) {
                 $errors['repos journalier'] = "Le nombre d'heures de repos minimum entre deux jours est inférieur à 11 heures.";
             }
-            
-            
-            
 
-            
+            //ok
+
+
+
             //check if H in Legal Week and Legal Week is full
             $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);
-            
+
+            //ok
+
             
                         
             if (!$H){
                 //check if H in Legal Week and Legal Week is full
-                if ($checkRules->isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)) {               
+                if ($checkRules->isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)) {
                 $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y'); 
                 }
             }
-            
-            //ok           
-            
-            if ($H) {                    
-                // check if R around H                
-                $RaroundH = $checkRules->RaroundH($H, $agent, $user, $RLetter);
-                
-                //Check if R around next H
-                $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);                    
-                $RaroundNextH = $checkRules->RaroundH($nxtH, $agent, $user, $RLetter);   
-            }
-            
-            
-            
-                
-            if (!$RaroundH || !$RaroundNextH) {
-                $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date du : " . $H[0]->GetDate()->format('D d M Y'). " ou la date du : " . $nxtH[0]->GetDate()->format('D d M Y') ;
-            }
 
-            // check if average of hourPerweek is legal
-           $averageHourPerWeek = $checkRules->averageHourPerWeek($startLegalWeek, $agent, $user, $checkRules);
+            //ok
+            $errors['R around H'] = '';
+            $errors['R around NextH'] = '';
+
+
+            if ($H) {
+                // check if R before or after H
+                $rBeforeH = $checkRules->RBeforeH($H, $agent, $user, $RLetter);
+                $rAfterH = $checkRules->RAfterH($H, $agent, $user, $RLetter);
+
+                if (!$rBeforeH || !$rAfterH) {
+                    $errors['R around H'] = "Il manque un R avant ou après le H pour la date du : " . $H[0]->GetDate()->format('D d M Y') ;
+                }
+            }
+            //ok
+
+            $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);
+
+            if ($nxtH) {
+                //Check if R before or after next H
+                $rBeforeNextH = $checkRules->RBeforeH($nxtH, $agent, $user, $RLetter);
+                $rAfterNextH = $checkRules->RAfterH ($nxtH, $agent, $user, $RLetter);
+
+                if (!$rBeforeNextH || !$rAfterNextH) {
+                    $errors['R around NextH'] = "Il manque un R avant ou après le H pour la date du : " . $nxtH[0]->GetDate()->format('D d M Y');
+                }
+            }
+            //ok
+
+
+
+            $response = new Response(json_encode([
+                'titre' => $errors['R around NextH']
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+
+
+            // check if average of hourPerweek is legal;
+           $averageHourPerWeek = $checkRules->averageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek);
             $max = $this->getDoctrine()->getRepository(Rule::class)
                 ->find(1)->getMaxAveragePerWeek();
             if ($averageHourPerWeek > $max) {

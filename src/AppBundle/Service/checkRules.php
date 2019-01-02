@@ -9,16 +9,17 @@ use AppBundle\Entity\Rule;
 
 
 
+
 class checkRules {
     
     public function __construct(EntityManagerInterface $entityManager)
 {
-    $this->em = $entityManager;    
+    $this->em = $entityManager;
 }
 
 
 
-    public function StartLegalWeek($date)
+    public function StartLegalWeek(\DateTimeImmutable $date)
     {        
         if ($date->format('w') == 0) {
             $startLegalWeek = $date->modify('sunday 00:00');
@@ -29,7 +30,7 @@ class checkRules {
         return $startLegalWeek;
     }
     
-    public function SendLegalWeek($date)
+    public function EndLegalWeek(\DateTimeImmutable $date)
     {        
         $endLegalWeek = $date->modify('next sunday 00:00');
         
@@ -91,11 +92,11 @@ class checkRules {
     }
     
     public function LookForNextH($endLegalWeek, $agent, $user, $HLetter)
-    {        
+    {
         //Check if H in legal week + 7
         $nextStartLegalWeek = $endLegalWeek;
         $nextEndLegalWeek = $endLegalWeek->modify('next sunday 00:00');
-        
+
         $nxtH = $this->em
             ->getRepository(AgendaTemp::class)
             ->findTempBetweenDateByUserByAgentByLetter($nextStartLegalWeek, $nextEndLegalWeek, $agent, $user, $HLetter);       
@@ -105,55 +106,59 @@ class checkRules {
     
      
     
-    public function RaroundH($H, $agent, $user, $RLetter)
-    {   
-        $dateBeforeH = \DateTimeImmutable::createFromMutable($H[0]->getDate()->modify('-1 day')); 
-        $dateAfterH = \DateTimeImmutable::createFromMutable($H[0]->getDate()->modify('+2 day'));        
+    public function RBeforeH ($H, $agent, $user, $RLetter)
+    {
+        $date = $H[0]->getDate();
+        $dateBeforeH = $date->modify('-1 day');
         $rBefore = $this->em
             ->getRepository(AgendaTemp::class)
             ->findTempByDateByUserByAgentByLetter($dateBeforeH, $agent, $user, $RLetter);
-            
+
+        
+        return $rBefore;
+    }
+
+    public function RAfterH ($H, $agent, $user, $RLetter)
+    {
+        $date = $H[0]->getDate();
+        $dateAfterH = $date->modify('+1 day');
         $rAfter = $this->em
             ->getRepository(AgendaTemp::class)
-            ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);             
-        
-                 
-        $RaroundH = [
-            'rBefore' => $rBefore,
-            'rAfter' => $rAfter,
-                ];
-        
-        return $RaroundH; 
+            ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);
+
+
+        return $rAfter;
     }
     
     
 
 
     
-    public function averageHourPerWeek($startLegalWeek, $agent, $user, $checkRules)
+    public function AverageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek)
     {
         //find date - 12 semaines
         $LegalMaxAveragePerWeek = $this->em
             ->getRepository(Rule::class)
             ->find(1)
             ->getMaxAveragePerWeek();
-        $startAverageDate = $startLegalWeek->modify("-12 week");        
+        $startAverageDate = $checkRules->StartLegalWeek($date)->modify('-12 week');
         $beCareful = [];
         $totalHours = 0;
         $countWeeks = 0;
-                
+        $arrayWeeks = 0;
+
         if (!$startAverageDate) {
              $beCareful['Nombre de semaines'] = "Le nombre de semaine comprise dans l'arrêt de tranche est inférieur à $LegalMaxAveragePerWeek. Impossible de calculer le moyenne";
-             
-        } else {            
-            $newDate = \DateTimeImmutable::createFromMutable($startAverageDate);
+
+        } else {
+            $newDate = $startAverageDate;
             while ($newDate <= $startLegalWeek) {
                $startLegalWeek =  $checkRules->StartLegalWeek($newDate);
-               $endLegalWeek = $checkRules->EndLegalWeek($newDate); 
+               $endLegalWeek = $checkRules->EndLegalWeek($newDate);
                 if ($checkRules->isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)){
-                    $arrayWeeks += $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user);                    
+                    $arrayWeeks += $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user);
                     $totalHours += $checkRules->HoursPerWeek($arrayWeeks);
-                    $countWeeks +=1;                
+                    $countWeeks +=1;
                     $newDate->modify('+ 1 week');
                 }
             }
