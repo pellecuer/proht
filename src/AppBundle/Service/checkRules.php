@@ -82,7 +82,7 @@ class checkRules {
     
     public function LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter)
     {
-        //Check if H in legal week
+        //Check if H in legal week        
         $H = $this->em
             ->getRepository(AgendaTemp::class)
             ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);       
@@ -106,17 +106,16 @@ class checkRules {
      
     
     public function RaroundH($H, $agent, $user, $RLetter)
-    {        
-        $dateH =  \DateTimeImmutable::createFromMutable($H[0]->getDate());        
-        $dateBeforeH = $dateH->modify('-1 day');
-        $dateAfterH = $dateBeforeH->modify('+2 day');
+    {   
+        $dateBeforeH = \DateTimeImmutable::createFromMutable($H[0]->getDate()->modify('-1 day')); 
+        $dateAfterH = \DateTimeImmutable::createFromMutable($H[0]->getDate()->modify('+2 day'));        
         $rBefore = $this->em
             ->getRepository(AgendaTemp::class)
             ->findTempByDateByUserByAgentByLetter($dateBeforeH, $agent, $user, $RLetter);
             
-            $rAfter = $this->em
-                ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);             
+        $rAfter = $this->em
+            ->getRepository(AgendaTemp::class)
+            ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);             
         
                  
         $RaroundH = [

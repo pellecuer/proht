@@ -95,8 +95,7 @@ class AgendaTempController extends Controller {
                 ->getRepository(Letter::class)
                 ->findOneBy([
                     'letter' =>'R',
-                ]);
-
+                ]);       
 
             //Persist in db for testing
             $agendaTemp->setLetter($letter);
@@ -107,6 +106,9 @@ class AgendaTempController extends Controller {
 
             //Check if HoursPerWeek is under maximum
             $hoursPerWeek = $checkRules->HoursPerWeek($arrayWeeks);
+            
+             
+            
             if ($hoursPerWeek > '48') {
                 $errors['Heures hebdomadaires'] = "Le nombre d'heures hebdomadaires dépasse le maximum légal de 48 heures.";
             }
@@ -120,10 +122,15 @@ class AgendaTempController extends Controller {
             if ($interval[0] < $LegalRestBetweenDays || $interval[1]< $LegalRestBetweenDays) {
                 $errors['repos journalier'] = "Le nombre d'heures de repos minimum entre deux jours est inférieur à 11 heures.";
             }
+            
+            
+            
 
             
             //check if H in Legal Week and Legal Week is full
-            $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);         
+            $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);
+            
+            
                         
             if (!$H){
                 //check if H in Legal Week and Legal Week is full
@@ -132,14 +139,19 @@ class AgendaTempController extends Controller {
                 }
             }
             
+            //ok           
+            
             if ($H) {                    
-                    // check if R around H     
-                    $RaroundH = $checkRules->RaroundH($H, $agent, $user, $RLetter);
-
-                    //Check if R around next H
-                    $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);                    
-                    $RaroundNextH = $checkRules->RaroundH($nxtH, $agent, $user, $RLetter);   
+                // check if R around H                
+                $RaroundH = $checkRules->RaroundH($H, $agent, $user, $RLetter);
+                
+                //Check if R around next H
+                $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);                    
+                $RaroundNextH = $checkRules->RaroundH($nxtH, $agent, $user, $RLetter);   
             }
+            
+            
+            
                 
             if (!$RaroundH || !$RaroundNextH) {
                 $errors['Repos hebdomadaire R'] = "Il manque un R avant ou après le H pour la date du : " . $H[0]->GetDate()->format('D d M Y'). " ou la date du : " . $nxtH[0]->GetDate()->format('D d M Y') ;
