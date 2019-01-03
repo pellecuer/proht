@@ -108,8 +108,9 @@ class checkRules {
     
     public function RBeforeH ($H, $agent, $user, $RLetter)
     {
-        $date = $H[0]->getDate();
-        $dateBeforeH = $date->modify('-1 day');
+        $dateBeforeH =$H[0]
+                ->getDate()
+                ->modify('-1 day');
         $rBefore = $this->em
             ->getRepository(AgendaTemp::class)
             ->findTempByDateByUserByAgentByLetter($dateBeforeH, $agent, $user, $RLetter);
@@ -119,9 +120,10 @@ class checkRules {
     }
 
     public function RAfterH ($H, $agent, $user, $RLetter)
-    {
-        $date = $H[0]->getDate();
-        $dateAfterH = $date->modify('+1 day');
+    {        
+         $dateAfterH = $H[0]
+                 ->getDate()
+                 ->modify('+2 day');
         $rAfter = $this->em
             ->getRepository(AgendaTemp::class)
             ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);
@@ -136,34 +138,45 @@ class checkRules {
     
     public function AverageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek)
     {
-        //find date - 12 semaines
+        //find AgendaTemp - X semaines
         $LegalMaxAveragePerWeek = $this->em
             ->getRepository(Rule::class)
             ->find(1)
             ->getMaxAveragePerWeek();
-        $startAverageDate = $checkRules->StartLegalWeek($date)->modify('-12 week');
-        $beCareful = [];
+        
+        $intervalWeekBefore = $this->em
+            ->getRepository(Rule::class)
+            ->find(1)
+            ->getNbWeekForAverage();       
+        $startAverageDate = $checkRules->StartLegalWeek($date)->modify("-$intervalWeekBefore week");
+        
+        $agendaTempBeforeXWeeks = $this->em
+                ->getRepository(AgendaTemp::class)
+                ->findTempByDateByUserByAgent($startAverageDate, $agent, $user);
+        
+        $arrayWeeks = [];
         $totalHours = 0;
-        $countWeeks = 0;
-        $arrayWeeks = 0;
-
-        if (!$startAverageDate) {
-             $beCareful['Nombre de semaines'] = "Le nombre de semaine comprise dans l'arrêt de tranche est inférieur à $LegalMaxAveragePerWeek. Impossible de calculer le moyenne";
+        $countWeeks = 1;
+        
+        if (!$agendaTempBeforeXWeeks) {
+             $averageHoursPerWeek = "Le nombre de semaine comprise dans l'arrêt de tranche est inférieur à $LegalMaxAveragePerWeek. Impossible de calculer le moyenne";
 
         } else {
-            $newDate = $startAverageDate;
+            $newDate = $startAverageDate;            
             while ($newDate <= $startLegalWeek) {
-               $startLegalWeek =  $checkRules->StartLegalWeek($newDate);
-               $endLegalWeek = $checkRules->EndLegalWeek($newDate);
-                if ($checkRules->isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)){
-                    $arrayWeeks += $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user);
-                    $totalHours += $checkRules->HoursPerWeek($arrayWeeks);
-                    $countWeeks +=1;
-                    $newDate->modify('+ 1 week');
+                $startWeek =  $checkRules->StartLegalWeek($newDate);
+                $endWeek = $checkRules->EndLegalWeek($newDate);
+                if ($checkRules->isLegalWeekFull($startWeek, $endWeek, $agent, $user)){
+                     $arrayWeeks += $checkRules->ArrayWeek ($startWeek, $endWeek, $agent, $user);
+                     $totalHours += $checkRules->HoursPerWeek($arrayWeeks);
+                     $countWeeks += 1;
+                     $newDate->modify('+ 1 week');
                 }
             }
         }
         $averageHoursPerWeek = $totalHours / $countWeeks;
+         
+        
         return $averageHoursPerWeek;
     }
         

@@ -83,10 +83,6 @@ class AgendaTempController extends Controller {
             $startLegalWeek = $checkRules->StartLegalWeek($date);
             $endLegalWeek = $checkRules->EndLegalWeek($date);
             $arrayWeeks = $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user);
-
-
-
-
             $HLetter = $this->getDoctrine()
                 ->getRepository(Letter::class)
                 ->findOneBy([
@@ -98,7 +94,6 @@ class AgendaTempController extends Controller {
                     'letter' =>'R',
                 ]);
 
-            //ok
 
             //Persist in db for testing
             $agendaTemp->setLetter($letter);
@@ -106,11 +101,8 @@ class AgendaTempController extends Controller {
             $em->persist($agendaTemp);
             $em->flush();
 
-
             //Check if HoursPerWeek is under maximum
             $hoursPerWeek = $checkRules->HoursPerWeek($arrayWeeks);
-
-            //ok
 
             
             if ($hoursPerWeek > '48') {
@@ -127,15 +119,8 @@ class AgendaTempController extends Controller {
                 $errors['repos journalier'] = "Le nombre d'heures de repos minimum entre deux jours est inférieur à 11 heures.";
             }
 
-            //ok
-
-
-
             //check if H in Legal Week and Legal Week is full
             $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);
-
-            //ok
-
             
                         
             if (!$H){
@@ -145,21 +130,22 @@ class AgendaTempController extends Controller {
                 }
             }
 
-            //ok
-            $errors['R around H'] = '';
-            $errors['R around NextH'] = '';
+            $errors['R around H'] = 'Everything ok';
+            $errors['R around NextH'] = 'Everything ok';
 
 
             if ($H) {
                 // check if R before or after H
                 $rBeforeH = $checkRules->RBeforeH($H, $agent, $user, $RLetter);
                 $rAfterH = $checkRules->RAfterH($H, $agent, $user, $RLetter);
+                $dateH = \DateTimeImmutable::createFromMutable($H[0]->GetDate());
 
-                if (!$rBeforeH || !$rAfterH) {
-                    $errors['R around H'] = "Il manque un R avant ou après le H pour la date du : " . $H[0]->GetDate()->format('D d M Y') ;
+                if (!$rBeforeH && !$rAfterH) {
+                    $errors['R around H'] = "Il manque un R avant ou après le H pour la date du : " . $dateH
+                            ->modify('-1 day')
+                            ->format('D d M Y') ;
                 }
-            }
-            //ok
+            }            
 
             $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);
 
@@ -167,27 +153,31 @@ class AgendaTempController extends Controller {
                 //Check if R before or after next H
                 $rBeforeNextH = $checkRules->RBeforeH($nxtH, $agent, $user, $RLetter);
                 $rAfterNextH = $checkRules->RAfterH ($nxtH, $agent, $user, $RLetter);
+                $dateNextH = $nxtH[0]->GetDate();
 
-                if (!$rBeforeNextH || !$rAfterNextH) {
-                    $errors['R around NextH'] = "Il manque un R avant ou après le H pour la date du : " . $nxtH[0]->GetDate()->format('D d M Y');
+                if (!$rBeforeNextH && !$rAfterNextH) {
+                    $errors['R around NextH'] = "Il manque un R avant ou après le H pour la date du : " . $dateNextH
+                            ->modify('-1 day')                            
+                            ->format('D d M Y');
                 }
-            }
-            //ok
+            } 
 
+                
 
-
+            // check if average of hourPerweek is legal;
+            
+            $averageHourPerWeek = $checkRules
+                ->averageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek);
+            $max = $this->getDoctrine()->getRepository(Rule::class)
+                ->find(1)->getMaxAveragePerWeek();
+            
             $response = new Response(json_encode([
-                'titre' => $errors['R around NextH']
+                'titre' => $averageHourPerWeek,
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
             return $response;
-
-
-            // check if average of hourPerweek is legal;
-           $averageHourPerWeek = $checkRules->averageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek);
-            $max = $this->getDoctrine()->getRepository(Rule::class)
-                ->find(1)->getMaxAveragePerWeek();
+            
             if ($averageHourPerWeek > $max) {
                 $errors['moyenne d\'heures de travail hebdomadaire trop élevé'] = "La moyenne d\'heures de travail hebdomadaire dépasse la durée légale de " . $max . 'sur la semaine du' . $startLegalWeek->format('D d M Y');
             }
@@ -339,6 +329,7 @@ class AgendaTempController extends Controller {
                 }
                 $agentBetweens[] = $agendaDate;
             }
+            //dump ($agentBetweens); die;
 
         return $this->render('agendaTemp.html.twig', [
 

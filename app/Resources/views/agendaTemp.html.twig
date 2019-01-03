@@ -81,6 +81,7 @@
                 </thead>
                 <tbody>                        
                     {% for agentBetween in agentBetweens %}
+                       {% if  agentBetween.0 %}
                         <tr id = "{{ agentBetween.0.agent.nni  }}">
                             <td>{{agentBetween.0.agent.name  }}</td>
                             <td>{{agentBetween.0.agent.firstname  }}</td>
@@ -106,7 +107,8 @@
                             <td class="check"><a href=""><i class="fas fa-check text-success"></i></a></td>
                             <td class="trash"><a href="{{ path('deleteAgenda', { 'agentId': agentBetween.0.agent.id }) }}"><i class="fas fa-trash-alt text-danger"></i></a></td>                                                                
                         </tr>
-                   {% endfor %}                        
+                        {% endif %}
+                    {% endfor %}                        
                 </tbody>                 
             </table>
 
