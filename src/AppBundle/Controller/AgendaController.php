@@ -109,7 +109,7 @@ class AgendaController extends Controller {
     {        
         //build the form
         $form = $this->createFormBuilder()
-            /*->add('startDate', DateType::class, array(
+            ->add('startDate', DateType::class, array(
             'placeholder' => 'Choose a delivery option',
             'constraints' => array(
                     new NotBlank()
@@ -119,7 +119,7 @@ class AgendaController extends Controller {
             'attr' => array('class' => 'form-group mb-2'),
              ))
                 
-            ->add('endDate', DateType::class, array(
+            /*->add('endDate', DateType::class, array(
             'placeholder' => 'Choose a delivery option',
             'constraints' => array(
                     new NotBlank()
@@ -160,17 +160,9 @@ class AgendaController extends Controller {
             $data = $form->getData();
             $dateInterval = $data['interval'];
             $team = $data['Team'];
-
-        } else {
-            //Default interval 15 days and default Team egal $user Team
-            $dateInterval = new \dateInterval ('P15D');
-            $team = $this->getDoctrine()
-                ->getRepository(Team::class)
-                ->find(3);
-
-        }
+            $startDate = $data['startDate'];
+        }       
         
-        $startDate = $team->getEvent()->getStartDate();
         $immutable = \DateTimeImmutable::createFromMutable($startDate);           
         $endDate = $immutable->add($dateInterval);
         
