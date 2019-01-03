@@ -13,6 +13,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
 
 
+
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
@@ -20,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
  
 class AgendaController extends Controller {
@@ -119,16 +121,6 @@ class AgendaController extends Controller {
             'attr' => array('class' => 'form-group mb-2'),
              ))
                 
-            /*->add('endDate', DateType::class, array(
-            'placeholder' => 'Choose a delivery option',
-            'constraints' => array(
-                    new NotBlank()
-            ),
-            'widget' => 'single_text',
-            'label'  => 'Date de fin',
-            'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
-            ))*/
-                
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
                 'choice_label' => 'name',
@@ -153,6 +145,14 @@ class AgendaController extends Controller {
         
             ->getForm()
             ;
+        
+        //initialize variables
+        $team = [];
+        $startDate = new \DateTime('now');
+        $immutable = \DateTimeImmutable::createFromMutable($startDate);
+        $defaultInterval = new \DateInterval('P15D');
+        $endDate = $immutable->add($defaultInterval);
+        $agents = [];
             
         //get date from Form
         $form->handleRequest($request);
@@ -161,21 +161,12 @@ class AgendaController extends Controller {
             $dateInterval = $data['interval'];
             $team = $data['Team'];
             $startDate = $data['startDate'];
+            $immutable = \DateTimeImmutable::createFromMutable($startDate);           
+            $endDate = $immutable->add($dateInterval);
+            $agents = $team->getAgents();
         }       
         
-        $immutable = \DateTimeImmutable::createFromMutable($startDate);           
-        $endDate = $immutable->add($dateInterval);
-        
-        //build letter Array
-        $agents = $team->getAgents();
-
-        /*$agentBetweens = [];
-        For ($i=0; $i<count($agents); $i++){
-            $agentBetweens[] = $this->getDoctrine()
-                ->getRepository(Agenda::class)
-                ->findAllBetweenDate($startDate, $endDate, $agents[$i]);
-        }*/
-        //dump($agentBetweens);die;
+       
 
         //build ArrayDate
         $interval = new \DateInterval('P1D');
@@ -186,8 +177,7 @@ class AgendaController extends Controller {
             $immutable = $immutable->add($interval);
         }
 
-
-        //show holidays
+        //build holidays
         $holidays = [];
         foreach ($arrayDates as $arrayDate){
             $holidays[] = $this->getDoctrine()
@@ -195,9 +185,8 @@ class AgendaController extends Controller {
                 ->findHolidaysByDate($arrayDate);
         }
 
-
-
-        //Show2
+        //build agendas
+        
         $agentBetweens = [];
         foreach ($agents as $agent) {
             $agendaDate = [];
