@@ -69,7 +69,17 @@ new $.fn.dataTable.Buttons( table, {
         {
             extend: 'print',
             text: 'Imprimer',
-            autoPrint: true
+            autoPrint: true,
+            exportOptions: {
+                columns: ':visible',
+            },
+            customize: function (win) {
+                $(win.document.body).find('table').addClass('compact').css('font-size', '9px');
+                $(win.document.body).find('tr:nth-child(odd) td').each(function(index){
+                    $(this).css('background-color','#D0D0D0');
+                });
+                $(win.document.body).find('h1').css('text-align','center');
+            }
         },
         {
             extend: 'copyHtml5',
@@ -81,11 +91,12 @@ new $.fn.dataTable.Buttons( table, {
         },
         {
             extend: 'pdfHtml5',
-            text: 'PDF',
+            text: 'PDF A3',
             orientation: 'landscape',
-            pageSize: 'LEGAL'
-        }
-    ],
+            pageSize: 'A3'
+            // A4 = 'legal'
+        }              
+    ]
 } );
 
 table.buttons( 0, null ).containers().appendTo( '#buttonPrint' );

@@ -328,8 +328,7 @@ class AgendaTempController extends Controller {
                         ],  ['date' => 'ASC']);
                 }
                 $agentBetweens[] = $agendaDate;
-            }
-            dump ($agentBetweens); die;
+            }           
 
         return $this->render('agendaTemp.html.twig', [
 
