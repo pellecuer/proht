@@ -130,8 +130,7 @@ class AgendaTempController extends Controller {
                 }
             }
 
-            $errors['R around H'] = 'Everything ok';
-            $errors['R around NextH'] = 'Everything ok';
+            
 
 
             if ($H) {
@@ -175,8 +174,9 @@ class AgendaTempController extends Controller {
                 'titre' => $averageHourPerWeek,
             ]));
             $response->headers->set('Content-Type', 'application/json');
-            return $response;            
+            return $response;          
             */
+            
             
             if ($averageHourPerWeek > $max) {
                 $errors['moyenne d\'heures de travail hebdomadaire trop élevé'] = "La moyenne d\'heures de travail hebdomadaire dépasse la durée légale de " . $max . 'sur la semaine du' . $startLegalWeek->format('D d M Y');
