@@ -165,18 +165,18 @@ class AgendaTempController extends Controller {
                 
 
             // check if average of hourPerweek is legal;
-            
             $averageHourPerWeek = $checkRules
                 ->averageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek);
             $max = $this->getDoctrine()->getRepository(Rule::class)
                 ->find(1)->getMaxAveragePerWeek();
             
+            /*
             $response = new Response(json_encode([
                 'titre' => $averageHourPerWeek,
             ]));
-
             $response->headers->set('Content-Type', 'application/json');
-            return $response;
+            return $response;            
+            */
             
             if ($averageHourPerWeek > $max) {
                 $errors['moyenne d\'heures de travail hebdomadaire trop élevé'] = "La moyenne d\'heures de travail hebdomadaire dépasse la durée légale de " . $max . 'sur la semaine du' . $startLegalWeek->format('D d M Y');
