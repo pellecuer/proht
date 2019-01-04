@@ -201,7 +201,7 @@ class AgendaController extends Controller {
             $agentBetweens[] = $agendaDate;
         }
 
-        //dump($agentBetweens);die;
+        dump($agentBetweens);die;
 
 
         

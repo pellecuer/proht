@@ -11,7 +11,7 @@
         <p>Consulter, modifier, imprimer la planning de vos équipes</p>
     </header>
     <div class="row border border-rounded my-2">
-        <div class="col-md-6">
+        <div class="col-md-4">
                 <span class="fa-stack fa-1x my-2">
                     <i class="fas fa-circle fa-stack-2x text-secondary"></i>
                     <a href="{{ path('createEvent') }}"><i class="fas fa-plus fa-stack-1x fa-inverse text-white"></i></a>
@@ -19,7 +19,7 @@
                 <span id="buttonPrint">
                 </span>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7 offset-md-1">
             <form action="{{ path('showAgenda') }}" method="post" class="form form-inline">
                 <div class="form-group mb-2">
                     {{ form_start(form) }}
