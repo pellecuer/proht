@@ -164,9 +164,7 @@ class AgendaController extends Controller {
             $immutable = \DateTimeImmutable::createFromMutable($startDate);           
             $endDate = $immutable->add($dateInterval);
             $agents = $team->getAgents();
-        }       
-        
-       
+        }
 
         //build ArrayDate
         $interval = new \DateInterval('P1D');
@@ -185,21 +183,16 @@ class AgendaController extends Controller {
                 ->findHolidaysByDate($arrayDate);
         }
 
-        //build agendas
-        
+        //build agendas        
         $agentBetweens = [];
-        foreach ($agents as $agent) {
-            $agendaDate = [];
+        foreach ($agents as $agent) {            
             foreach ($arrayDates as $arrayDate) {
-            $agendaDate[] = $this->getDoctrine()
+            $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
-                ->findOneBy([
-                    'agent' => $agent,
-                    'date' => $arrayDate,
-                ],  ['date' => 'ASC']);
-            }
-            $agentBetweens[] = $agendaDate;
+                ->findAllBetweenDate($agent, $startDate, $endDate);
+            }          
         }
+        
 
         //dump($agentBetweens);die;
 
