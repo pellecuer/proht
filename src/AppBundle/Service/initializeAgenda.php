@@ -17,17 +17,33 @@ use AppBundle\Entity\Agenda;
 class initializeAgenda {
     
     public function __construct(EntityManagerInterface $entityManager)
-{
-    $this->em = $entityManager;
-}
+    {
+        $this->em = $entityManager;
+    }
+
     
     public function initialize($team, $agent)
     {
         //build the arrayDate
         $startDate = $team->getEvent()->getStartDate();        
         $endDate = $team->getEvent()->getEndDate();        
-        $date = $startDate;        
+        $date = $startDate;
+        $agentId = $agent->getId();
         
+        //remove existent agenda if exists
+        $agendaToRemoves = $this->em
+            ->getRepository(Agenda::class)
+            ->deleteAgentAgendaBetweenDate($startDate, $endDate, $agentId);
+        
+        if ($agendaToRemoves) {
+        
+        foreach ($agendaToRemoves as $agendaToRemove){
+            $this->em->remove($agendaToRemove); 
+        }                
+        $this->em->flush();        
+        } 
+        
+        //initialize Agenda with default values        
         while ($startDate<=$endDate){ 
             $agenda = new Agenda();
             $agenda->setAgent($agent);           
@@ -56,11 +72,6 @@ class initializeAgenda {
            $this->em->persist($agenda);
            $this->em->flush();
            $date -> modify('+1 day');           
-        }
-        
-        
-        $message = 'agenda initialisé pour l\'agent : ' . $agent->getName();
-
-        return $message;
+        }        
     }    
 }

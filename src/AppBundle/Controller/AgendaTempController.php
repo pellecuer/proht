@@ -17,6 +17,7 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Rule;
 
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -28,6 +29,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Security\Core\User\UserInterface;
 use AppBundle\Service\historyAgenda;
 use AppBundle\Service\checkRules;
+use AppBundle\Service\initializeAgenda;
 
 /**
  * Team controller.
@@ -360,7 +362,7 @@ class AgendaTempController extends Controller {
             $agendaToRemove->setAgent(null);
             $em->remove($agendaToRemove);            
         }                
-        $em->flush();
+       $em->flush();
        $this->addFlash('success', 'L\'agenda provisoire a bien été supprimé pour l\'équipe ' . $team->getName());
       
            
@@ -411,6 +413,25 @@ class AgendaTempController extends Controller {
                 'id' => $team->getId(),
                 'userId' =>$user->getId()
                     ));               
+    }
+    
+    /**
+     * Initialize an agenda entity.
+     *
+     * @Route("/initialize/{agentId}", name="InitializeAgenda")
+     * @Method("GET")
+     */
+    public function initializeAction($agentId, InitializeAgenda $initializeAgenda)
+    {
+        //Get the service Initialize
+        $agent = $this->getDoctrine()
+        ->getRepository(Agent::class)                
+        ->find($agentId);
+        $team = $agent->getTeam();        
+        $initializeAgenda->initialize($team, $agent); 
+        $this->addFlash('success', 'L\'agenda a réinitialisé pour l\'agent ' . $agent->getName());
+        
+        return $this->redirectToRoute('showAgenda');
     }
 }
 

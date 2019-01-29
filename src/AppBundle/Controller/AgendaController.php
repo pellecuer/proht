@@ -13,7 +13,6 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
 
 
-
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
@@ -251,5 +250,6 @@ class AgendaController extends Controller {
         $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
            
         return $this->redirectToRoute('showAgenda');
-    } 
+    }
+    
 }
