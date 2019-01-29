@@ -191,10 +191,18 @@ class AgendaController extends Controller {
                 $agent->getFirstName(),
                 $agent->getNni(),
                 $agent->getFunction()
-                ];                
-            $agentBetweens[] = $this->getDoctrine()
-                ->getRepository(Agenda::class)
-                ->findAllBetweenDate($startDate, $endDate, $agent);                    
+                ];
+            
+            $agendaDate = [];
+            foreach ($arrayDates as $arrayDate) {                
+                $agendaDate[] = $this->getDoctrine()
+                    ->getRepository(Agenda::class)
+                    ->findOneBy([
+                        'agent' => $agent,
+                        'date' => $arrayDate,
+                    ],  ['date' => 'ASC']);
+            }
+            $agentBetweens[] = $agendaDate;
         }
         
 
