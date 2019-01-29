@@ -183,10 +183,11 @@ class AgendaController extends Controller {
                 ->findHolidaysByDate($arrayDate);
         }
 
-        //build agendas        
-        $agentBetweens = [];
+        //build agenda
+        $agentBetweens = [];        
         foreach ($agents as $agent) {
-            $agentBetweens[] = [
+            $agentIdentification = [];
+            $agentIdentification[] = [
                 $agent->getName(),
                 $agent->getFirstName(),
                 $agent->getNni(),
@@ -194,17 +195,17 @@ class AgendaController extends Controller {
                 ];
             
             $agendaDate = [];
-            foreach ($arrayDates as $arrayDate) {                
+            foreach ($arrayDates as $arrayDate) {
+               
                 $agendaDate[] = $this->getDoctrine()
                     ->getRepository(Agenda::class)
                     ->findOneBy([
                         'agent' => $agent,
                         'date' => $arrayDate,
-                    ],  ['date' => 'ASC']);
-            }
-            $agentBetweens[] = $agendaDate;
-        }
-        
+                    ],  ['date' => 'ASC']);                
+            }      
+            $agentBetweens[] = [$agentIdentification, $agendaDate];            
+        }       
 
         //dump($agentBetweens);die;
 
