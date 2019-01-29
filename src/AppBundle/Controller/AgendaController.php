@@ -185,12 +185,10 @@ class AgendaController extends Controller {
 
         //build agendas        
         $agentBetweens = [];
-        foreach ($agents as $agent) {            
-            foreach ($arrayDates as $arrayDate) {
+        foreach ($agents as $agent) { 
             $agentBetweens[] = $this->getDoctrine()
                 ->getRepository(Agenda::class)
-                ->findAllBetweenDate($agent, $startDate, $endDate);
-            }          
+                ->findAllBetweenDate($startDate, $endDate, $agent);                    
         }
         
 
