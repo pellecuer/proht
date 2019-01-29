@@ -96,9 +96,12 @@
                         <th scope ="col" class="text-info"></th>
                     </tr>
                 </thead>
-                <tbody>                
+                <tbody> 
+                    {% if agentBetweens %}
                         {% for agent in agentBetweens.0 %}
-                        <td>{{ agent }}</td>                       
+
+                                <td>{{ agent }}</td>
+
                         {% endfor  %}
                         
                         {% for agenda in agentBetweens.1 %}                            
@@ -117,6 +120,7 @@
                                 <td class="editFor border border-dark"></td>
                             {% endif  %}
                         {% endfor %}
+                    {% endif  %}
                         <td class="update" scope ="col"><i class="fas fa-edit text-color-blue"></i></td>
                         <td class="check"><a href=""><i class="fas fa-check text-success"></i></a></td>
                         {#
