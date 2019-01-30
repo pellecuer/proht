@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 /**
  * Team controller.
@@ -129,62 +129,27 @@ class TeamController extends Controller {
         return $this->redirectToRoute('showteam');
     }
     
-       /**
+     /**
      * Add an Agent in Team.
      *
      * @Route("/add/{id}", name="addAgent")
      * @Method({"GET", "POST"})
      */
-    public function addAgentAction($id, Request $request)
-    {
-        $team = $this->getDoctrine()    
-                    ->getRepository(Team::class)
-                    ->find($id);        
-        
-        //build the form
-        $form = $this->createFormBuilder()          
-            ->add('Agent', EntityType::class, array(
-                'class' => Agent::class,
-                'choice_label' => 'name',
-                'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
-                ))
-            
-            ->add('Envoyer', SubmitType::class, array(
-            'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
-            ))
-        
-            ->getForm()
-            ;
-        
-         //get data from Form
-        $form->handleRequest($request); 
-        //dump($form);die;
-        if ($form->isSubmitted() && $form->isValid()) {
-            $agentArray = $form->getData();
-            $agent = $agentArray['Agent'];            
-                  
-             //add Agent
-            $team->addAgent($agent);
+    public function addAgentAction(Agent $agent)
+    {         
+        $connectedUser = $this->getUser();        
+        $team = $connectedUser->getTeam();
+        $team->addAgent($agent);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($agent);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($agent);
+        $em->flush();
 
-            $this->addFlash('success',
-                        'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team ' . $team->getName()
-                );            
-                  
-            return $this->redirectToRoute('showAgents', array('id' => $team->getId()));        
-        }
+        $this->addFlash('success',
+                    'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team ' . $team->getName()
+            );            
         
-        
-        return $this->render('team/addAgent.html.twig', array(
-            //'team' => $team,
-            'form' => $form->createView(),
-            'team' => $team,
-            'title'=> 'Ajouter'
-            
-        ));
+       return $this->redirectToRoute('showAgents', array('id' => $team->getId()));
     }
     
      /**

@@ -57,6 +57,8 @@ class AgentType extends AbstractType
                         
             ->add('Envoyer', SubmitType::class, array(
             'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
-        ));
-    } 
+        ));      
+       
+    }    
+    
 }

@@ -35,6 +35,7 @@
                             <th>Modifier</th>
                             <th>Supprimer</th>
                             <th>Historique des modifications</th>
+                            <th>Ajouter à mon Equipe</th>
                             
                         </tr>
                     </thead>                    
@@ -50,6 +51,7 @@
                                 <td><a href="{{ path('editAgent', { 'id': agent.id }) }}"><i class="fas fa-edit"></i></a></td>
                                 <td><a href="{{ path('deleteAgent', { 'id': agent.id }) }}"><i class="fas fa-trash-alt"></i></a></td>
                                 <td><a href="{{ path('showHistory', { 'id': agent.id }) }}"><i class="fas fa-history"></i></a></td>
+                                <td><a href="{{ path('addAgent', { 'id': agent.id }) }}"><i class="fas fa-plus text-success"></i></a></td>
                             </tr>
                         {% endfor %}                       
                     </tbody>
