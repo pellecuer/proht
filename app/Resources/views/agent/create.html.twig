@@ -8,7 +8,7 @@
 {% block body %}   
     <div class="container">       
         <h1>Créer un nouvel agent</h1>
-        <form action="{{ path('createAgent') }}" method="post" class="form">
+        <form action="{{ path('user_registration') }}" method="post" class="form">
             <div class="form-group mb-2">
             {{ form_start(form) }}  
             {{ form_rest(form) }}

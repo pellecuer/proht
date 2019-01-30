@@ -14,7 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use AppBundle\Service\initializeAgenda;
 
 /**
  * Team controller.
@@ -136,19 +135,19 @@ class TeamController extends Controller {
      * @Route("/add/{id}", name="addAgent")
      * @Method({"GET", "POST"})
      */
-    public function addAgentAction($id, Request $request, InitializeAgenda $initializeAgenda)
+    public function addAgentAction($id, Request $request)
     {
         $team = $this->getDoctrine()    
                     ->getRepository(Team::class)
-                    ->find($id);  
+                    ->find($id);        
+        
         //build the form
-        $form = $this->createFormBuilder()
-                
+        $form = $this->createFormBuilder()          
             ->add('Agent', EntityType::class, array(
                 'class' => Agent::class,
                 'choice_label' => 'name',
                 'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
-                ))  
+                ))
             
             ->add('Envoyer', SubmitType::class, array(
             'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
@@ -157,11 +156,12 @@ class TeamController extends Controller {
             ->getForm()
             ;
         
-         //get date from Form
-        $form->handleRequest($request);
+         //get data from Form
+        $form->handleRequest($request); 
+        //dump($form);die;
         if ($form->isSubmitted() && $form->isValid()) {
-             $agentArray = $form->getData();             
-             $agent = $agentArray['Agent'];            
+            $agentArray = $form->getData();
+            $agent = $agentArray['Agent'];            
                   
              //add Agent
             $team->addAgent($agent);
@@ -173,8 +173,7 @@ class TeamController extends Controller {
             $this->addFlash('success',
                         'L\' agent : ' . $agent->getName(). ' a été ajouté avec succès à la team ' . $team->getName()
                 );            
-            //Get the service Initialize         
-            //$initializeAgenda->initialize($team, $agent);           
+                  
             return $this->redirectToRoute('showAgents', array('id' => $team->getId()));        
         }
         
