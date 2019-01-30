@@ -3,14 +3,20 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Agent
  *
- * @ORM\Table(name="agent")
+ * @ORM\Table(name="app_users")
+ * @UniqueEntity(fields="email", message="Email already taken")
+ * @UniqueEntity(fields="username", message="Username already taken")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AgentRepository")
  */
-class Agent
+class Agent implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -58,14 +64,43 @@ class Agent
      */
     private $team;
     
+    /**
+     * @ORM\Column(type="string", length=254, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Email
+     */
+    private $email;
 
     /**
-     * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Role")
-     * * @ORM\JoinColumn(nullable=true)
+     * @ORM\Column(type="string", length=25, unique=true)
+     * @Assert\NotBlank
      */
-    private $role;
+    private $username;
+    
+    
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
+    
+    
+    /**
+     * The below length depends on the "algorithm" you use for encoding
+     * the password, but this works well with bcrypt.
+     *
+     * @ORM\Column(type="string", length=64)
+     */
+    private $password;
+
+   
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $roles;
+    
+
+    
     
     function getId() {
         return $this->id;
@@ -91,9 +126,7 @@ class Agent
         return $this->team;
     }
 
-    function getRole() {
-        return $this->role;
-    }
+    
 
     function setId($id) {
         $this->id = $id;
@@ -120,7 +153,99 @@ class Agent
         return $this;
     }
 
-    function setRole($role) {
-        $this->role = $role;
+    
+    
+
+    public function __construct()
+    {
+        $this->roles = array('ROLE_USER');
+    }   
+    
+
+    // other properties and methods
+
+    public function getEmail()
+    {
+        return $this->email;
     }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+    
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+    
+    
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+    
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+    }
+    
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    
+     public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+    
+    public function getSalt()
+    {
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return null;
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized, array('allowed_classes' => false));
+    }
+    
+    
+    
 }

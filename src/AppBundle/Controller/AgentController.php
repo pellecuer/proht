@@ -2,23 +2,13 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Entity\Agent;
 use AppBundle\Form\Type\AgentType;
-use AppBundle\Form\Type\TeamType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
-use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityManagerInterface;
-use AppBundle\Entity\Team;
-use AppBundle\Entity\Role;
-use AppBundle\Entity\Event;
-
-
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
@@ -30,14 +20,47 @@ class AgentController extends Controller
 {
     
     /**
+    * @Route("/register", name="user_registration")
+    */
+    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        // 1) build the form
+        $agent = new Agent();
+        $form = $this->createForm(AgentType::class, $agent);
+
+        // 2) handle the submit (will only happen on POST)
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // 3) Encode the password (you could also do this via Doctrine listener)
+            $password = $passwordEncoder->encodePassword($agent, $agent->getPlainPassword());
+            $agent->setPassword($password);
+
+            // 4) save the User!
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($agent);
+            $entityManager->flush();
+
+            // ... do any other work - like sending them an email, etc
+            // maybe set a "flash" success message for the user
+
+            return $this->redirectToRoute('showagent');
+        }
+
+        return $this->render(
+            'registration/register.html.twig',
+            array('form' => $form->createView())
+        );
+    }
+    
+    
+    /**
         * @Route("/show/{id}", name="findAgent")
      */
     public function findAgentAction($id)
-    {
-             // finds *all* products 
+    {             
         $agent = $this->getDoctrine()->getRepository(Agent::class)
-                ->find($id);                  
-
+                ->find($id); 
         if (!$agent) {
             throw $this->createNotFoundException(
                 'No agent found'
@@ -56,19 +79,17 @@ class AgentController extends Controller
     public function showAction()
     {
              // finds *all* products 
-        $agents = $this->getDoctrine()->getRepository(Agent::class)->findAll();                  
+        $agents = $this->getDoctrine()
+                ->getRepository(Agent::class)
+                ->findAll();               
 
         if (!$agents) {
-            throw $this->createNotFoundException(
-                'No agent found'
-            );
+            return $this->redirectToRoute('user_registration');
         }        
         
         return $this->render('agent/show.html.twig', array(
                 'agents' => $agents,
             ));
-
-        // ... do something, like pass the $product object into a template
     }
     
     /**
@@ -88,8 +109,7 @@ class AgentController extends Controller
                        
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);            
-            $entityManager->flush();
-            
+            $entityManager->flush();            
             
             //return new Response('Saved new event with id '.$event->getId());
             $this->addFlash('success',

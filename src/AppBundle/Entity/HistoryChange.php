@@ -48,14 +48,13 @@ class HistoryChange
      * @ORM\Column(name="dateChange", type="datetime")
      */
     private $dateChange;
-
+    
     /**
-     * @var
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @var int
+     *           
      */
-    private $user;
-
+    private $AgentId;
+    
 
     function getId() {
         return $this->id;
@@ -77,9 +76,7 @@ class HistoryChange
         return $this->dateChange;
     }
 
-    function getUser() {
-        return $this->user;
-    }
+    
 
     function setId($id) {
         $this->id = $id;
@@ -100,8 +97,13 @@ class HistoryChange
     function setDateChange(\DateTime $dateChange) {
         $this->dateChange = $dateChange;
     }
+    
+    function getAgentId() {
+        return $this->AgentId;
+    }
 
-    function setUser($user) {
-        $this->user = $user;
-    }    
+    function setAgentId($AgentId) {
+        $this->AgentId = $AgentId;
+    }
+      
 }

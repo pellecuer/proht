@@ -24,13 +24,13 @@ security:
             #form_login: ~
     
     encoders:
-        AppBundle\Entity\User:
+        AppBundle\Entity\Agent:
             algorithm: bcrypt
             
     providers:
         our_db_provider:
             entity:
-                class: AppBundle:User
+                class: AppBundle:Agent
                 property: username
                 # if you're using multiple entity managers
                 # manager_name: customer
