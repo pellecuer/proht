@@ -42,8 +42,8 @@
             <table id="example" class="table table-striped table-hover table-sm shadow-lg" style="width:100%">
                 <caption class="text-center">Equipe {% if team %} {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}} {% endif %}</caption>
                 <thead class="thead">
-                    <tr class="bg-muted">
-                        <th scope ="col" colspan="4" class="text-success">Vacances scolaires</th>
+                    <tr class="bg-muted">                        
+                        <th scope ="col" colspan="6" class="text-success">Vacances scolaires</th>                        
                         {% for holiday in holidays %}
                         <th scope ="col"
                                 {% if holiday%}
@@ -54,9 +54,10 @@
                             {% endfor %}
                         </th>
                     </tr>
-
                     <tr class ="bg-dark">
-                        <th scope ="col" class="text-info">{% if app.user and  team %}<a class="btn btn-danger btn-sm" href="{{ path('agendaTempEdit2', { 'id': team.id, 'userId': app.user.id}) }}" role="button">Modifier</a>{% endif %}</th>
+                        <th scope ="col" class="text-info"></th>
+                        <th scope ="col" class="text-info"></th>
+                        <th scope ="col" class="text-info"></th>
                         <th scope ="col" class="text-info"></th>
                         <th scope ="col" class="text-info"></th>
                         <th scope ="col" class="text-info"></th>
@@ -78,27 +79,27 @@
                                 D
                             {% endif %}
                         {% endfor %}
-                        </th>
-                        
-                        
+                        </th> 
                     </tr>
                     <tr class="bg-muted">
+                        <th scope ="col" class="text-color-blue"></th>
+                        <th scope ="col" class="text-color-blue">Id</th>
                         <th scope ="col" class="text-color-blue">Nom</th>
                         <th scope ="col" class="text-color-blue">Prénom</th>
                         <th scope ="col" class="text-color-blue">NNI</th>
                         <th scope ="col" class="text-color-blue">Fonction</th>
                         {% for dateBetween in dateBetweens %}
                             <th scope ="col" class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}</th>
-                        {% endfor %}                        
-                        
+                        {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
                     {% if agentBetweens %}
                         {% for agentRow in agentBetweens %}
                             <tr>
-                            {% for AgentIdentification in agentRow.0 %}                                
-                                {% for AgentIdentificationDetail in AgentIdentification %}                                    
+                            {% for AgentIdentification in agentRow.0 %}
+                                <td>{% if app.user and  team %}<a href="{{ path('agendaTempEdit2', {'id': AgentIdentification.0}) }}"><i class="fas fa-edit"></i></a>{% endif %}</td>                                
+                                {% for AgentIdentificationDetail in AgentIdentification %} 
                                     <td>{{ AgentIdentificationDetail }}</td>
                                 {% endfor  %}
                             {% endfor  %}
@@ -121,15 +122,7 @@
                             {% endfor %}                            
                             </tr>
                         {% endfor %}
-                    {% endif  %}                    
-                    
-                        {#<td class="update" scope ="col"><i class="fas fa-edit text-color-blue"></i></td>
-                        <td class="check"><a href=""><i class="fas fa-check text-success"></i></a></td>
-                        {#
-                        <td class="trash"><a href="{{ path('deleteAgenda', { 'agentId': agentBetween.0.agent.id }) }}"><i class="fas fa-trash-alt text-danger"></i></a></td>
-                        #}
-                                      
-               
+                    {% endif  %}
                 </tbody>                 
             </table>
         </div>

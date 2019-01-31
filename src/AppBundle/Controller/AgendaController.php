@@ -187,6 +187,7 @@ class AgendaController extends Controller {
         foreach ($agents as $agent) {
             $agentIdentification = [];
             $agentIdentification[] = [
+                $agent->getId(),
                 $agent->getName(),
                 $agent->getFirstName(),
                 $agent->getNni(),

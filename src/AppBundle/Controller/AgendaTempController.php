@@ -232,69 +232,62 @@ class AgendaTempController extends Controller {
     
      
     /**
-     * @Route("/edit2/{id}/user/{userId}", name="agendaTempEdit2")
-     * @ParamConverter("agent", options={"mapping": {"userId": "id"}})
+     * @Route("/edit2/{id}}", name="agendaTempEdit2")     
      * @Method({"GET", "POST"})
      */
-    public function copyAgendaAction( Team $team, Agent $agent)
+    public function createAction(Agent $agent)
     {          
         //check it temp exist for this User and this Agent        
+        $team = $agent->getTeam();
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByUserByTeam($team, $agent);
-                 //->findTempByUserByTeam($team, $user);
-         
+                ->findTempByAgent($agent);
         
         if (!$agendaTemp) {
             // si l'agendaTemp n'éxiste pas, récupère l'agenda éxistant de la team                
             $agendas = $this->getDoctrine()
                 ->getRepository(Agenda::class)
-                ->findAgendaByTeam($team, $agent);                
-
+                ->findAgendaByTeam($team, $agent);
+            
             //crée les agendas Temp                
             foreach ($agendas as $agenda){
                     $em = $this->getDoctrine()->getManager();
                     $agendaTemp = new AgendaTemp();
                     $agendaTemp->setAgent($agenda->getAgent());
                     $agendaTemp->setLetter($agenda->getLetter());
-                    $agendaTemp->setDate($agenda->getDate());
-                    $agendaTemp->setUser($agent);
-
-                    //A ajouter ultérieurement
+                    $agendaTemp->setDate($agenda->getDate()); 
+                    
                     //$agendaTemp->setUtilisateur($agendaToCopy->getUtilisateur());
                     $em->persist($agendaTemp);
                     $em->flush();
                     }
 
-            return $this->redirectToRoute('showAgendaTemp', array(
-                'id' => $team->getId(),
-                'userId' =>$agent->getId()        
+            return $this->redirectToRoute('showOneAgendaTemp', array(
+                'id' => $agent->getId(),       
                 ));
         
-        }  return $this->redirectToRoute('showAgendaTemp', array(
-            'id' => $team->getId(),
-            'userId' =>$agent->getId()
+        }  return $this->redirectToRoute('showOneAgendaTemp', array(
+            'id' => $agent->getId(), 
                 ));          
     }  
     
     
      /**
-     * @Route("/show/{id}/user/{userId}", name="showAgendaTemp")
-     * @ParamConverter("agent", options={"mapping": {"userId": "id"}})
+     * @Route("/show/{id}", name="showAgendaTemp")   
      */
-    public function showAction( Team $team, Agent $agent)
+    public function showAction(Agent $agent)
     {        
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
-                ->findTempByUserByTeam($team, $agent);
+                ->findTempByAgent($agent);
         
             if (!$agendaTemp) {
                 // si l'agendaTemp n'éxiste pas renvoie la route agenda :
                 return $this->redirectToRoute('showAgenda');            
             }
 
-
             //crée un array d'array des agendas
+            $team = $agent->getTeam();            
             $startDate = $team->getEvent()->getStartDate();
             $endDate = $team->getEvent()->getEndDate();
             
@@ -317,19 +310,30 @@ class AgendaTempController extends Controller {
             }
 
             //Showagendas
-            $agents = $team->getAgents();
             $agentBetweens = [];
+            $agents = $team->getAgents();
+            dump($agents[0]);die;
             foreach ($agents as $agent) {
+                $agentIdentification = [];
+                $agentIdentification[] = [
+                    $agent->getId(),
+                    $agent->getName(),
+                    $agent->getFirstName(),
+                    $agent->getNni(),
+                    $agent->getFunction()
+                    ];
+
                 $agendaDate = [];
                 foreach ($arrayDates as $arrayDate) {
+
                     $agendaDate[] = $this->getDoctrine()
-                        ->getRepository(AgendaTemp::class)
+                        ->getRepository(Agenda::class)
                         ->findOneBy([
                             'agent' => $agent,
                             'date' => $arrayDate,
-                        ],  ['date' => 'ASC']);
-                }
-                $agentBetweens[] = $agendaDate;
+                        ],  ['date' => 'ASC']);                
+                }      
+                $agentBetweens[] = [$agentIdentification, $agendaDate];            
             }           
 
         return $this->render('agendaTemp.html.twig', [
@@ -342,6 +346,82 @@ class AgendaTempController extends Controller {
                 'holidays' => $holidays,
                  ]);
     }
+    
+    /**
+     * @Route("/showOne/{id}", name="showOneAgendaTemp")   
+     */
+    public function showOneAction(Agent $agent)
+    {        
+        $agendaTemp = $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findTempByAgent($agent);
+        
+            if (!$agendaTemp) {
+                // si l'agendaTemp n'éxiste pas renvoie la route agenda :
+                return $this->redirectToRoute('showAgenda');            
+            }
+
+            //crée un array d'array des agendas
+            $team = $agent->getTeam();
+            $startDate = $team->getEvent()->getStartDate();
+            $endDate = $team->getEvent()->getEndDate();
+            
+            //build calendar
+            $interval = new \DateInterval('P1D');
+            $arrayDates = [];
+            $immutable = \DateTimeImmutable::createFromMutable($startDate);
+
+            while ($immutable<=$endDate){
+                $arrayDates[] =  $immutable;
+                $immutable = $immutable->add($interval);
+            }
+
+            //show holidays
+            $holidays = [];
+            foreach ($arrayDates as $arrayDate){
+                $holidays[] = $this->getDoctrine()
+                    ->getRepository(Event::class)
+                    ->findHolidaysByDate($arrayDate);
+            }
+
+            //Showagendas
+            $agentBetweens = [];
+            $agents = [$agent];
+            foreach ($agents as $agent) {
+                $agentIdentification = [];
+                $agentIdentification[] = [
+                    $agent->getId(),
+                    $agent->getName(),
+                    $agent->getFirstName(),
+                    $agent->getNni(),
+                    $agent->getFunction()
+                    ];
+
+                $agendaDate = [];
+                foreach ($arrayDates as $arrayDate) {
+
+                    $agendaDate[] = $this->getDoctrine()
+                        ->getRepository(Agenda::class)
+                        ->findOneBy([
+                            'agent' => $agent,
+                            'date' => $arrayDate,
+                        ],  ['date' => 'ASC']);                
+                }      
+                $agentBetweens[] = [$agentIdentification, $agendaDate];            
+            }         
+
+        return $this->render('agendaTemp.html.twig', [
+
+                'dateBetweens' => $arrayDates,
+                'agentBetweens' => $agentBetweens,
+                'team' => $team,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'holidays' => $holidays,
+                 ]);
+    }
+    
+    
     
     /**
      * Deletes an agenda entity.

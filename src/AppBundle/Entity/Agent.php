@@ -125,7 +125,6 @@ class Agent implements UserInterface, \Serializable
     function getTeam() {
         return $this->team;
     }
-
     
 
     function setId($id) {

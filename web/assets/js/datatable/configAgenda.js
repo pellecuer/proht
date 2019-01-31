@@ -14,7 +14,7 @@ var table =
             },
             {
                 "targets": [ 1 ],
-                "visible": true,
+                "visible": false,
                 "searchable": true
             },
             {

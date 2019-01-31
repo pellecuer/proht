@@ -43,14 +43,6 @@ class AgendaTemp
      */
     private $letter;
     
-    
-    
-    /**
-     * @var int
-     *           
-     */
-    private $AgentId;
-
 
     function getId() {
         return $this->id;
@@ -82,16 +74,6 @@ class AgendaTemp
 
     function setLetter($letter) {
         $this->letter = $letter;
-    }
-    
-    function getAgentId() {
-        return $this->AgentId;
-    }
-
-    function setAgentId($AgentId) {
-        $this->AgentId = $AgentId;
-    }
-
-
+    }    
 }
 
