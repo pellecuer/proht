@@ -20,14 +20,13 @@ class historyAgenda {
 }
     
     public function history($agenda, $connectedUser)
-    {
-        $id = $connectedUser->getId();
+    {        
         $history = new HistoryChange();
         $history->setDateChange(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
         $history->setDate($agenda->getDate());
         $history->setAgent($agenda->getAgent());
         $history->setLetter($agenda->getLetter());
-        $history->setAgentId($id);         
+        $history->setValideur($connectedUser);     
         $this->em->persist($history);
         $this->em->flush();
     }    

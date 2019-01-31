@@ -50,10 +50,11 @@ class HistoryChange
     private $dateChange;
     
     /**
-     * @var int
-     *           
+     * @var
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agent")
      */
-    private $AgentId;
+    private $valideur;
     
 
     function getId() {
@@ -75,7 +76,6 @@ class HistoryChange
     function getDateChange(): \DateTime {
         return $this->dateChange;
     }
-
     
 
     function setId($id) {
@@ -98,12 +98,14 @@ class HistoryChange
         $this->dateChange = $dateChange;
     }
     
-    function getAgentId() {
-        return $this->AgentId;
+    function getValideur() {
+        return $this->valideur;
     }
 
-    function setAgentId($AgentId) {
-        $this->AgentId = $AgentId;
+    function setValideur($valideur) {
+        $this->valideur = $valideur;
     }
+
+
       
 }

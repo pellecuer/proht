@@ -28,8 +28,8 @@ class HistoryController extends Controller {
     public function showAction(Agent $agent)
     {         
         $historys = $this->getDoctrine()
-                ->getRepository(HistoryChange::class)
-                ->findByAgent($agent);
+            ->getRepository(HistoryChange::class)
+            ->findByAgent($agent);
         
         if (!$historys) {
             

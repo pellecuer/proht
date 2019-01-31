@@ -26,7 +26,7 @@
                             <th>Date</th>
                             <th>Agent</th>
                             <th>Lettre</th>
-                            <th>Utilisateur</th>
+                            <th>Valideur</th>
                             <th>Date de changement</th>
                         </tr>
                     </thead>                    
@@ -37,7 +37,7 @@
                                 <td>{{ history.date|localizeddate('none', 'none', 'fr', null, 'E dd MMM Y') }}</td>                             
                                 <td>{{ history.agent.name }}</td>
                                 <td>{{ history.letter.letter }}</td>                                
-                                <td>{{ history.user.username }}</td>
+                                <td>{{ history.valideur.name }}</td>
                                 <td>{{ history.dateChange|localizeddate('full', 'none', 'fr', null, 'E dd MMM Y  H:m')}}</td>
                             </tr>
                         {% endfor %}                       
