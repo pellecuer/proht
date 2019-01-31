@@ -426,15 +426,14 @@ class AgendaTempController extends Controller {
     /**
      * Deletes an agenda entity.
      *
-     * @Route("/delete/{id}/user/{userId}", name="deleteTemp")
-     * @ParamConverter("agent", options={"mapping": {"userId": "id"}})
+     * @Route("/delete/{id}}", name="deleteTemp")
      * @Method({"GET", "POST"})
      */
-    public function deleteAction(Request $request, Team $team, Agent $agent)
+    public function deleteAction(Agent $agent)
     {    
         $agendaToRemoves = $this->getDoctrine()
-            ->getRepository(AgendaTemp::class)
-            ->findTempByUserByTeam($team, $agent);
+                ->getRepository(AgendaTemp::class)
+                ->findTempByAgent($agent);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -443,10 +442,11 @@ class AgendaTempController extends Controller {
             $em->remove($agendaToRemove);            
         }                
        $em->flush();
-       $this->addFlash('success', 'L\'agenda provisoire a bien été supprimé pour l\'équipe ' . $team->getName());
-      
+       $this->addFlash('success', 'L\'agenda provisoire a bien été supprimé pour l\'agent ' . $agent->getName());      
            
-        return $this->redirectToRoute('showAgenda');
+        return $this->redirectToRoute('showOneAgendaTemp', array(
+                'id' => $agent->getId(),                
+                    ));
     }
     
     
@@ -454,18 +454,18 @@ class AgendaTempController extends Controller {
     /**
      * Persist temp in agenda entity.
      *
-     * @Route("/valid/{id}/user/{userId}", name="validTemp")
-     * @ParamConverter("agent", options={"mapping": {"userId": "id"}})
+     * @Route("/valid/{id}", name="validTemp")     
      * @Method({"GET", "POST"})
      */
-    public function validAction(Request $request, Team $team, Agent $agent, historyAgenda $historyAgenda)
+    public function validAction(Agent $agent, historyAgenda $historyAgenda)
     {    
+        $connectedUser = $this->getUser();
         $agendaToUpdates = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
-            ->findTempByUserByTeam($team, $agent);
-        //dump($agendaToUpdates);die;
+            ->findTempByAgent($agent);        
         
         $em = $this->getDoctrine()->getManager();
+         
         
         foreach ($agendaToUpdates as $agendaToUpdate){
             // update dans l'agenda
@@ -475,23 +475,23 @@ class AgendaTempController extends Controller {
             
             $agendas = $this->getDoctrine()
             ->getRepository(Agenda::class)
-            ->findAgendaToUpdate($date, $agent);
+            ->findAgendaToUpdate($date, $agent);            
             
+            //Check the differences between new and old version of agenda and persist if difference exists
             foreach ($agendas as $agenda){
                 if ($agenda->getLetter() != $letter){
                    $agenda->setLetter($letter);
-                    $em->persist($agenda);
-                    $historyAgenda->history($agenda, $user); 
+                    $em->persist($agenda);                    
+                    $historyAgenda->history($agenda, $connectedUser);
                 }
             }
         }                
         
         $em->flush();
-        $this->addFlash('success', 'L\'agenda a bien été mis à jour pour l\'équipe ' . $team->getName());
+        $this->addFlash('success', 'L\'agenda a bien été mis à jour pour l\'agent ' . $agent->getName());
            
         return $this->redirectToRoute('deleteTemp', array(
-                'id' => $team->getId(),
-                'userId' =>$user->getId()
+                'id' => $agent->getId(),                
                     ));               
     }
     

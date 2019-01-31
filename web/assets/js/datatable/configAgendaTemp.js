@@ -14,12 +14,12 @@ var table =
             },
             {
                 "targets": [ 1 ],
-                "visible": false,
+                "visible": true,
                 "searchable": true
             },
             {
                 "targets": [ 2 ],
-                "visible": true,
+                "visible": false,
                 "searchable": true
             },
             {

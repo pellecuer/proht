@@ -11,13 +11,9 @@
         <p>Modifier votre planning ou celui de vos équipes</p>
     </header>
     <div class="row border border-rounded my-2">
-        <div class="col-md-10">
-                <span class="fa-stack fa-1x my-2">
-                    <i class="fas fa-circle fa-stack-2x text-secondary"></i>
-                    <a href="{{ path('createEvent') }}"><i class="fas fa-plus fa-stack-1x fa-inverse text-white"></i></a>
-                </span>
+        <div class="col-md-10">            
             <span id="buttonPrint">
-                </span>
+            </span>
         </div>
     </div>
     <div class= "row">
@@ -26,7 +22,7 @@
                 <caption class="text-center">Equipe {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
                 <thead class="thead">
                     <tr class="bg-muted">                        
-                        <th scope ="col" colspan="6" class="text-success">Vacances scolaires</th>                        
+                        <th scope ="col" colspan="7" class="text-success">Vacances scolaires</th>                       
                         {% for holiday in holidays %}
                         <th scope ="col"
                                 {% if holiday%}
@@ -38,12 +34,7 @@
                         </th>
                     </tr>
                     <tr class ="bg-dark">
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
-                        <th scope ="col" class="text-info"></th>
+                        <th scope ="col" colspan="7" class="text-info"></th>                        
                         {% for dateBetween in dateBetweens %}
                         <th scope ="col" class="text-light">
                             {% if dateBetween.date|localizeddate('none', 'none', 'fr', null, 'e')  == 6 %}
@@ -65,7 +56,7 @@
                         </th> 
                     </tr>
                     <tr class="bg-muted">
-                        <th scope ="col" class="text-color-blue"></th>
+                        <th scope ="col" colspan="2" class="text-color-blue"></th>
                         <th scope ="col" class="text-color-blue">Id</th>
                         <th scope ="col" class="text-color-blue">Nom</th>
                         <th scope ="col" class="text-color-blue">Prénom</th>
@@ -81,7 +72,8 @@
                         {% for agentRow in agentBetweens %}
                             <tr>
                             {% for AgentIdentification in agentRow.0 %}
-                                <td class="initialize"><a class="btn btn-success btn-sm" href="{{ path('InitializeAgenda', { 'agentId': AgentIdentification.0 }) }}" role="button">Initialiser</a></td>                                
+                                <td><a class="btn btn-success btn-sm" href="{{ path('validTemp', {'id': AgentIdentification.0}) }}">Valider</a></td>
+                                <td class="initialize"><a class="btn btn-danger btn-sm" href="{{ path('InitializeAgenda', { 'agentId': AgentIdentification.0 }) }}" role="button">Initialiser</a></td>                                
                                 {% for AgentIdentificationDetail in AgentIdentification %} 
                                     <td>{{ AgentIdentificationDetail }}</td>
                                 {% endfor  %}

@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\HistoryChange;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
 /**
@@ -18,15 +19,15 @@ class historyAgenda {
     $this->em = $entityManager;
 }
     
-    public function history($agenda, $user)
+    public function history($agenda, $connectedUser)
     {
+        $id = $connectedUser->getId();
         $history = new HistoryChange();
         $history->setDateChange(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
         $history->setDate($agenda->getDate());
         $history->setAgent($agenda->getAgent());
         $history->setLetter($agenda->getLetter());
-        $history->setUser($user);
-         
+        $history->setAgentId($id);         
         $this->em->persist($history);
         $this->em->flush();
     }    
