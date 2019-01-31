@@ -77,7 +77,8 @@ $('.update').on( "click", function(){
 //sendAgendaTempControlleur
 $('.editFor').on( "change paste keyup", function(){
     var id = $(this).attr('id');
-    var letter = $(this).html();
+    var letter = $(this).html();    
+
     $.ajax({
         url:'/agendaTemp/edit',
         type: "POST",
@@ -108,10 +109,6 @@ $('.editFor').on( "change paste keyup", function(){
             if (data.bgLetter) {
                 $( '#' + id ).removeClass('table-success').removeClass('table-danger').removeClass('table-info').addClass(data.bgLetter);
             }
-
-
-
-
             // $( '#' + id ).css({"border": "2px solid red"});
 
         }
