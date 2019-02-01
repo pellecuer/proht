@@ -53,11 +53,11 @@ $('.update').on( "click", function(){
 });
 
 //sendAgendaControlleur
-/*$('.editFor').on( "keyup", function(){
+$('.editFor').on( "keyup", function(){
     var id = $(this).attr('id');
     var letter = $(this).html();
     $.ajax({
-        url:'/agendaEdit',
+        url:'/ajax_request',
         type: "POST",
         dataType: "json",
         data: {
@@ -72,10 +72,10 @@ $('.update').on( "click", function(){
             $( '#description' ).text(data.description);
         }
     });
-});*/
+});
 
 //sendAgendaTempControlleur
-$('.editFor').on( "change paste keyup", function(){
+/*$('.editFor').on( "change paste keyup", function(){
     var id = $(this).attr('id');
     var letter = $(this).html();    
 
@@ -114,4 +114,5 @@ $('.editFor').on( "change paste keyup", function(){
         }
     });
 });
+*/
 

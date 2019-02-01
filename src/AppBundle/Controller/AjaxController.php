@@ -17,12 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class AjaxController {
     
         /**
-     * @Route(" /ajax_request", name=" /ajax_request")
+     * @Route(" /ajax_request", name=" ajax_request")
      */
     public function ajaxAction(Request $request)
     {
         /* on récupère la valeur envoyée par la vue */
-        $personnage = strtoupper($request->request->get('personnage'));
+        $personnage = strtoupper($request->request->get('letter'));
         switch ($personnage){
             case 'H':
                 $titre = 'Repos hebdo';

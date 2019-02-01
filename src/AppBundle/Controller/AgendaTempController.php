@@ -44,9 +44,8 @@ class AgendaTempController extends Controller {
      */
     public function editAjaxAction(Request $request, UserInterface $user, checkRules $checkRules)
     {
-        /*  Get the object agendaTemp send by Ajax */ 
-        
-        $id = $request->request->get('id');
+        /*  Get the object agendaTemp send by Ajax */        
+        $id = $request->request->get('id');        
         $agendaTemp = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
             ->find($id);
