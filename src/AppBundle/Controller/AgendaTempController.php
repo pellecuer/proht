@@ -300,8 +300,7 @@ class AgendaTempController extends Controller {
 
             //Showagendas
             $agentBetweens = [];
-            $agents = $team->getAgents();
-            dump($agents[0]);die;
+            $agents = $team->getAgents();            
             foreach ($agents as $agent) {
                 $agentIdentification = [];
                 $agentIdentification[] = [
@@ -500,7 +499,9 @@ class AgendaTempController extends Controller {
         $initializeAgenda->initialize($team, $agent); 
         $this->addFlash('success', 'L\'agenda a réinitialisé pour l\'agent ' . $agent->getName());
         
-        return $this->redirectToRoute('showAgenda');
+        return $this->redirectToRoute('showOneAgendaTemp', array(
+            'id' => $agent->getId(),
+        ));
     }
 }
 

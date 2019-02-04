@@ -19,12 +19,12 @@ var table =
             },
             {
                 "targets": [ 2 ],
-                "visible": true,
+                "visible": false,
                 "searchable": true
             },
             {
                 "targets": [ 3 ],
-                "visible": false,
+                "visible": true,
                 "searchable": true
             }
         ],

@@ -118,11 +118,12 @@ $('.editFor').on( "change paste keyup", function(){
             $( '#letter').text(data.interval);
             $( '#average').text(data.average);
             $( '#' + id).text(data.letter);
+            
             if (data.bgLetter) {
-                $( '#' + id ).removeClass('table-success').removeClass('table-danger').removeClass('table-info').addClass(data.bgLetter);
+                $( '#' + id ).css({"border": ""}).removeClass('table-success').removeClass('table-danger').removeClass('table-info').addClass(data.bgLetter);                
+            } else {
+                $( '#' + id ).css({"border": "1px solid red"});
             }
-            // $( '#' + id ).css({"border": "2px solid red"});
-
         }
     });
 });
