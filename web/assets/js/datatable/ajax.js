@@ -53,6 +53,7 @@ $('.update').on( "click", function(){
 });
 
 //sendAgendaControlleur
+/*
 $('.editFor').on( "keyup", function(){
     var id = $(this).attr('id');
     var letter = $(this).html();
@@ -73,12 +74,16 @@ $('.editFor').on( "keyup", function(){
         }
     });
 });
+*/
 
 //Test Ajax
+/*
 $('.editFor').on( "keyup", function(){
     var id = $(this).attr('id');
     alert(id);
     });
+*/
+    
     
 
 //sendAgendaTempControlleur
