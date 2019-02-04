@@ -83,7 +83,7 @@ class AgendaTempController extends Controller {
             $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
             $startLegalWeek = $checkRules->StartLegalWeek($date);
             $endLegalWeek = $checkRules->EndLegalWeek($date);
-            $arrayWeeks = $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user);
+            $arrayWeeks = $checkRules->ArrayWeek ($startLegalWeek, $endLegalWeek, $agent);
             $HLetter = $this->getDoctrine()
                 ->getRepository(Letter::class)
                 ->findOneBy([
@@ -111,7 +111,7 @@ class AgendaTempController extends Controller {
             }
 
             //check if rest between days is under minimmum legal
-            $interval = $checkRules->RestBetweenDays($user, $agent, $agendaTemp);
+            $interval = $checkRules->RestBetweenDays($agent, $agendaTemp);
             $rule = $this->getDoctrine()
                 ->getRepository(Rule::class)
                 ->find(1);
@@ -121,12 +121,12 @@ class AgendaTempController extends Controller {
             }
 
             //check if H in Legal Week and Legal Week is full
-            $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);
+            $H = $checkRules->LookForH($startLegalWeek, $endLegalWeek, $agent, $HLetter);
             
                         
             if (!$H){
                 //check if H in Legal Week and Legal Week is full
-                if ($checkRules->isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)) {
+                if ($checkRules->isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent)) {
                 $errors['Repos hebdomadaire H'] = "Il manque un 'H' sur la semaine du " . $startLegalWeek->format('D d M Y'); 
                 }
             }
@@ -136,8 +136,8 @@ class AgendaTempController extends Controller {
 
             if ($H) {
                 // check if R before or after H
-                $rBeforeH = $checkRules->RBeforeH($H, $agent, $user, $RLetter);
-                $rAfterH = $checkRules->RAfterH($H, $agent, $user, $RLetter);
+                $rBeforeH = $checkRules->RBeforeH($H, $agent, $RLetter);
+                $rAfterH = $checkRules->RAfterH($H, $agent, $RLetter);
                 $dateH = \DateTimeImmutable::createFromMutable($H[0]->GetDate());
 
                 if (!$rBeforeH && !$rAfterH) {
@@ -147,12 +147,12 @@ class AgendaTempController extends Controller {
                 }
             }            
 
-            $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $user, $HLetter);
+            $nxtH = $checkRules->LookForNextH($endLegalWeek, $agent, $HLetter);
 
             if ($nxtH) {
                 //Check if R before or after next H
-                $rBeforeNextH = $checkRules->RBeforeH($nxtH, $agent, $user, $RLetter);
-                $rAfterNextH = $checkRules->RAfterH ($nxtH, $agent, $user, $RLetter);
+                $rBeforeNextH = $checkRules->RBeforeH($nxtH, $agent, $RLetter);
+                $rAfterNextH = $checkRules->RAfterH ($nxtH, $agent, $RLetter);
                 $dateNextH = $nxtH[0]->GetDate();
 
                 if (!$rBeforeNextH && !$rAfterNextH) {
@@ -164,7 +164,7 @@ class AgendaTempController extends Controller {
 
             // check if average of hourPerweek is legal;
             $averageHourPerWeek = $checkRules
-                ->averageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek);
+                ->averageHourPerWeek($agent, $checkRules, $date, $startLegalWeek);
             $max = $this->getDoctrine()->getRepository(Rule::class)
                 ->find(1)->getMaxAveragePerWeek();            
             

@@ -37,15 +37,15 @@ class checkRules {
         return $endLegalWeek;
     }
     
-    public function isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent, $user)
+    public function isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent)
     {        
         $AgendaTempStartLegalWeek = $this->em
             ->getRepository(AgendaTemp::class)
-            ->findTempByDateByUserByAgent($startLegalWeek, $agent, $user);
+            ->findTempByDateByAgent($startLegalWeek, $agent);
 
         $AgendaTempEndLegalWeek = $this->em
             ->getRepository(AgendaTemp::class)
-            ->findTempByDateByUserByAgent($endLegalWeek, $agent, $user);
+            ->findTempByDateByAgent($endLegalWeek, $agent);
         
         if ($AgendaTempStartLegalWeek && $AgendaTempEndLegalWeek) {
             return true;
@@ -54,11 +54,11 @@ class checkRules {
         }
     }
     
-     public function ArrayWeek ($startLegalWeek, $endLegalWeek, $agent, $user)
+     public function ArrayWeek ($startLegalWeek, $endLegalWeek, $agent)
     {        
        $arrayWeek = $this->em
                     ->getRepository(AgendaTemp::class)
-                    ->findAllTempBetweenDateByUser($startLegalWeek, $endLegalWeek, $agent, $user);
+                    ->findAllTempBetweenDateByAgent($startLegalWeek, $endLegalWeek, $agent);
        
        return $arrayWeek;
     } 
@@ -81,17 +81,17 @@ class checkRules {
     }
     
     
-    public function LookForH($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter)
+    public function LookForH($startLegalWeek, $endLegalWeek, $agent, $HLetter)
     {
         //Check if H in legal week        
         $H = $this->em
             ->getRepository(AgendaTemp::class)
-            ->findTempBetweenDateByUserByAgentByLetter($startLegalWeek, $endLegalWeek, $agent, $user, $HLetter);       
+            ->findTempBetweenDateByAgentByLetter($startLegalWeek, $endLegalWeek, $agent, $HLetter);       
         
         return $H;
     }
     
-    public function LookForNextH($endLegalWeek, $agent, $user, $HLetter)
+    public function LookForNextH($endLegalWeek, $agent, $HLetter)
     {
         //Check if H in legal week + 7
         $nextStartLegalWeek = $endLegalWeek;
@@ -99,34 +99,34 @@ class checkRules {
 
         $nxtH = $this->em
             ->getRepository(AgendaTemp::class)
-            ->findTempBetweenDateByUserByAgentByLetter($nextStartLegalWeek, $nextEndLegalWeek, $agent, $user, $HLetter);       
+            ->findTempBetweenDateByAgentByLetter($nextStartLegalWeek, $nextEndLegalWeek, $agent, $HLetter);       
         
         return $nxtH;
     }    
     
      
     
-    public function RBeforeH ($H, $agent, $user, $RLetter)
+    public function RBeforeH ($H, $agent, $RLetter)
     {
         $dateBeforeH =$H[0]
                 ->getDate()
                 ->modify('-1 day');
         $rBefore = $this->em
             ->getRepository(AgendaTemp::class)
-            ->findTempByDateByUserByAgentByLetter($dateBeforeH, $agent, $user, $RLetter);
+            ->findTempByDateByAgentByLetter($dateBeforeH, $agent, $RLetter);
 
         
         return $rBefore;
     }
 
-    public function RAfterH ($H, $agent, $user, $RLetter)
+    public function RAfterH ($H, $agent, $RLetter)
     {        
          $dateAfterH = $H[0]
                  ->getDate()
                  ->modify('+2 day');
         $rAfter = $this->em
             ->getRepository(AgendaTemp::class)
-            ->findTempByDateByUserByAgentByLetter($dateAfterH, $agent, $user, $RLetter);
+            ->findTempByDateByAgentByLetter($dateAfterH, $agent, $RLetter);
 
 
         return $rAfter;
@@ -136,7 +136,7 @@ class checkRules {
 
 
     
-    public function AverageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek)
+    public function AverageHourPerWeek($agent, $checkRules, $date, $startLegalWeek)
     {
         //find AgendaTemp - X semaines
         $LegalMaxAveragePerWeek = $this->em
@@ -152,7 +152,7 @@ class checkRules {
         
         $agendaTempBeforeXWeeks = $this->em
                 ->getRepository(AgendaTemp::class)
-                ->findTempByDateByUserByAgent($startAverageDate, $agent, $user);
+                ->findTempByDateByAgent($startAverageDate, $agent);
         
         $arrayWeeks = [];
         $totalHours = 0;
@@ -166,8 +166,8 @@ class checkRules {
             while ($newDate <= $startLegalWeek) {
                 $startWeek =  $checkRules->StartLegalWeek($newDate);
                 $endWeek = $checkRules->EndLegalWeek($newDate);
-                if ($checkRules->isLegalWeekFull($startWeek, $endWeek, $agent, $user)){
-                     $arrayWeeks += $checkRules->ArrayWeek ($startWeek, $endWeek, $agent, $user);
+                if ($checkRules->isLegalWeekFull($startWeek, $endWeek, $agent)){
+                     $arrayWeeks += $checkRules->ArrayWeek ($startWeek, $endWeek, $agent);
                      $totalHours += $checkRules->HoursPerWeek($arrayWeeks);
                      $countWeeks += 1;
                      $newDate->modify('+ 1 week');
@@ -183,7 +183,7 @@ class checkRules {
         
 
 
-    public function RestBetweenDays($user, $agent, $agendaTemp)
+    public function RestBetweenDays($agent, $agendaTemp)
     {
         //check the dateBefore
         $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
@@ -192,8 +192,7 @@ class checkRules {
             ->getRepository(AgendaTemp::class)
             ->findOneBy([
                 'agent' => $agent,
-                'date' => $dayBefore,
-                'user' => $user
+                'date' => $dayBefore,                
             ]);
 
         //if no DayBefore or if letter before = R Or H, set intervalBefore to minimum legal (11h)
@@ -216,8 +215,7 @@ class checkRules {
              ->getRepository(AgendaTemp::class)
              ->findOneBy([
                  'agent' => $agent,
-                 'date' => $dayAfter,
-                 'user' => $user
+                 'date' => $dayAfter,                 
              ]);
 
 
