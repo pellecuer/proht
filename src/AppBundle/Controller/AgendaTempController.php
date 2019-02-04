@@ -202,7 +202,7 @@ class AgendaTempController extends Controller {
             'description' => $description,
             'letter' => $updatedLetter,
             'bgLetter' => $bgLetter,
-            'startLegalWeek' => $startLegalWeek->format('D d M Y H:i:s'),
+            'startLegalWeek' => strftime($startLegalWeek->format('D d M Y H:i:s')),
             'endLegalWeek' => $endLegalWeek->format('D d M Y H:i:s'),
             'startDay' => $interval[2]->format('D d M H:i:s'),
             'endDay' => $interval[3]->format('D d M H:i:s'),
