@@ -19,14 +19,14 @@ var table =
             },
             {
                 "targets": [ 2 ],
-                "visible": false,
+                "visible": true,
                 "searchable": true
             },
             {
                 "targets": [ 3 ],
-                "visible": true,
+                "visible": false,
                 "searchable": true
-            },
+            }
         ],
 
 
@@ -85,7 +85,7 @@ new $.fn.dataTable.Buttons( table, {
             orientation: 'landscape',
             pageSize: 'LEGAL'
         }
-    ],
+    ]
 } );
 
 table.buttons( 0, null ).containers().appendTo( '#buttonPrint' );

@@ -162,21 +162,11 @@ class AgendaTempController extends Controller {
                 }
             } 
 
-                
-
             // check if average of hourPerweek is legal;
             $averageHourPerWeek = $checkRules
                 ->averageHourPerWeek($agent, $user, $checkRules, $date, $startLegalWeek);
             $max = $this->getDoctrine()->getRepository(Rule::class)
-                ->find(1)->getMaxAveragePerWeek();
-            
-            /*
-            $response = new Response(json_encode([
-                'titre' => $averageHourPerWeek,
-            ]));
-            $response->headers->set('Content-Type', 'application/json');
-            return $response;          
-            */
+                ->find(1)->getMaxAveragePerWeek();            
             
             
             if ($averageHourPerWeek > $max) {
@@ -383,7 +373,7 @@ class AgendaTempController extends Controller {
                     ->findHolidaysByDate($arrayDate);
             }
 
-            //Showagendas
+            //ShowagendasTemp
             $agentBetweens = [];
             $agents = [$agent];
             foreach ($agents as $agent) {
@@ -400,11 +390,11 @@ class AgendaTempController extends Controller {
                 foreach ($arrayDates as $arrayDate) {
 
                     $agendaDate[] = $this->getDoctrine()
-                        ->getRepository(Agenda::class)
+                        ->getRepository(AgendaTemp::class)
                         ->findOneBy([
                             'agent' => $agent,
                             'date' => $arrayDate,
-                        ],  ['date' => 'ASC']);                
+                        ],  ['date' => 'ASC']);
                 }      
                 $agentBetweens[] = [$agentIdentification, $agendaDate];            
             }         
