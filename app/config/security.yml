@@ -51,6 +51,10 @@ security:
     access_control:
         # require ROLE_ADMIN for /admin*
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/admin, roles: ROLE_ADMIN }
-        #- { path: ^/valideur, roles: ROLE_VALIDEUR }
-        #- { path: ^/agentAuth, roles: ROLE_AGENT }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/valideur, roles: ROLE_VALIDEUR }
+        - { path: ^/agentAuth, roles: ROLE_AGENT }
+        
+    role_hierarchy:
+        ROLE_VALIDEUR: ROLE_AGENT
+        ROLE_ADMIN: [ROLE_VALIDEUR, ROLE_ALLOWED_TO_SWITCH]

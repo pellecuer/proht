@@ -76,7 +76,7 @@ class AgentController extends Controller
     
     /**
      * @Route("/show", name="showagent")
-     * //@Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents")
+     * @Security("is_granted('ROLE_AGENT')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents")
      */
     public function showAction()
     {

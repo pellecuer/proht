@@ -152,10 +152,6 @@ class Agent implements UserInterface, \Serializable
     }
 
     
-    
-
-      
-    
 
     // other properties and methods
 
@@ -212,11 +208,11 @@ class Agent implements UserInterface, \Serializable
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_AGENT';
         return array_unique($roles);
     }
     
-     public function setRoles($roles)
+     public function setRoles(array $roles)
     {
         $this->roles = $roles;
     }
