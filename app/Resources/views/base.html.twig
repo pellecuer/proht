@@ -28,7 +28,10 @@
                 </div>
             </div>
             <div class="row align-items-center justify-content-end" style="background-color: #09357A;">
-                <span class="mr-2 text-white">Bonjour {% if  app.user %} {{ app.user.username }} {% endif %}</span>
+                <span class="mr-2 text-white">Bonjour 
+                    {% if  app.user %}
+                        {{ app.user.username }} vous êtes connectés en tant que {{ app.user.roles.0 }}                    
+                    {% endif %}</span>
                 <span class="mr-2 text-white">
                     {% if  app.user %}
                         <a class="btn redEDf mx-1" href="{{ path('logout') }}" role="button">Déconnexion <i class="fas fa-sign-out-alt"></i></a>

@@ -79,9 +79,13 @@ class AgentController extends Controller
     public function showAction()
     {
              // finds *all* products 
+        $user = $this->getUser();
+        
         $agents = $this->getDoctrine()
                 ->getRepository(Agent::class)
-                ->findAll();               
+                ->findAll();
+        
+        //dump($agents[0]->getRoles());die;
 
         if (!$agents) {
             return $this->redirectToRoute('user_registration');
@@ -136,7 +140,7 @@ class AgentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $agent->setRoles(array('ROLE_ADMIN'));
+            //$agent->setRoles(array('ROLE_ADMIN'));
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success',
                     'L\'agent avec le nom ' . $agent->getName(). 'a été modifié avec succès'

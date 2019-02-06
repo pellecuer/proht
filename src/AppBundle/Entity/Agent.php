@@ -97,8 +97,7 @@ class Agent implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="array")
      */
-    private $roles;
-    
+    private $roles;   
 
     
     

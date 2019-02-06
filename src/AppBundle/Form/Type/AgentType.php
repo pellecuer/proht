@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -54,6 +55,23 @@ class AgentType extends AbstractType
                 'choice_label' => 'name ',
                 'attr' => array('class' => 'form-group mx-sm-3 mb-2')
                 ))
+               
+            ->add('roles', ChoiceType::class, array(                
+                'attr'  =>  array('class' => 'form-control',
+                'style' => 'margin:5px 0;'),
+                'choices' => 
+                array
+                (
+                    'Administrateur' => 'ROLE_ADMIN',                    
+                    'Valideur' => 'ROLE_VALIDEUR',
+                    'Agent' => 'ROLE_AGENT',                   
+                ) 
+                ,
+                'multiple' => true,
+                'expanded' => true,
+                'required' => true,
+                )
+            )
                         
             ->add('Envoyer', SubmitType::class, array(
             'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),

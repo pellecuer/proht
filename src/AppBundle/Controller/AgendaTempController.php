@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Entity\Agenda;
 use AppBundle\Entity\AgendaTemp;
@@ -40,7 +41,7 @@ class AgendaTempController extends Controller {
 
 
     /**
-     * @Route("/edit", name="agendaTempEdit")
+     * @Route("/edit", name="agendaTempEdit")      
      */
     public function editAjaxAction(Request $request, UserInterface $user, checkRules $checkRules)
     {
@@ -262,7 +263,7 @@ class AgendaTempController extends Controller {
     
     
      /**
-     * @Route("/show/{id}", name="showAgendaTemp")   
+     * @Route("/show/{id}", name="showAgendaTemp")     
      */
     public function showAction(Agent $agent)
     {        
@@ -335,7 +336,7 @@ class AgendaTempController extends Controller {
                  ]);
     }
     
-    /**
+    /**     
      * @Route("/showOne/{id}", name="showOneAgendaTemp")   
      */
     public function showOneAction(Agent $agent)
