@@ -33,7 +33,7 @@
                             <th>Prénom</th>
                             <th>Fonction</th>
                             <th>Equipe</th>
-                            <th>Role</th>
+                            <th>Roles</th>
                             <th>Modifier</th>
                             <th>Supprimer</th>
                             <th>Historique des modifications</th>
@@ -49,8 +49,12 @@
                                 <td>{{ agent.name }}</td>
                                 <td>{{ agent.firstname }}</td>
                                 <td>{{ agent.function }}</td>
-                                <td>{{ agent.team.name }}</td>
-                                <td>{{ dump (agent.roles) }}</td>  
+                                <td>{{ agent.team.name }}</td>                                
+                                <td>
+                                    {% for role in agent.roles %}
+                                        <table><tr><td>{{ role }}</td></tr></table>
+                                    {% endfor %}
+                                </td>  
                                 <td><a href="{{ path('editAgent', { 'id': agent.id }) }}"><i class="fas fa-edit"></i></a></td>
                                 <td><a href="{{ path('deleteAgent', { 'id': agent.id }) }}"><i class="fas fa-trash-alt"></i></a></td>
                                 <td><a href="{{ path('showHistory', { 'id': agent.id }) }}"><i class="fas fa-history"></i></a></td>
