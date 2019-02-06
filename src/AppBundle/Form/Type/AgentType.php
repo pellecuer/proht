@@ -59,9 +59,7 @@ class AgentType extends AbstractType
             ->add('roles', ChoiceType::class, array(                
                 'attr'  =>  array('class' => 'form-control',
                 'style' => 'margin:5px 0;'),
-                'choices' => 
-                array
-                (
+                'choices' => array (
                     'Administrateur' => 'ROLE_ADMIN',                    
                     'Valideur' => 'ROLE_VALIDEUR',
                     'Agent' => 'ROLE_AGENT',                   

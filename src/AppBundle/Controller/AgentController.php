@@ -76,15 +76,15 @@ class AgentController extends Controller
     
     /**
      * @Route("/show", name="showagent")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents")
+     * //@Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents")
      */
     public function showAction()
     {
+        //dump($agents[0]->getRoles());die;
         $agents = $this->getDoctrine()
                 ->getRepository(Agent::class)
-                ->findAll();
+                ->findAll();       
         
-        //dump($agents[0]->getRoles());die;
 
         if (!$agents) {
             return $this->redirectToRoute('user_registration');
