@@ -28,7 +28,7 @@ security:
             algorithm: bcrypt
             
     providers:
-        our_db_provider:
+        our_db_provider:            
             entity:
                 class: AppBundle:Agent
                 property: username
