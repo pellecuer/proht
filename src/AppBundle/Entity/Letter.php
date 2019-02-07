@@ -4,11 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * CodePlanning
  *
  * @ORM\Table(name="Letter")
+ * @UniqueEntity(fields="letter", message="La lettre éxiste déjà")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LetterRepository")
  */
 class Letter
@@ -25,7 +27,7 @@ class Letter
     /**
      * @var string
      *
-     * @ORM\Column(name="Letter", type="string", length=2, nullable =true)
+     * @ORM\Column(name="Letter", type="string", length=2, unique =true)
      */
     private $letter;
    

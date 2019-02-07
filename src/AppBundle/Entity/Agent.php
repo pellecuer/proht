@@ -12,8 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Agent
  *
  * @ORM\Table(name="app_users")
- * @UniqueEntity(fields="email", message="Email already taken")
- * @UniqueEntity(fields="username", message="Username already taken")
+ * @UniqueEntity(fields="email", message="Cet email éxiste déjà")
+ * @UniqueEntity(fields="username", message="Ce nom d'utilisateur éxiste déjà")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AgentRepository")
  */
 class Agent implements UserInterface, \Serializable

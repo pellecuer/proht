@@ -8,14 +8,15 @@
 {% block body %}   
     <div class="container">       
         <h1>Modifier l'équipe</h1>
-        <form action="{{ path('editTeam', { 'id': team.id }) }}" method="post" class="form-inline">
             <div class="form-group mb-2">
-            {{ form_start(form) }}           
-            {{ form_widget(form) }}                         
-            {{ form_rest(form) }}
-            {{ form_end(form) }}
-            </div            
-        </form>
+                {{ form_start(form, {'action':  path('editTeam', { 'id': team.id }), 'method': 'POST'}) }}                
+                {{ form_row(form.name, {'label': 'Nom d\'utilisateur', 'attr' : {'placeholder':'Nom d\'utilisateur ...' }}) }}
+                {{ form_row(form.Event, {'label': 'Nom d\'utilisateur', 'attr' : {'placeholder':'Nom d\'utilisateur ...' }}) }}  
+                {{ form_row(form.Section, {'label': 'Nom d\'utilisateur', 'attr' : {'placeholder':'Nom d\'utilisateur ...' }}) }}
+                {{ form_row(form.Envoyer) }}
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>        
     </div> 
 {% endblock %}
 

@@ -9,7 +9,10 @@
     <div class="container">
         <h1>Créer un nouveau service</h1>        
         <div class="form-group mb-2">
-        {{ form_start(form) }} 
+        {{ form_start(form) }}
+        {{ form_row(form.name, {'label': 'Nom du service', 'attr' : {'placeholder':'Entrez un nom ...' }}) }}
+        {{ form_row(form.chief, {'label': 'Nom de la section', 'attr' : {'placeholder':'Entrez un nom ...' }}) }}
+        {{ form_row(form.Event, {'label': 'Nom du service', 'attr' : {'placeholder':'Sélectrionnez un service ...' }}) }}        
         {{ form_rest(form) }}
         {{ form_end(form) }}
         </div>        

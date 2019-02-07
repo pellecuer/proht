@@ -23,7 +23,7 @@ class AgentController extends Controller
     
     /**
     * @Route("/register", name="user_registration")
-    * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents; Vous devez avoir le role Valideur")
+    * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les agents; Vous devez avoir le role Administrateur")
     */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {

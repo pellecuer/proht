@@ -20,16 +20,16 @@ class ServiceType extends AbstractType
         $builder
                 ->add('name', TextType::class, array(
                     'label'  => 'Nom',
-                    'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+                    'attr' => array('class' => 'form-group mb-2'),
                 ))
                 ->add('chief', TextType::class, array(
                     'label'  => 'Chef',
-                    'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+                    'attr' => array('class' => 'form-group mb-2'),
                 ))                                   
                 ->add('Event', EntityType::class, array(
                 'class' => Event::class,
                 'choice_label' => 'code',
-                'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
+                'attr' => array('class' => 'form-group mb-2')  
                 ))
                 ->add('Envoyer', SubmitType::class, array(
             'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),

@@ -10,6 +10,7 @@ use AppBundle\Entity\Rule;
 use AppBundle\Form\Type\RuleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Rule controller.
@@ -39,7 +40,9 @@ class RuleController extends Controller {
     }
     
     /**
+     * * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer des règles du travail; Vous devez avoir le role Administrateur")
      * @Route("/create", name="createRule")
+     * 
      */
     public function CreateAction(Request $request)
     {       

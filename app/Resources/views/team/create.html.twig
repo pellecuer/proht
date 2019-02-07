@@ -7,15 +7,15 @@
 
 {% block body %}   
     <div class="container">
-        <h1>Créer une nouvelle équipe</h1>
-        <form action="{{ path('create_team') }}" method="post" class="form-inline">
+        <h1>Créer une nouvelle équipe</h1>        
             <div class="form-group mb-2">
-            {{ form_start(form) }}
-            {{ form_rest(form) }}
-            {{ form_end(form) }}            
-            
-            </div
-        </form>
+            {{ form_start(form, {'action': path('create_team'), 'method': 'POST'}) }} 
+            {{ form_row(form.name, {'label': 'Nom d\'utilisateur', 'attr' : {'placeholder':'Nom d\'utilisateur ...' }}) }}
+            {{ form_row(form.Event, {'label': 'Evenements' }) }}
+            {{ form_row(form.Section, {'label': 'section' }) }}           
+            {{ form_row(form.Envoyer) }}
+            {{ form_end(form) }}        
+            </div>        
     </div> 
 {% endblock %}
 

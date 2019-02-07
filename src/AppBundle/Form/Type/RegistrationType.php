@@ -39,8 +39,7 @@ class RegistrationType extends AbstractType
             ))
             ->add('Envoyer', SubmitType::class, array(
             'attr' => array(
-                'class' => 'btn btn-primary my-2 sendDate'),
-                
+                'class' => 'btn btn-primary my-2 sendDate'),                
             ))  
         ;
     }

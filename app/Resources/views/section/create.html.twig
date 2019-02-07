@@ -9,7 +9,11 @@
     <div class="container">
         <h1>Créer un nouvelle section</h1>        
         <div class="form-group mb-2">
-        {{ form_start(form) }} 
+        {{ form_start(form) }}
+        {{ form_row(form.name, {'label': 'Nom de la section', 'attr' : {'placeholder':'Entrez un nom ...' }}) }}
+        {{ form_row(form.chief, {'label': 'Chef de section', 'attr' : {'placeholder':'Entrez le nom du chef de section ...' }}) }}
+        {{ form_row(form.Service, {'label': 'Service', 'attr' : {'placeholder':'Sélectionnez un service ...' }}) }}
+        {{ form_row(form.Event, {'label': 'Evènement', 'attr' : {'placeholder':'Sélectionnez un évènement ...' }}) }}
         {{ form_rest(form) }}
         {{ form_end(form) }}
         </div>        

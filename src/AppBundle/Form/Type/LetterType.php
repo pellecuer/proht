@@ -20,10 +20,9 @@ class LetterType extends AbstractType
         $builder
                 ->add('letter', TextType::class, array(
                     'label'  => 'Lettre',
-                    'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+                    'attr' => array('class' => 'form-group mb-2'),
                 ))
-                ->add('startTime', TimeType::class, array(
-                    'placeholder' => 'Choose a delivery option',
+                ->add('startTime', TimeType::class, array(                    
                     'widget' => 'single_text',
                     'label'  => 'Heure de début',
                     'attr' => array('class' => 'form-group mb-2'),
@@ -38,7 +37,7 @@ class LetterType extends AbstractType
                 
                  ->add('effectiveDuration', TextType::class, array(                    
                     'label' => 'Durée effective',
-                    'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
+                    'attr' => array('class' => 'form-group mb-2')  
                     ))
                 
                 ->add('Envoyer', SubmitType::class, array(
