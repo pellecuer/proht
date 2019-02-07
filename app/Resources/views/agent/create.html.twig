@@ -7,14 +7,13 @@
 
 {% block body %}   
     <div class="container">       
-        <h1>Créer un nouvel agent</h1>
-        <form action="{{ path('user_registration') }}" method="post" class="form">
-            <div class="form-group mb-2">
-            {{ form_start(form) }}  
-            {{ form_rest(form) }}
-            {{ form_end(form) }}
-            </div
-        </form>
+        <h1>Créer un nouvel agent</h1>        
+        {{ form_start(form) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword.first) }}
+        {{ form_row(form.plainPassword.second) }}        
+        {{ form_end(form) }}
     </div> 
 {% endblock %}
 

@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Agent;
 use AppBundle\Form\Type\AgentType;
+use AppBundle\Form\Type\RegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,12 +23,13 @@ class AgentController extends Controller
     
     /**
     * @Route("/register", name="user_registration")
+    * //@Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents; Vous devez avoir le role Valideur")
     */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         // 1) build the form
         $agent = new Agent();
-        $form = $this->createForm(AgentType::class, $agent);
+        $form = $this->createForm(RegistrationType::class, $agent);
 
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
@@ -76,7 +78,7 @@ class AgentController extends Controller
     
     /**
      * @Route("/show", name="showagent")
-     * @Security("is_granted('ROLE_AGENT')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents")
+     * //@Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents; Vous devez avoir le role Valideur")
      */
     public function showAction()
     {
@@ -93,39 +95,8 @@ class AgentController extends Controller
         return $this->render('agent/show.html.twig', array(
                 'agents' => $agents,
             ));
-    }
+    }    
     
-    /**
-     *
-     * @Route("/create", name="createAgent")
-     */
-    public function CreateAction(Request $request)
-    {
-         // 1) build the form
-        $agent = new Agent();
-        $form = $this->createForm(AgentType::class, $agent);
-               
-       // 2) handle the submit (will only happen on POST)
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {            
-            $data = $form->getData();           
-                       
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($data);            
-            $entityManager->flush();            
-            
-            //return new Response('Saved new event with id '.$event->getId());
-            $this->addFlash('success',
-                    'Nouvel agent crée avec l\'id : ' . $agent->getId()
-            );  
-            
-            return $this->redirectToRoute('showagent');
-         
-        }
-        return $this->render('agent/create.html.twig', array(            
-            'form' => $form->createView(),
-        ));
-    }
     
     /**
      * Displays a form to edit an existing agent entity.

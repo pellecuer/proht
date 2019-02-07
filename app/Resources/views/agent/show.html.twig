@@ -16,7 +16,7 @@
             <div class="col-md-10">
                 <span class="fa-stack fa-1x my-2">
                     <i class="fas fa-circle fa-stack-2x text-secondary"></i>
-                    <a href="{{ path('createAgent') }}"><i class="fas fa-plus fa-stack-1x fa-inverse text-white"></i></a>
+                    <a href="{{ path('user_registration') }}"><i class="fas fa-plus fa-stack-1x fa-inverse text-white"></i></a>
                 </span>
                 <span id="buttonPrint">
                 </span>
@@ -28,9 +28,11 @@
                      <thead class="thead-dark">
                         <tr>
                             <th>id</th>
+                            <th>User Name</th>
+                            <th>Email</th>
                             <th>NNI</th>
                             <th>Nom</th>
-                            <th>Prénom</th>
+                            <th>Prénom</th>                            
                             <th>Fonction</th>
                             <th>Equipe</th>
                             <th>Roles</th>
@@ -45,11 +47,16 @@
                        {%for agent in agents %}
                             <tr>                                                            
                                 <td>{{ agent.id }}</td>
+                                <td>{{ agent.username }}</td>
+                                <td>{{ agent.email }}</td>
                                 <td>{{ agent.nni }}</td>
                                 <td>{{ agent.name }}</td>
-                                <td>{{ agent.firstname }}</td>
+                                <td>{{ agent.firstname }}</td>                                
                                 <td>{{ agent.function }}</td>
-                                <td>{{ agent.team.name }}</td>                                
+                                <td>
+                                    {% if  agent.team %}
+                                        {{ agent.team.name }}
+                                    {% endif %}</td>                                
                                 <td>
                                     {% for role in agent.roles %}
                                         <table><tr><td>{{ role }}</td></tr></table>

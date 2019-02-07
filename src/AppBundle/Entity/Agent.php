@@ -30,28 +30,28 @@ class Agent implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="Nni", type="string", length=45)
+     * @ORM\Column(name="Nni", type="string", length=45, nullable=true)
      */
     private $nni;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=100)
+     * @ORM\Column(name="Name", type="string", length=100, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="FirstName", type="string", length=100)
+     * @ORM\Column(name="FirstName", type="string", length=100, nullable=true)
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Function", type="string", length=100)
+     * @ORM\Column(name="Function", type="string", length=100, nullable=true)
      */
     private $function;
     
@@ -95,7 +95,7 @@ class Agent implements UserInterface, \Serializable
 
    
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
     private $roles;   
 
