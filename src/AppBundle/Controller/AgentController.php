@@ -110,6 +110,7 @@ class AgentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             //$agent->setRoles(array('ROLE_ADMIN'));
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success',

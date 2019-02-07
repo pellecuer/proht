@@ -30,7 +30,14 @@
             <div class="row align-items-center justify-content-end" style="background-color: #09357A;">
                 <span class="mr-2 text-white">Bonjour 
                     {% if  app.user %}
-                        {{ app.user.username }} vous êtes connectés en tant que {{ app.user.roles.0 }}                    
+                        {{ app.user.username }} vous êtes connectés en tant que :  
+                        {% if is_granted('ROLE_ADMIN') %}
+                            Administrateur
+                        {% elseif is_granted('ROLE_VALIDEUR') %}
+                            Valideur
+                        {% else %}
+                            Agent
+                        {% endif %}                                            
                     {% endif %}</span>
                 <span class="mr-2 text-white">
                     {% if  app.user %}
