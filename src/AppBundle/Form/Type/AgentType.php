@@ -22,57 +22,71 @@ class AgentType extends AbstractType
     {
        $builder               
                
-            ->add('email', EmailType::class)
-            ->add('username', TextType::class)
+            ->add('email', EmailType::class, array(
+            'attr' => array('class' => 'form-group mb-2'),
+                ))
+                    
+            ->add('username', TextType::class, array(
+                'attr' => array('class' => 'form-group mb-2'),
+                )
+            )
+               
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
-            ))        
+                'first_options'  => array(
+                    'label' => 'Mot de passe',
+                    'attr' => array(
+                        'class' => 'form-group mb-2',
+                        ),
+                    ),
+                'second_options' => array(
+                    'label' => 'Confirmation de mot de passe',
+                    'attr' => array(
+                        'class' => 'form-group mb-2',
+                        ),
+                    ),
+                )
+            )      
                
-            ->add('name', TextType::class, array(            
-            'label'  => 'name',
-            'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+            ->add('name', TextType::class, array( 
+            'attr' => array('class' => 'form-group mb-2'),
             ))
                
-             ->add('firstname', TextType::class, array(            
-            'label'  => 'firstname',
-            'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+             ->add('firstname', TextType::class, array( 
+            'attr' => array('class' => 'form-group mb-2'),
             ))
                
-            ->add('function', TextType::class, array(            
-            'label'  => 'function',
-            'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+            ->add('function', TextType::class, array(
+            'attr' => array('class' => 'form-group mb-2'),
             ))
                
-            ->add('nni', TextType::class, array(            
-            'label'  => 'code',
-            'attr' => array('class' => 'form-group mx-sm-3 mb-2'),
+            ->add('nni', TextType::class, array(
+            'attr' => array('class' => 'form-group mb-2'),
             ))
             
             ->add('Team', EntityType::class, array(
                 'class' => Team::class,
                 'choice_label' => 'name ',
-                'attr' => array('class' => 'form-group mx-sm-3 mb-2')
+                'attr' => array('class' => 'form-group mb-2')
                 ))
                
             ->add('roles', ChoiceType::class, array(                
-                'attr'  =>  array('class' => 'form-control',
-                'style' => 'margin:5px 0;'),
+                'attr'  =>  array('class' => 'form-control mb-2',
+                
+                    ),
                 'choices' => array (
                     'Administrateur' => 'ROLE_ADMIN',                    
                     'Valideur' => 'ROLE_VALIDEUR',
                     'Agent' => 'ROLE_AGENT',                   
-                ) 
-                ,
+                ),
                 'multiple' => true,
-                'expanded' => true,
                 'required' => true,
                 )
             )
                         
             ->add('Envoyer', SubmitType::class, array(
-            'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
+            'attr' => array(
+                'class' => 'btn btn-primary mb-2 sendDate'),
         ));      
        
     }    
