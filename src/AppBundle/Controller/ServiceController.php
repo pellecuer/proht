@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Service controller.
@@ -36,6 +37,7 @@ class ServiceController extends Controller
      * Creates a new service entity.
      *
      * @Route("/create", name="createService")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les services; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -67,6 +69,7 @@ class ServiceController extends Controller
      * Displays a form to edit an existing service entity.
      *
      * @Route("/{id}/edit", name="editService")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour éditer les services; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Service $service)    
@@ -95,6 +98,7 @@ class ServiceController extends Controller
      * Deletes a Service entity.
      *
      * @Route("/delete/{id}", name="deleteService")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les services; Vous devez avoir le role Administrateur")
      * @Method("GET")
      */
     public function deleteAction(Service $service)

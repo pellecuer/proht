@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Letter;
 use AppBundle\Form\Type\LetterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Letter controller.
@@ -39,6 +40,7 @@ class LetterController extends Controller {
     
     /**
      * @Route("/create", name="createLetter")
+     *  @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour Créer les lettres; Vous devez avoir le role Administrateur")
      */
     public function CreateAction(Request $request)
     {       
@@ -68,6 +70,7 @@ class LetterController extends Controller {
      * Displays a form to edit an existing letter entity.
      *
      * @Route("/{id}/edit", name="editLetter")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les lettres; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Letter $letter)    
@@ -96,6 +99,7 @@ class LetterController extends Controller {
      * Deletes a Service entity.
      *
      * @Route("/delete/{id}", name="deleteLetter")
+     *  @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les lettres; Vous devez avoir le role Administrateur")
      * @Method("GET")
      */
     public function deleteAction(Letter $letter)

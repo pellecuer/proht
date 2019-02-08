@@ -13,6 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 
 
 /**
@@ -62,6 +64,7 @@ class TeamController extends Controller {
      * Creates a new section entity.
      *
      * @Route("/create", name="create_team")
+     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer une équipe; Vous devez avoir le role Valideurs")     
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -90,6 +93,7 @@ class TeamController extends Controller {
      * Displays a form to edit an existing service entity.
      *
      * @Route("/{id}/edit", name="editTeam")
+     * * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour éditer une équipe; Vous devez avoir le role Valideur")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Team $team)    
@@ -118,6 +122,7 @@ class TeamController extends Controller {
      * Deletes a Service entity.
      *
      * @Route("/delete/{id}", name="deleteTeam")
+     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Valideur")
      * @Method("GET")
      */
     public function deleteAction(Team $team)
@@ -133,6 +138,7 @@ class TeamController extends Controller {
      * Add an Agent in Team.
      *
      * @Route("/add/{id}", name="addAgent")
+     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour ajouter des agents dans une équipe; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function addAgentAction(Agent $agent)
@@ -156,6 +162,7 @@ class TeamController extends Controller {
      * Remove an Agent of Team.
      *
      * @Route("/remove/{id}", name="removeAgent")
+     *  @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agents d'une équipe; Vous devez avoir le role Valideur")
      * @Method({"GET", "POST"})
      */
     public function removeAgentAction(Agent $agent, Request $request)

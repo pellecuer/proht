@@ -102,6 +102,7 @@ class AgentController extends Controller
      * Displays a form to edit an existing agent entity.
      *
      * @Route("/{id}/edit", name="editAgent")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les agents; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Agent $agent)    
@@ -131,6 +132,7 @@ class AgentController extends Controller
      * Deletes an agent entity.
      *
      * @Route("/delete/{id}", name="deleteAgent")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agents; Vous devez avoir le role Administrateur")
      * @Method("GET")
      */
     public function deleteAction(Agent $agent)

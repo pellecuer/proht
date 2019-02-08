@@ -32,6 +32,8 @@ use AppBundle\Service\historyAgenda;
 use AppBundle\Service\checkRules;
 use AppBundle\Service\initializeAgenda;
 
+
+
 /**
  * Team controller.
  *
@@ -41,7 +43,9 @@ class AgendaTempController extends Controller {
 
 
     /**
-     * @Route("/edit", name="agendaTempEdit")      
+     * @Route("/edit", name="agendaTempEdit")
+     * @Security("is_granted('ROLE_AGENT')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier le planning; Vous devez avoir le role Valideur")
+     *     
      */
     public function editAjaxAction(Request $request, UserInterface $user, checkRules $checkRules)
     {
@@ -222,7 +226,8 @@ class AgendaTempController extends Controller {
     
      
     /**
-     * @Route("/edit2/{id}}", name="agendaTempEdit2")     
+     * @Route("/edit2/{id}}", name="agendaTempEdit2")
+     * @Security("is_granted('ROLE_AGENT)", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les agendas; Vous devez avoir le role Administrateur")   
      * @Method({"GET", "POST"})
      */
     public function createAction(Agent $agent)
@@ -416,6 +421,7 @@ class AgendaTempController extends Controller {
      * Deletes an agenda entity.
      *
      * @Route("/delete/{id}}", name="deleteTemp")
+     * @Security("is_granted('ROLE_AGENT')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function deleteAction(Agent $agent)
@@ -443,7 +449,8 @@ class AgendaTempController extends Controller {
     /**
      * Persist temp in agenda entity.
      *
-     * @Route("/valid/{id}", name="validTemp")     
+     * @Route("/valid/{id}", name="validTemp")
+     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Administrateur")    
      * @Method({"GET", "POST"})
      */
     public function validAction(Agent $agent, historyAgenda $historyAgenda)
@@ -488,6 +495,7 @@ class AgendaTempController extends Controller {
      * Initialize an agenda entity.
      *
      * @Route("/initialize/{agentId}", name="InitializeAgenda")
+     * * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Administrateur")
      * @Method("GET")
      */
     public function initializeAction($agentId, InitializeAgenda $initializeAgenda)

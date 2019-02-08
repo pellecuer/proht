@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 /**
@@ -36,6 +37,7 @@ class EventController extends Controller {
     
     /**
      * @Route("/create", name="createEvent")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les évènements; Vous devez avoir le role Administrateur")
      */
     public function CreateAction(Request $request)
     {        
@@ -71,6 +73,7 @@ class EventController extends Controller {
     
     /**     
      * @Route("/{id}/edit", name="editEvent")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour éditer les évènements; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, $id)
@@ -99,6 +102,7 @@ class EventController extends Controller {
      * Deletes an Event entity.
      *
      * @Route("/delete/{id}", name="eventDelete")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les évènements; Vous devez avoir le role Administrateur")
      * @Method("GET")
      */
     public function deleteAction(Request $request, Event $event, $id)

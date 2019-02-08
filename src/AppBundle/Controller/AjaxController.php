@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 
@@ -18,6 +19,7 @@ class AjaxController {
     
         /**
      * @Route(" /ajax_request", name=" ajax_request")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour accèder à cette fonctionnalité; Vous devez avoir le role Administrateur")
      */
     public function ajaxAction(Request $request)
     {

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Section controller.
@@ -37,6 +38,7 @@ class SectionController extends Controller
      * Displays a form to edit an existing section entity.
      *
      * @Route("/{id}/edit", name="editSection")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les sections; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Section $section)    
@@ -64,6 +66,7 @@ class SectionController extends Controller
      * Creates a new section entity.
      *
      * @Route("/create", name="createSection")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les sections; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -93,6 +96,7 @@ class SectionController extends Controller
      * Deletes a Section entity.
      *
      * @Route("/delete/{id}", name="deleteSection")
+     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les sections; Vous devez avoir le role Administrateur")
      * @Method("GET")
      */
     public function deleteAction(Section $section)

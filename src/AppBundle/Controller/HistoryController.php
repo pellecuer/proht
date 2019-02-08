@@ -13,6 +13,7 @@ use AppBundle\Entity\HistoryChange;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 /**
@@ -24,6 +25,7 @@ class HistoryController extends Controller {
    
     /**
      * @Route("/{id}/show", name="showHistory")
+     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser l'historique des modifications; Vous devez avoir le role valideur")
      */
     public function showAction(Agent $agent)
     {         
