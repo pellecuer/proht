@@ -25,13 +25,6 @@ class LetterController extends Controller {
     {
             
         $letters = $this->getDoctrine()->getRepository(Letter::class)->findAll();
-              
-
-        if (!$letters) {
-            throw $this->createNotFoundException(
-                'No letter found'
-            );
-        }        
         
         return $this->render('letter/show.html.twig', array(
                 'letters' => $letters,

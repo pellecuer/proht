@@ -31,11 +31,7 @@ class TeamController extends Controller {
     {            
         $teams = $this->getDoctrine()->getRepository(Team::class)->findAll();
 
-        if (!$teams) {
-            throw $this->createNotFoundException(
-                'No team found'
-            );
-        }        
+              
         return $this->render('team/show.html.twig', array(
                 'teams' => $teams,                
             ));        

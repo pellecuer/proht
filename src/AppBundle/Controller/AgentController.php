@@ -86,11 +86,7 @@ class AgentController extends Controller
         $agents = $this->getDoctrine()
                 ->getRepository(Agent::class)
                 ->findAll();       
-        
-
-        if (!$agents) {
-            return $this->redirectToRoute('user_registration');
-        }        
+         
         
         return $this->render('agent/show.html.twig', array(
                 'agents' => $agents,
@@ -105,17 +101,20 @@ class AgentController extends Controller
      * //@Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les agents; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Agent $agent)    
+    public function editAction(Request $request, Agent $agent, UserPasswordEncoderInterface $passwordEncoder)    
     {        
         $form = $this->createForm(AgentType::class, $agent);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            //$agent->setRoles(array('ROLE_ADMIN'));
+            //Encode the password (you could also do this via Doctrine listener)
+            $password = $passwordEncoder->encodePassword($agent, $agent->getPlainPassword());
+            $agent->setPassword($password);
+            
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success',
-                    'L\'agent avec le nom ' . $agent->getName(). 'a été modifié avec succès'
+                    'L\'agent avec le nom ' . $agent->getName(). ' a été modifié avec succès'
             );
 
             return $this->redirectToRoute('showagent', array('id' => $agent->getId()));

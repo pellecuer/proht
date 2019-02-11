@@ -25,11 +25,7 @@ class EventController extends Controller {
         //get objects from entity    
         $events = $this->getDoctrine()->getRepository(Event::class)->findAll();              
 
-        if (!$events) {
-            throw $this->createNotFoundException(
-                'No event found'
-            );
-        }        
+        
         return $this->render('event/show.html.twig', array(
                 'events' => $events,                
             ));

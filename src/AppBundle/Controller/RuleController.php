@@ -26,13 +26,6 @@ class RuleController extends Controller {
     {
             
         $rules = $this->getDoctrine()->getRepository(Rule::class)->findAll();
-              
-
-        if (!$rules) {
-            throw $this->createNotFoundException(
-                'No rule found'
-            );
-        }        
         
         return $this->render('rule/show.html.twig', array(
                 'rules' => $rules,

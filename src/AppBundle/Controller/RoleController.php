@@ -24,12 +24,7 @@ class RoleController extends Controller {
     public function showAction()
     {            
         $roles = $this->getDoctrine()->getRepository(Role::class)->findAll(); 
-        if (!$roles) {
-            throw $this->createNotFoundException(
-                'No role found'
-            );
-        }        
-        
+          
         return $this->render('role/show.html.twig', array(
                 'roles' => $roles,
             ));        
