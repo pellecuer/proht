@@ -23,7 +23,7 @@ class AgentController extends Controller
     
     /**
     * @Route("/register", name="user_registration")
-    * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les agents; Vous devez avoir le role Administrateur")
+    * //@Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les agents; Vous devez avoir le role Administrateur")
     */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -78,7 +78,7 @@ class AgentController extends Controller
     
     /**
      * @Route("/show", name="showagent")
-     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents; Vous devez avoir le role Valideur")
+     * //@Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents; Vous devez avoir le role Valideur")
      */
     public function showAction()
     {
@@ -102,7 +102,7 @@ class AgentController extends Controller
      * Displays a form to edit an existing agent entity.
      *
      * @Route("/{id}/edit", name="editAgent")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les agents; Vous devez avoir le role Administrateur")
+     * //@Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les agents; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Agent $agent)    
