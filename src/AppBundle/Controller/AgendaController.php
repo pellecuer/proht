@@ -39,20 +39,19 @@ class AgendaController extends Controller {
     {        
         //build the form
         $form = $this->createFormBuilder()
-            ->add('startDate', DateType::class, array(
-            'placeholder' => 'Choose a delivery option',
+            ->add('startDate', DateType::class, array(            
             'constraints' => array(
                     new NotBlank()
             ),
             'widget' => 'single_text',
             'label'  => 'Date de début',
-            'attr' => array('class' => 'form-group mb-2'),
+            'attr' => array('class' => 'form-control'),
              ))
                 
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
                 'choice_label' => 'name',
-                'attr' => array('class' => 'form-group mx-sm-3 mb-2')  
+                'attr' => array('class' => 'form-control')  
                 ))
                 
             ->add('interval', DateIntervalType::class, array(
@@ -64,11 +63,11 @@ class AgendaController extends Controller {
                 'with_days'   => false,
                 'with_hours'  => false,
                 'label' => false,
-                'attr' => array('class' => 'form-group mx-sm-3 mb-2')
+                'attr' => array('class' => 'form-control ')
              ))
                 
             ->add('Envoyer', SubmitType::class, array(
-            'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
+                'attr' => array('class' => 'btn btn-primary sendDate'),
             ))
         
             ->getForm()

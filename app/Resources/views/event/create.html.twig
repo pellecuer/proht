@@ -3,14 +3,16 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/sl-1.2.6/datatables.min.css"/>
 {% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block title %}Welcome!{% endblock %}
 
 {% block body %}   
     <div class="container">
         <h1>Créer un nouvel evenement</h1>
-        <form action="{{ path('createEvent') }}" method="post" class="form-inline">
+        <form action="{{ path('createEvent') }}" method="post">
             <div class="form-group mb-2">
-            {{ form_start(form) }}         
+            {{ form_start(form) }}
+            {{ form_row(form.code, {'label': 'Code d\'arrêt', 'attr' : {'placeholder':'Entrez une code d\'arrêt ...' }}) }}
             {{ form_rest(form) }}
             {{ form_end(form) }}
             </div

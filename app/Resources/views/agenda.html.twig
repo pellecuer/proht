@@ -3,6 +3,7 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/sl-1.2.6/datatables.min.css"/>
 {% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block title %}Agenda{% endblock %}
 {% block body %}    
 <div class="container bg-light">
@@ -10,26 +11,26 @@
         <h1 class="bg-white-semi_transparent"><em class="text-dark"></em>Agenda</h1>
         <p>Consulter, modifier, imprimer la planning de vos équipes</p>
     </header>
-    <div class="row border border-rounded my-2">
+    <div class="row border border-rounded mb-2 shadow-lg">
         <div class="col-md-4">
-                <span class="fa-stack fa-1x my-2">
-                    <i class="fas fa-circle fa-stack-2x text-secondary"></i>
-                    <a href="{{ path('createEvent') }}"><i class="fas fa-plus fa-stack-1x fa-inverse text-white"></i></a>
-                </span>
-                <span id="buttonPrint">
-                </span>
+            <span class="fa-stack fa-1x ">
+                <i class="fas fa-circle fa-stack-2x text-secondary"></i>
+                <a href="{{ path('createEvent') }}"><i class="fas fa-plus fa-stack-1x fa-inverse text-white "></i></a>
+            </span>
+            <span id="buttonPrint">
+            </span>
         </div>
-        <div class="col-md-7 offset-md-1">
-            <form action="{{ path('showAgenda') }}" method="post" class="form form-inline">
-                <div class="form-group mb-2">
-                    {{ form_start(form) }}
-                    {{ form_rest(form) }}
-                    {{ form_end(form) }}
-                </div>
-            </form>
-        </div>
+    </div>    
+    <form action="{{ path('showAgenda') }}" method="post" class="form-control mb-2 bg-menu shadow-lg" >
+        {{ form_start(form) }} 
+        {{ form_row(form.startDate, {'label': 'Date de début', 'attr' : {'placeholder':'Entrez une lettre ...' }}) }}
+        {{ form_row(form.Team, {'label': 'Lettre', 'attr' : {'placeholder':'Entrez une lettre ...' }}) }} 
+        {{ form_row(form.interval, {'label': 'Interval'}) }}
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
 
-    </div>
+    </form>
+    
     <div class= "row">
         <div class="col-md-12">
 
