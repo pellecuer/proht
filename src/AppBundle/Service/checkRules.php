@@ -236,30 +236,38 @@ class checkRules {
         $endDateTimeDay = $immutableDay->setTime($hourEndTimeDate, $minuteEndTimeDate);
 
         //set endDateTime Day on dateBefore
+        if ($AgendaTempBefore){
         $endTimeDateBefore = $AgendaTempBefore->getLetter()->getEndTime();
         $hourStartTimeDateBefore = $endTimeDateBefore->format('H');
         $minuteStartTimeDateBefore = $endTimeDateBefore->format('i');
         $endDateTimeDayBefore = $immutableDay
             ->modify('-1 day')
             ->setTime($hourStartTimeDateBefore, $minuteStartTimeDateBefore);
+        
+         //Check intervalBefore and intervalAfter
+        $intervalBefore = $endDateTimeDayBefore->diff($startDateTimeDay)->format('%H:%I:%S');
+        }
 
         //set StartDateTime Day on dateAfter
+        if ($AgendaTempAfter) {
         $startTimeDateAfter = $AgendaTempAfter->getLetter()->getStartTime();
         $hourStartTimeDateAfter = $startTimeDateAfter->format('H');
         $minuteStartTimeDateAfter = $startTimeDateAfter->format('i');
         $startDateTimeDayAfter = $immutableDay
             ->modify('+1 day')
             ->setTime($hourStartTimeDateAfter, $minuteStartTimeDateAfter);
-
+        
         //Check intervalBefore and intervalAfter
-        $intervalBefore = $endDateTimeDayBefore->diff($startDateTimeDay)->format('%H:%I:%S');
         $intervalAfter = $endDateTimeDay->diff($startDateTimeDayAfter)->format('%H:%I:%S');
+        }
+       
         //$intervalAfter =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
-       // $intervalBefore =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
+        // $intervalBefore =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
 
         if (!$AgendaTempBefore || $AgendaTempBefore->getLetter()->getLetter() == 'H' || $AgendaTempBefore->getLetter()->getLetter() == 'R')  {
             //$intervalBefore =  new \DateInterval('PT11H');
             $intervalBefore =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
+            $endDateTimeDayBefore = $startDateTimeDay->modify('-11 hour');
         }
 
 
@@ -267,9 +275,8 @@ class checkRules {
         if (!$AgendaTempAfter || $AgendaTempAfter->getLetter() == $HLetter || $AgendaTempAfter->getLetter()->getLetter() == $RLetter)  {
             //$intervalAfter =  new \DateInterval('PT11H');
             $intervalBefore =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
+            $startDateTimeDayAfter = $endDateTimeDay->modify('+11 hour');
         }
-
-
 
 
         $interval = [

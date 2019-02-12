@@ -227,7 +227,7 @@ class AgendaTempController extends Controller {
      
     /**
      * @Route("/edit2/{id}}", name="agendaTempEdit2")
-     * @Security("is_granted('ROLE_AGENT)", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les agendas; Vous devez avoir le role Administrateur")   
+     * @Security("is_granted('ROLE_AGENT')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function createAction(Agent $agent)
@@ -450,7 +450,7 @@ class AgendaTempController extends Controller {
      * Persist temp in agenda entity.
      *
      * @Route("/valid/{id}", name="validTemp")
-     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Administrateur")    
+     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour valider les agendas; Vous devez avoir le role Valideur")    
      * @Method({"GET", "POST"})
      */
     public function validAction(Agent $agent, historyAgenda $historyAgenda)
@@ -495,7 +495,7 @@ class AgendaTempController extends Controller {
      * Initialize an agenda entity.
      *
      * @Route("/initialize/{agentId}", name="InitializeAgenda")
-     * * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Administrateur")
+     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour initialiser les agendas; Vous devez avoir le role Administrateur")
      * @Method("GET")
      */
     public function initializeAction($agentId, InitializeAgenda $initializeAgenda)
@@ -506,7 +506,7 @@ class AgendaTempController extends Controller {
         ->find($agentId);
         $team = $agent->getTeam();        
         $initializeAgenda->initialize($team, $agent); 
-        $this->addFlash('success', 'L\'agenda a réinitialisé pour l\'agent ' . $agent->getName());
+        $this->addFlash('success', 'L\'agenda a été réinitialisé pour l\'agent ' . $agent->getName());
         
         return $this->redirectToRoute('showOneAgendaTemp', array(
             'id' => $agent->getId(),
