@@ -166,7 +166,8 @@ class TeamController extends Controller {
         //remove Agent
         $team = $agent->getTeam();
         
-        $idDefaultTeam = 19;
+        
+        $idDefaultTeam = 1;
         $Defaultteam = $this->getDoctrine()    
                     ->getRepository(Team::class)
                     ->find($idDefaultTeam);

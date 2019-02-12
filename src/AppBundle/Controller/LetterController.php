@@ -42,7 +42,9 @@ class LetterController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();         
+            $letterToUpperCase = strtoupper($letter->getLetter());            
+            $letter->setLetter($letterToUpperCase);
             $em->persist($letter);
             $em->flush();
             $this->addFlash('success',
@@ -72,7 +74,11 @@ class LetterController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+            $letterToUpperCase = strtoupper($letter->getLetter());            
+            $letter->setLetter($letterToUpperCase);
+                    
+            $em->flush();
             $this->addFlash('success',
                     'La lettre avec l\'id :' . $letter->getId(). 'a été modifiée avec succès'
             );
