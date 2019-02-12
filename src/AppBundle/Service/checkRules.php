@@ -9,7 +9,6 @@ use AppBundle\Entity\Rule;
 
 
 
-
 class checkRules {
     
     public function __construct(EntityManagerInterface $entityManager)
@@ -291,6 +290,28 @@ class checkRules {
 
          return $interval;
 
+    }
+    
+    public function ForbidModifyBefore(\DateTimeImmutable $date)
+    {        
+        $now = new \DateTime("now");
+        if($date < $now ){            
+                
+        return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
+    public function ForbidModifyAfter(\DateTimeImmutable $date, $dateMinModifyOk)
+    {
+        if($date < $dateMinModifyOk ){            
+                
+        return true;
+        } else {
+            return false;
+        }        
     }
 
 

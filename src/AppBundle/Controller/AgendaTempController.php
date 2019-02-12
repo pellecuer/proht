@@ -61,6 +61,10 @@ class AgendaTempController extends Controller {
         /* Get the letter send by Ajax */
         $letterUpdate = strtoupper($request->request->get('letter'));
 
+        
+        
+        
+        
         /* check if letter exist */
         $letter = $this
             ->getDoctrine()
@@ -107,9 +111,27 @@ class AgendaTempController extends Controller {
             $em->persist($agendaTemp);
             $em->flush();
 
+            //check if date < today
+            if ($checkRules->ForbidModifyBefore($date)) {
+                $errors['Modification sur date antérieure '] = "Vous ne pouvez pas modifier l'agenda sur des dates antérieures "; 
+            }
+                
+            //check if date > today + 2 or 7 depends on role user
+                //check Role             
+            if  ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                $dateMinModifyOk = new \DateTime("now + 2 days");
+            } else {
+                $dateMinModifyOk = new \DateTime("now + 7 days");
+            }                        
+                    
+            if ($checkRules->ForbidModifyAfter($date, $dateMinModifyOk)){
+               
+                $errors['Modification sur proche'] = "Vous ne pouvez pas modifier l'agenda sur une date inférieure au " . $dateMinModifyOk->modify('+1 day')->format('d M Y') ; 
+            }   
+            
+
             //Check if HoursPerWeek is under maximum
             $hoursPerWeek = $checkRules->HoursPerWeek($arrayWeeks);
-
             
             if ($hoursPerWeek > '48') {
                 $errors['Heures hebdomadaires'] = "Le nombre d'heures hebdomadaires dépasse le maximum légal de 48 heures.";
@@ -508,8 +530,8 @@ class AgendaTempController extends Controller {
         $initializeAgenda->initialize($team, $agent); 
         $this->addFlash('success', 'L\'agenda a été réinitialisé pour l\'agent ' . $agent->getName());
         
-        return $this->redirectToRoute('showOneAgendaTemp', array(
-            'id' => $agent->getId(),
+        return $this->redirectToRoute('showAgents', array(
+            'id' => $agent->getTeam()->getId(),
         ));
     }
 }

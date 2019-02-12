@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="app_users")
  * @UniqueEntity(fields="email", message="Cet email éxiste déjà")
  * @UniqueEntity(fields="username", message="Ce nom d'utilisateur éxiste déjà")
+ * @UniqueEntity(fields="nni", message="Ce NNI éxiste déjà")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AgentRepository")
  */
 class Agent implements UserInterface, \Serializable
@@ -30,7 +31,7 @@ class Agent implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="Nni", type="string", length=45, nullable=true)
+     * @ORM\Column(name="Nni", type="string", length=45, nullable=true, unique=true)
      */
     private $nni;
 

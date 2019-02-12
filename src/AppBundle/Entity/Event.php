@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Event
  *
  * @ORM\Table(name="event")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
+ * @UniqueEntity(fields="code", message="Ce nom éxiste déjà")
  */
 class Event
 {
@@ -45,7 +47,7 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=45, nullable=true)
+     * @ORM\Column(name="code", type="string", length=45, nullable=true, unique=true)
      */
     private $code;
 
