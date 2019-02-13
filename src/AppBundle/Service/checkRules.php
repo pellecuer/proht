@@ -12,9 +12,9 @@ use AppBundle\Entity\Rule;
 class checkRules {
     
     public function __construct(EntityManagerInterface $entityManager)
-{
-    $this->em = $entityManager;
-}
+    {
+        $this->em = $entityManager;
+    }
 
 
 

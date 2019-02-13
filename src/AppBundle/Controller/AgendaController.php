@@ -57,14 +57,15 @@ class AgendaController extends Controller {
                 
             ->add('interval', DateIntervalType::class, array(
                 'widget' => 'choice',
+                'allow_extra_fields' => true,
                 'with_years'  => false,
                 'with_months' => false,
                 'with_weeks' => true,
                 'weeks' => range(0, 4),
                 'with_days'   => false,
-                'with_hours'  => false,
-                'label' => false,
-                'attr' => array('class' => 'form-control ')
+                'with_hours'  => false,                
+                'attr' => array('class' => 'form-control'),                    
+                'placeholder' => ['weeks' => 'semaines'],                
              ))
                 
             ->add('Envoyer', SubmitType::class, array(
