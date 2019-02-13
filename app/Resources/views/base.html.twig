@@ -28,17 +28,17 @@
                 </div>
             </div>
             <div class="row align-items-center justify-content-end" style="background-color: #09357A;">
-                <span class="mr-2 text-white">Bonjour 
+                <span class="mr-2 text-white">Bonjour, 
                     {% if  app.user %}
-                        {{ app.user.username }}                        
+                        {{ app.user.firstname|capitalize }} {{ app.user.username|upper }}                       
                         {% if is_granted('ROLE_ADMIN') %}
-                            | Rôle : administrateur  
+                            | Rôle : ADMINISTRATEUR  
                         {% elseif is_granted('ROLE_VALIDEUR') %}
-                            | Rôle :  valideur  
+                            | Rôle :  VALIDEUR  
                         {% else %}
-                            | Rôle : Agent
+                            | Rôle : AGENT
                         {% endif %}
-                        {% if  app.user.team %}  | Equipe :  {{   app.user.team.name }}{% endif %}
+                        {% if  app.user.team %}  | Equipe :  {{   app.user.team.name|upper }}{% endif %}
                     {% endif %}</span>
                 <span class="mr-2 text-white">
                     {% if  app.user %}

@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
  
 class AgendaController extends Controller {
         
@@ -52,6 +53,7 @@ class AgendaController extends Controller {
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
                 'choice_label' => 'name',
+                'placeholder' => 'Sélectionner une équipe',
                 'attr' => array('class' => 'form-control')  
                 ))
                 
@@ -59,7 +61,8 @@ class AgendaController extends Controller {
                 'widget' => 'choice',
                 'allow_extra_fields' => true,
                 'with_years'  => false,
-                'with_months' => false,
+                'with_months' => true,
+                'weeks' => range(0, 2),
                 'with_weeks' => true,
                 'weeks' => range(0, 4),
                 'with_days'   => false,
@@ -77,7 +80,7 @@ class AgendaController extends Controller {
         
         //initialize defaults variables
         $team = $this->getUser()->getTeam();
-        $startDate = $team->getEvent()->getStartDate();        
+        $startDate = $team->getEvent()->getStartDate();       
         //$startDate = new \DateTime('now');
         $immutable = \DateTimeImmutable::createFromMutable($startDate);
         $defaultInterval = new \DateInterval('P15D');
@@ -93,7 +96,8 @@ class AgendaController extends Controller {
             $startDate = $data['startDate'];
             $immutable = \DateTimeImmutable::createFromMutable($startDate);           
             $endDate = $immutable->add($dateInterval);            
-        }
+        }        
+       
 
         //build ArrayDate
         $interval = new \DateInterval('P1D');

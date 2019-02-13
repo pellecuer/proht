@@ -23,17 +23,19 @@
             <span><i class="fas fa-step-forward"></i></span><span> </span>
         </a>        
     </p>
-    <div class="collapse" id="collapseExample">        
+</div>
+<div class="container bg-light">
+    
+    <div class="col-md-8 offset-2 text-center collapse" id="collapseExample">        
         <form action="{{ path('showAgenda') }}" method="post" class="form-control mb-2 bg-menu shadow-lg" >
         {{ form_start(form) }} 
         {{ form_row(form.startDate, {'label': 'Date de début', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
-        {{ form_row(form.interval, {'label': 'Nombre de semaines', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
+        {{ form_row(form.interval, {'label': 'intervalle de temps ', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
         {{ form_row(form.Team, {'label': 'Equipe', 'attr' : {'placeholder':'Selectionnez une équipe ...' }}) }}         
         {{ form_rest(form) }}
         {{ form_end(form) }}
         </form>        
-    </div>
-        
+    </div> 
 </div>
 <div class="container">    
     <div class= "row">

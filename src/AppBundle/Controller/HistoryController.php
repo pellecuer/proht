@@ -11,7 +11,6 @@ use AppBundle\Entity\Agenda;
 use AppBundle\Entity\User;
 use AppBundle\Entity\HistoryChange;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
