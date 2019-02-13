@@ -61,10 +61,9 @@ class AgendaController extends Controller {
                 'widget' => 'choice',
                 'allow_extra_fields' => true,
                 'with_years'  => false,
-                'with_months' => true,
-                'weeks' => range(0, 2),
+                'with_months' => false,                
                 'with_weeks' => true,
-                'weeks' => range(0, 4),
+                'weeks' => range(0, 3),
                 'with_days'   => false,
                 'with_hours'  => false,                
                 'attr' => array('class' => 'form-control'),                    
@@ -153,8 +152,241 @@ class AgendaController extends Controller {
             'holidays' => $holidays,
             'form'=>$form->createView()                
              ]);
+    }
+    
+    
+    
+    
+    /**
+     *  show next agendas objects.
+     *
+     * @Route("/agenda/next/{nextDate}/team/{team_Id}}", name="showNextAgenda")
+     * @ParamConverter("team", options={"id": "team_Id"})
+     * 
+     * @Method({"GET", "POST"})
+     */
+    public function showNextAgendaAction(Request $request, UserInterface $agent, $nextDate, Team $team)
+    {    
+        //dump ($nextDate);die;
+        //build the form
+        $form = $this->createFormBuilder()
+            ->add('startDate', DateType::class, array(            
+            'constraints' => array(
+                    new NotBlank()
+            ),
+            'widget' => 'single_text',
+            'label'  => 'Date de début',
+            'attr' => array('class' => 'form-control'),
+             ))
+                
+             ->add('Team', EntityType::class, array(
+                'class' => Team::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Sélectionner une équipe',
+                'attr' => array('class' => 'form-control')  
+                ))
+                
+            ->add('interval', DateIntervalType::class, array(
+                'widget' => 'choice',
+                'allow_extra_fields' => true,
+                'with_years'  => false,
+                'with_months' => false,                
+                'with_weeks' => true,
+                'weeks' => range(0, 3),
+                'with_days'   => false,
+                'with_hours'  => false,                
+                'attr' => array('class' => 'form-control'),                    
+                'placeholder' => ['weeks' => 'semaines'],                
+             ))
+                
+            ->add('Envoyer', SubmitType::class, array(
+                'attr' => array('class' => 'btn btn-primary sendDate'),
+            ))
+        
+            ->getForm()
+            ;
+        
+        
+
+
+        //Set Next Date from parameters        
+        $immutable = \DateTimeImmutable::createFromMutable(new \DateTime($nextDate));         
+        $defaultInterval = new \DateInterval('P15D');
+        $endDate = $immutable->add($defaultInterval);
+        $agents = $team->getAgents();
+
+        //build ArrayDate
+        $interval = new \DateInterval('P1D');
+        $arrayDates = [];
+        
+        while ($immutable<$endDate){
+            $arrayDates[] = $immutable;
+            $immutable = $immutable->add($interval);
+        }
+
+        //build holidays
+        $holidays = [];
+        foreach ($arrayDates as $arrayDate){
+            $holidays[] = $this->getDoctrine()
+                ->getRepository(Event::class)
+                ->findHolidaysByDate($arrayDate);
+        }
+
+        //build agenda
+        $agentBetweens = [];        
+        foreach ($agents as $agent) {
+            $agentIdentification = [];
+            $agentIdentification[] = [
+                $agent->getId(),
+                $agent->getName(),
+                $agent->getFirstName(),
+                $agent->getNni(),
+                $agent->getFunction()
+                ];
+            
+            $agendaDate = [];
+            foreach ($arrayDates as $arrayDate) {
+               
+                $agendaDate[] = $this->getDoctrine()
+                    ->getRepository(Agenda::class)
+                    ->findOneBy([
+                        'agent' => $agent,
+                        'date' => $arrayDate,
+                    ],  ['date' => 'ASC']);                
+            }      
+            $agentBetweens[] = [$agentIdentification, $agendaDate];            
         }
         
+        return $this->render('agenda.html.twig', [
+
+            'dateBetweens' => $arrayDates,
+            'agentBetweens' => $agentBetweens,
+            'team' => $team,
+            'startDate' => $nextDate,
+            'endDate' => $endDate,
+            'holidays' => $holidays,
+            'form'=>$form->createView()                
+             ]);
+    }
+    
+    
+    /**
+     *  show next agendas objects.
+     *
+     * @Route("/agenda/previous/{previousDate}/team/{team_Id}}", name="showPreviousAgenda")
+     * @ParamConverter("team", options={"id": "team_Id"})
+     * 
+     * @Method({"GET", "POST"})
+     */
+    public function showPreviousAgendaAction(Request $request, UserInterface $agent, $previousDate, Team $team)
+    {    
+        //dump ($nextDate);die;
+        //build the form
+        $form = $this->createFormBuilder()
+            ->add('startDate', DateType::class, array(            
+            'constraints' => array(
+                    new NotBlank()
+            ),
+            'widget' => 'single_text',
+            'label'  => 'Date de début',
+            'attr' => array('class' => 'form-control'),
+             ))
+                
+             ->add('Team', EntityType::class, array(
+                'class' => Team::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Sélectionner une équipe',
+                'attr' => array('class' => 'form-control')  
+                ))
+                
+            ->add('interval', DateIntervalType::class, array(
+                'widget' => 'choice',
+                'allow_extra_fields' => true,
+                'with_years'  => false,
+                'with_months' => false,                
+                'with_weeks' => true,
+                'weeks' => range(0, 3),
+                'with_days'   => false,
+                'with_hours'  => false,                
+                'attr' => array('class' => 'form-control'),                    
+                'placeholder' => ['weeks' => 'semaines'],                
+             ))
+                
+            ->add('Envoyer', SubmitType::class, array(
+                'attr' => array('class' => 'btn btn-primary sendDate'),
+            ))
+        
+            ->getForm()
+            ;
+        
+
+        //Set previous Date from parameters
+        $defaultInterval = new \DateInterval('P15D');
+        $end = new \DateTime($previousDate);        
+        $start = $end->sub($defaultInterval);        
+        $immutable = \DateTimeImmutable::createFromMutable($start);
+        
+        $endDate = $immutable->add($defaultInterval);        
+        $agents = $team->getAgents();
+
+        //build ArrayDate
+        $interval = new \DateInterval('P1D');
+        $arrayDates = [];
+        
+        while ($immutable<$endDate){
+            $arrayDates[] = $immutable;
+            $immutable = $immutable->add($interval);
+        }  
+
+        //build holidays
+        $holidays = [];
+        foreach ($arrayDates as $arrayDate){
+            $holidays[] = $this->getDoctrine()
+                ->getRepository(Event::class)
+                ->findHolidaysByDate($arrayDate);
+        }
+
+        //build agenda
+        $agentBetweens = [];        
+        foreach ($agents as $agent) {
+            $agentIdentification = [];
+            $agentIdentification[] = [
+                $agent->getId(),
+                $agent->getName(),
+                $agent->getFirstName(),
+                $agent->getNni(),
+                $agent->getFunction()
+                ];
+            
+            $agendaDate = [];
+            foreach ($arrayDates as $arrayDate) {
+               
+                $agendaDate[] = $this->getDoctrine()
+                    ->getRepository(Agenda::class)
+                    ->findOneBy([
+                        'agent' => $agent,
+                        'date' => $arrayDate,
+                    ],  ['date' => 'ASC']);                
+            }      
+            $agentBetweens[] = [$agentIdentification, $agendaDate];            
+        }
+        
+        return $this->render('agenda.html.twig', [
+
+            'dateBetweens' => $arrayDates,
+            'agentBetweens' => $agentBetweens,
+            'team' => $team,
+            'startDate' => $immutable,
+            'endDate' => $endDate,
+            'holidays' => $holidays,
+            'form'=>$form->createView()                
+             ]);
+    }
+    
+    
+    
+    
+    
     /**
      * Deletes an agenda entity.
      *

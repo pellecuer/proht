@@ -15,11 +15,11 @@
     <p>      
         <button class="btn btn-primary shadow-lg" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             <span><i class="fas fa-search"></i></span><span> </span>
-        </button>
-        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        </button>        
+        <a class="btn btn-primary" href="{{ path('showPreviousAgenda', {'team_Id': team.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
             <span><i class="fas fa-step-backward"></i></span><span> </span>
         </a>
-        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a class="btn btn-primary" href="{{ path('showNextAgenda', {'team_Id': team.id, 'nextDate': endDate|date("Y-m-d")}) }}">                                        
             <span><i class="fas fa-step-forward"></i></span><span> </span>
         </a>
         <span id="buttonPrint">
