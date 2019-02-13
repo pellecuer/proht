@@ -105,3 +105,31 @@ h1, h2, h3, h4, h5 {
    
 }
 
+/*Style of print bottom data table.net*/
+.buttons-print {
+  background-color: #007bff;
+  color: white;
+  margin : 5px;  
+  border-radius: 5px;
+}
+.buttons-excel {
+  background-color: #007bff;
+  color: white;
+  margin : 5px;
+  border-radius: 5px;
+}
+
+.buttons-copy {
+  background-color: #007bff;
+  color: white;
+  margin : 5px;
+  border-radius: 5px;
+}
+
+.buttons-pdf {
+  background-color: #007bff;
+  color: white;
+  margin : 5px;
+  border-radius: 5px;
+}
+

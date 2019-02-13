@@ -21,7 +21,9 @@
         </a>
         <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             <span><i class="fas fa-step-forward"></i></span><span> </span>
-        </a>        
+        </a>
+        <span id="buttonPrint">
+        </span>
     </p>
 </div>
 <div class="container bg-light">
@@ -56,7 +58,7 @@
                         </th>
                     </tr>
                     <tr class ="bg-dark">
-                        <th scope ="col" colspan="6" class="text-info" id="buttonPrint" ></th>                        
+                        <th scope ="col" colspan="6" class="text-info"></th>                        
                         {% for dateBetween in dateBetweens %}
                         <th scope ="col" class="text-light">
                             {% if dateBetween.date|localizeddate('none', 'none', 'fr', null, 'e')  == 6 %}
