@@ -12,14 +12,28 @@
         <p>Consulter, modifier, imprimer la planning de vos équipes</p>        
     </header>
       
-    <form action="{{ path('showAgenda') }}" method="post" class="form-control mb-2 bg-menu shadow-lg" >
+    <p>      
+        <button class="btn btn-primary shadow-lg" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <span><i class="fas fa-search"></i></span><span> </span>
+        </button>
+        <button class="btn btn-primary shadow-lg" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <span><i class="fas fa-step-backward"></i></span><span> </span>
+        </button>
+        <button class="btn btn-primary shadow-lg" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <span><i class="fas fa-step-forward"></i></span><span> </span>
+    </button>
+    </p>
+    <div class="collapse" id="collapseExample">        
+        <form action="{{ path('showAgenda') }}" method="post" class="form-control mb-2 bg-menu shadow-lg" >
         {{ form_start(form) }} 
-        {{ form_row(form.startDate, {'label': 'Date de début', 'attr' : {'placeholder':'Entrez une lettre ...' }}) }}
-        {{ form_row(form.Team, {'label': 'Lettre', 'attr' : {'placeholder':'Entrez une lettre ...' }}) }} 
+        {{ form_row(form.startDate, {'label': 'Date de début', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
         {{ form_row(form.interval, {'label': 'Interval'}) }}
+        {{ form_row(form.Team, {'label': 'Equipe', 'attr' : {'placeholder':'Selectionnez une équipe ...' }}) }}         
         {{ form_rest(form) }}
         {{ form_end(form) }}
-    </form>    
+        </form>        
+    </div>
+        
 </div>
 <div class="container">    
     <div class= "row">

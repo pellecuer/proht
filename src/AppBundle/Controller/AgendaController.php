@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
  
 class AgendaController extends Controller {
@@ -35,7 +36,7 @@ class AgendaController extends Controller {
      * @Route("/agenda/show", name="showAgenda")
      * @Method({"GET", "POST"})
      */
-    public function showAgendaAction(Request $request)
+    public function showAgendaAction(Request $request, UserInterface $agent)
     {        
         //build the form
         $form = $this->createFormBuilder()
@@ -73,13 +74,14 @@ class AgendaController extends Controller {
             ->getForm()
             ;
         
-        //initialize variables
-        $team = [];
-        $startDate = new \DateTime('now');
+        //initialize defaults variables
+        $team = $this->getUser()->getTeam();
+        $startDate = $team->getEvent()->getStartDate();        
+        //$startDate = new \DateTime('now');
         $immutable = \DateTimeImmutable::createFromMutable($startDate);
         $defaultInterval = new \DateInterval('P15D');
         $endDate = $immutable->add($defaultInterval);
-        $agents = [];
+        $agents = $team->getAgents();
             
         //get date from Form
         $form->handleRequest($request);
@@ -89,8 +91,7 @@ class AgendaController extends Controller {
             $team = $data['Team'];
             $startDate = $data['startDate'];
             $immutable = \DateTimeImmutable::createFromMutable($startDate);           
-            $endDate = $immutable->add($dateInterval);
-            $agents = $team->getAgents();
+            $endDate = $immutable->add($dateInterval);            
         }
 
         //build ArrayDate
