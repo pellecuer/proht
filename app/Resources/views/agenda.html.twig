@@ -9,7 +9,7 @@
 <div class="container bg-light">
     <header class="text-center py-3">
         <h1 class="bg-white-semi_transparent"><em class="text-dark"></em>Agenda</h1>
-        <p>Consulter, modifier, imprimer la planning de vos équipes</p>        
+        <p>Consulter, modifier, imprimer le planning de vos équipes</p>        
     </header>
       
     <p>      
@@ -32,7 +32,7 @@
         <form action="{{ path('showAgenda') }}" method="post" class="form-control mb-2 bg-menu shadow-lg" >
         {{ form_start(form) }} 
         {{ form_row(form.startDate, {'label': 'Date de début', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
-        {{ form_row(form.interval, {'label': 'intervalle de temps ', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
+        {{ form_row(form.interval, {'label': 'Période ', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
         {{ form_row(form.Team, {'label': 'Equipe', 'attr' : {'placeholder':'Selectionnez une équipe ...' }}) }}         
         {{ form_rest(form) }}
         {{ form_end(form) }}

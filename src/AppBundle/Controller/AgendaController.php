@@ -79,7 +79,7 @@ class AgendaController extends Controller {
             ;
         
         //initialize defaults variables
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        
         $team = $this->getUser()->getTeam();
         
         $startDate = $team->getEvent()->getStartDate();       
