@@ -49,6 +49,11 @@ h1, h2, h3, h4, h5 {
 }
 
 
+.fa-edit {
+     color: #868e96;
+}
+
+
 
 .homeCards {
 	position:relative;
@@ -107,29 +112,34 @@ h1, h2, h3, h4, h5 {
 
 /*Style of print bottom data table.net*/
 .buttons-print {
-  background-color: #007bff;
-  color: white;
+  /*bootstrap primary  background-color: #007bff;*/
+  background-color: white;
+  color: black;
   margin : 5px;  
   border-radius: 5px;
 }
 .buttons-excel {
-  background-color: #007bff;
-  color: white;
+  background-color: white;
+  color: black;
   margin : 5px;
   border-radius: 5px;
 }
 
 .buttons-copy {
-  background-color: #007bff;
-  color: white;
+  background-color: white;
+  color: black;
   margin : 5px;
   border-radius: 5px;
 }
 
 .buttons-pdf {
-  background-color: #007bff;
-  color: white;
+  background-color: white;
+  color: black;
   margin : 5px;
   border-radius: 5px;
+}
+
+.btn-edf-Color{
+  background-color: #09357A;
 }
 

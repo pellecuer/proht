@@ -27,8 +27,8 @@
                     </a> 
                 </div>
             </div>
-            <div class="row align-items-center justify-content-end" style="background-color: #09357A;">
-                <span class="mr-2 text-white">Bonjour, 
+            <div class="row align-items-end justify-content-between py-2 rounded" style="background-color: #09357A; min-height: 100px;">
+                <span class="ml-5 text-white">Bonjour, 
                     {% if  app.user %}
                         {{ app.user.firstname|capitalize }} {{ app.user.username|upper }}                       
                         {% if is_granted('ROLE_ADMIN') %}
@@ -39,7 +39,8 @@
                             | Rôle : AGENT
                         {% endif %}
                         {% if  app.user.team %}  | Equipe :  {{   app.user.team.name|upper }}{% endif %}
-                    {% endif %}</span>
+                    {% endif %}
+                </span>
                 <span class="mr-2 text-white">
                     {% if  app.user %}
                         <a class="btn redEDf mx-1" href="{{ path('logout') }}" role="button">Déconnexion <i class="fas fa-sign-out-alt"></i></a>

@@ -7,24 +7,29 @@
 {% block title %}Agenda{% endblock %}
 {% block body %}    
 <div class="container bg-light">
-    <header class="text-center py-3">
+    <header class="text-center py-3 my-5">
         <h1 class="bg-white-semi_transparent"><em class="text-dark"></em>Agenda</h1>
         <p>Consulter, modifier, imprimer le planning de vos équipes</p>        
     </header>
+    <hr>
       
-    <p>      
-        <button class="btn btn-primary shadow-lg" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            <span><i class="fas fa-search"></i></span><span> </span>
-        </button>        
-        <a class="btn btn-primary" href="{{ path('showPreviousAgenda', {'team_Id': team.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
-            <span><i class="fas fa-step-backward"></i></span><span> </span>
-        </a>
-        <a class="btn btn-primary" href="{{ path('showNextAgenda', {'team_Id': team.id, 'nextDate': endDate|date("Y-m-d")}) }}">                                        
-            <span><i class="fas fa-step-forward"></i></span><span> </span>
-        </a>
-        <span id="buttonPrint">
+    <div class="bg-white my-3">
+        <span class ="d-flex align-items-center justify-content-between">
+            <span>
+                <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <span><i class="fas fa-search"></i></span><span> </span>
+                </button>        
+                <a class="btn btn-outline-dark" href="{{ path('showPreviousAgenda', {'team_Id': team.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
+                    <span><i class="fas fa-step-backward"></i></span> -15 j <span> </span>
+                </a>
+                <a class="btn btn-outline-dark" href="{{ path('showNextAgenda', {'team_Id': team.id, 'nextDate': endDate|date("Y-m-d")}) }}">                                        
+                    <span><i class="fas fa-step-forward"></i></span>+ 15 J <span> </span>
+                </a>
+            </span>                    
+            <span id="buttonPrint">
+            </span>
         </span>
-    </p>
+    </div>
 </div>
 <div class="container bg-light">
     
@@ -46,7 +51,7 @@
                 <caption class="text-center">Equipe {% if team %} {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}} {% endif %}</caption>
                 <thead class="thead">
                     <tr class="bg-muted">                        
-                        <th scope ="col" colspan="6" class="text-success">Vacances scolaires</th>                        
+                        <th scope ="col" colspan="6" class="text-dark">Vacances scolaires : </th>                        
                         {% for holiday in holidays %}
                         <th scope ="col"
                                 {% if holiday%}
@@ -80,12 +85,12 @@
                         </th> 
                     </tr>
                     <tr class="bg-muted">
-                        <th scope ="col" class="text-color-blue"></th>
-                        <th scope ="col" class="text-color-blue">Id</th>
-                        <th scope ="col" class="text-color-blue">Nom</th>
-                        <th scope ="col" class="text-color-blue">Prénom</th>
-                        <th scope ="col" class="text-color-blue">NNI</th>
-                        <th scope ="col" class="text-color-blue">Fonction</th>
+                        <th scope ="col" class="text-color-secondary">Modifier</th>
+                        <th scope ="col" class="text-color-secondary">Id</th>
+                        <th scope ="col" class="text-color-secondary">Nom</th>
+                        <th scope ="col" class="text-color-secondary">Prénom</th>
+                        <th scope ="col" class="text-color-secondary">NNI</th>
+                        <th scope ="col" class="text-color-secondary">Fonction</th>
                         {% for dateBetween in dateBetweens %}
                             <th scope ="col" class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}</th>
                         {% endfor %}
