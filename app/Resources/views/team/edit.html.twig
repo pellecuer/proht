@@ -10,9 +10,9 @@
         <h1>Modifier l'équipe</h1>
             <div class="form-group mb-2">
                 {{ form_start(form, {'action':  path('editTeam', { 'id': team.id }), 'method': 'POST'}) }}                
-                {{ form_row(form.name, {'label': 'Nom d\'utilisateur', 'attr' : {'placeholder':'Nom d\'utilisateur ...' }}) }}
-                {{ form_row(form.Event, {'label': 'Nom d\'utilisateur', 'attr' : {'placeholder':'Nom d\'utilisateur ...' }}) }}  
-                {{ form_row(form.Section, {'label': 'Nom d\'utilisateur', 'attr' : {'placeholder':'Nom d\'utilisateur ...' }}) }}
+                {{ form_row(form.name, {'label': 'Nom de l\'équipe', 'attr' : {'placeholder':'Saisissez un nom d\'équipe' }}) }}
+                {{ form_row(form.Event, {'label': 'Arrêt de tranche', 'attr' : {'placeholder':' Sélectionner un arrêt de tranche' }}) }}  
+                {{ form_row(form.Section, {'label': 'Nom de section', 'attr' : {'placeholder':'Nom de section' }}) }}
                 {{ form_row(form.Envoyer) }}
                 {{ form_rest(form) }}
                 {{ form_end(form) }}

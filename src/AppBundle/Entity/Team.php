@@ -119,13 +119,14 @@ class Team
         return $this;
     }
     
-    public function removeAgent(Agent $agent, $Defaultteam): self
+    public function removeAgent(Agent $agent): self
     {
         if ($this->agents->contains($agent)) {
             $this->agents->removeElement($agent);
             // set the owning side to null (unless already changed)
             if ($agent->getTeam() === $this) {
-                $agent->setTeam($Defaultteam);
+                //$agent->setTeam($Defaultteam);
+                $agent->setTeam(NULL);
             }
         }
 

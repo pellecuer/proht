@@ -67,7 +67,8 @@ class AgentType extends AbstractType
             ->add('Team', EntityType::class, array(
                 'class' => Team::class,
                 'choice_label' => 'name ',
-                'attr' => array('class' => 'form-group mb-2')
+                'attr' => array('class' => 'form-group mb-2'),
+                'required' => false,
                 ))
                
             ->add('roles', ChoiceType::class, array(                

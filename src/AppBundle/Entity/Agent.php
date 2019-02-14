@@ -147,10 +147,11 @@ class Agent implements UserInterface, \Serializable
         $this->function = $function;
     }
 
-    function setTeam( Team $team) {
+    function setTeam($team) {
         $this->team = $team;
         return $this;
     }
+       
 
     
 

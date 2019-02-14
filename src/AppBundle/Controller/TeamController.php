@@ -166,13 +166,8 @@ class TeamController extends Controller {
         //remove Agent
         $team = $agent->getTeam();
         
-        
-        $idDefaultTeam = 1;
-        $Defaultteam = $this->getDoctrine()    
-                    ->getRepository(Team::class)
-                    ->find($idDefaultTeam);
       
-        $team->removeAgent($agent, $Defaultteam);
+        $team->removeAgent($agent);
         $em = $this->getDoctrine()->getManager();
             $em->persist($team);
             $em->flush();
