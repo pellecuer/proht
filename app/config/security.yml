@@ -59,3 +59,7 @@ security:
     role_hierarchy:
         ROLE_VALIDEUR: ROLE_AGENT
         ROLE_ADMIN: [ROLE_VALIDEUR, ROLE_ALLOWED_TO_SWITCH]
+        
+        
+    # User don't has to relog to see the new role
+    always_authenticate_before_granting: true
