@@ -156,7 +156,7 @@ class AgendaController extends Controller {
     
     
     
-    
+        
     /**
      *  show next agendas objects.
      *
@@ -313,7 +313,7 @@ class AgendaController extends Controller {
              ))
                 
             ->add('Envoyer', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn-primary sendDate'),
+                'attr' => array('class' => 'btn btn-primary btn-edf-Color'),
             ))
         
             ->getForm()

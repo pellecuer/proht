@@ -7,7 +7,13 @@ footer {
 }
 
 h1, h2, h3, h4, h5 {
-    color: #09357A; 
+    color: #09357A;
+    font-weight: bold;
+}
+
+.title-EDF {
+    font-size: 4em;
+    font-weight:bold;
 }
 
 .text-color-blue {
@@ -18,6 +24,11 @@ h1, h2, h3, h4, h5 {
 .btn-custom {
 	background-color: #FE5815;
         color:white;
+}
+
+/* buttons sucess*/
+.btn-custom-bg {
+    
 }
 
 
@@ -142,4 +153,13 @@ h1, h2, h3, h4, h5 {
 .btn-edf-Color{
   background-color: #09357A;
 }
+
+.text-orange-edf {
+  color: #FE5815;
+}
+
+.text-blue-edf {
+    color: #09357A;
+}
+
 
