@@ -323,7 +323,7 @@ class AgendaController extends Controller {
         //Set previous Date from parameters
         $defaultInterval = new \DateInterval('P15D');
         $end = new \DateTime($previousDate);        
-        $start = $end->sub($defaultInterval);        
+        $start = $end->sub($defaultInterval);
         $immutable = \DateTimeImmutable::createFromMutable($start);
         
         $endDate = $immutable->add($defaultInterval);        
@@ -376,7 +376,7 @@ class AgendaController extends Controller {
             'dateBetweens' => $arrayDates,
             'agentBetweens' => $agentBetweens,
             'team' => $team,
-            'startDate' => $immutable,
+            'startDate' => $start,
             'endDate' => $endDate,
             'holidays' => $holidays,
             'form'=>$form->createView()                
