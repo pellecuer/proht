@@ -97,8 +97,18 @@ class AgendaController extends Controller {
             $startDate = $data['startDate'];
             $immutable = \DateTimeImmutable::createFromMutable($startDate);           
             $endDate = $immutable->add($dateInterval);            
-        }        
-       
+        } 
+        
+        //prohibit show team<>myTeam unless granted Admin
+        //dump($this->getUser()->getTeam());die;
+        $myTeam =  $this->getUser()->getTeam();
+        if ($team != $myTeam && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+            $this->addFlash('danger',
+                    'Vous ne pouvez pas voir l\'agenda d\'une autre équipe que la votre'
+            );
+
+            return $this->redirectToRoute('showAgenda'); 
+        }
 
         //build ArrayDate
         $interval = new \DateInterval('P1D');

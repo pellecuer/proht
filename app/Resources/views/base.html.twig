@@ -30,7 +30,7 @@
             </div>
             <div class="row align-items-end justify-content-between py-2 rounded" style="background-color: #09357A; min-height: 100px;">
                 <span class="ml-5 text-white">
-                    {% if  app.user %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         {{ app.user.firstname|capitalize }} {{ app.user.username|upper }}                       
                         {% if is_granted('ROLE_ADMIN') %}
                             | Rôle : ADMINISTRATEUR  
