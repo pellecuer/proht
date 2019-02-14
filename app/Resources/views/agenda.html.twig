@@ -18,13 +18,15 @@
             <span>
                 <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     <span><i class="fas fa-search"></i></span><span> </span>
-                </button>        
+                </button>
+                {% if team %}
                 <a class="btn btn-outline-dark" href="{{ path('showPreviousAgenda', {'team_Id': team.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
                     <span><i class="fas fa-step-backward"></i></span> -15 j <span> </span>
                 </a>
                 <a class="btn btn-outline-dark" href="{{ path('showNextAgenda', {'team_Id': team.id, 'nextDate': endDate|date("Y-m-d")}) }}">                                        
                     <span><i class="fas fa-step-forward"></i></span>+ 15 J <span> </span>
                 </a>
+                {% endif %}
             </span>                    
             <span id="buttonPrint">
             </span>

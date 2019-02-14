@@ -77,16 +77,21 @@ class AgendaController extends Controller {
             ->getForm()
             ;
         
-        //initialize defaults variables
-        
+        //initialize defaults variables        
         $team = $this->getUser()->getTeam();
         
-        $startDate = $team->getEvent()->getStartDate();       
-        //$startDate = new \DateTime('now');
+        if ($team) {
+            $startDate = $team->getEvent()->getStartDate();
+            $agents = $team->getAgents();
+        } else {
+          $startDate = new \DateTime('now');
+          $agents = [];
+        }               
+        
         $immutable = \DateTimeImmutable::createFromMutable($startDate);
         $defaultInterval = new \DateInterval('P15D');
         $endDate = $immutable->add($defaultInterval);
-        $agents = $team->getAgents();
+        
             
         //get date from Form
         $form->handleRequest($request);
