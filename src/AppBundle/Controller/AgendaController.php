@@ -41,14 +41,6 @@ class AgendaController extends Controller {
     {        
         //build the form
         $form = $this->createFormBuilder()
-            ->add('startDate', DateType::class, array(            
-            'constraints' => array(
-                    new NotBlank()
-            ),
-            'widget' => 'single_text',
-            'label'  => 'Date de début',
-            'attr' => array('class' => 'form-control'),
-             ))
                 
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
@@ -74,48 +66,46 @@ class AgendaController extends Controller {
                 'attr' => array('class' => 'btn btn-primary sendDate'),
             ))
         
-            ->getForm()
-            ;
-        
-        //initialize defaults variables        
-        $team = $this->getUser()->getTeam();
-        
-        if ($team) {
-            $startDate = $team->getEvent()->getStartDate();
-            $agents = $team->getAgents();
-        } else {
-          $startDate = new \DateTime('now');
-          $agents = [];
-        }               
-        
-        $immutable = \DateTimeImmutable::createFromMutable($startDate);
-        $defaultInterval = new \DateInterval('P15D');
-        $endDate = $immutable->add($defaultInterval);
+            ->getForm();
         
             
         //get date from Form
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {            
+        if ($form->isSubmitted() && $form->isValid()) { 
+            //if role admin ok, else redirect
             $data = $form->getData();
             $dateInterval = $data['interval'];
             $team = $data['Team'];
-            $startDate = $data['startDate'];
-            $immutable = \DateTimeImmutable::createFromMutable($startDate);           
-            $endDate = $immutable->add($dateInterval);            
-        } 
-        
-        //prohibit show team<>myTeam unless granted Admin
-        //dump($this->getUser()->getTeam());die;
-        $myTeam =  $this->getUser()->getTeam();
-        if ($team != $myTeam && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
-            $this->addFlash('danger',
-                    'Vous ne pouvez pas voir l\'agenda d\'une autre équipe que la votre'
-            );
+            $startDate = $team->getEvent()->getStartDate();
+            $agents = $team->getAgents();
+            
+            //prohibit show team<>myTeam unless granted Admin
+            $myTeam =  $this->getUser()->getTeam();
+            if ($team != $myTeam && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas voir l\'agenda d\'une autre équipe que la votre'
+                );
+                return $this->redirectToRoute('showAgenda'); 
+            } 
+            
+        } else {            
+            //if form is not submitted, initialize defaults variables
+            $dateInterval = new \DateInterval('P15D');
+            $team = $this->getUser()->getTeam();
+            
+            if ($team) {
+                $startDate = $team->getEvent()->getStartDate();
+                $agents = $team->getAgents();
 
-            return $this->redirectToRoute('showAgenda'); 
+            } else {
+              $startDate = new \DateTime('now');
+              $agents = [];              
+            } 
         }
 
         //build ArrayDate
+        $immutable = \DateTimeImmutable::createFromMutable($startDate);        
+        $endDate = $immutable->add($dateInterval);
         $interval = new \DateInterval('P1D');
         $arrayDates = [];
         
@@ -132,7 +122,7 @@ class AgendaController extends Controller {
                 ->findHolidaysByDate($arrayDate);
         }
 
-        //build agenda
+        //build agenda        
         $agentBetweens = [];        
         foreach ($agents as $agent) {
             $agentIdentification = [];

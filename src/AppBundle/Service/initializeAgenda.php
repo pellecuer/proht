@@ -27,13 +27,12 @@ class initializeAgenda {
         //build the arrayDate
         $startDate = $team->getEvent()->getStartDate();        
         $endDate = $team->getEvent()->getEndDate();        
-        $date = $startDate;
-        $agentId = $agent->getId();
+        $date = $startDate;        
         
-        //remove existent agenda if exists
+        //remove existant agenda if exists
         $agendaToRemoves = $this->em
             ->getRepository(Agenda::class)
-            ->deleteAgentAgendaBetweenDate($startDate, $endDate, $agentId);
+            ->deleteAgentAgendaBetweenDate($startDate, $endDate, $agent);
         
         if ($agendaToRemoves) {
         
@@ -47,7 +46,7 @@ class initializeAgenda {
         while ($startDate<=$endDate){ 
             $agenda = new Agenda();
             $agenda->setAgent($agent);           
-            $agenda->setDate($date);            
+            $agenda->setDate($date);          
             
             $dayWeek =$date->format('w');
             //if saturday
@@ -71,7 +70,7 @@ class initializeAgenda {
            $agenda->setletter($letter);
            $this->em->persist($agenda);
            $this->em->flush();
-           $date -> modify('+1 day');           
+           $date -> modify('+1 day');          
         }        
     }    
 }

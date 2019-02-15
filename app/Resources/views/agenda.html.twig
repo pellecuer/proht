@@ -37,10 +37,9 @@
     
     <div class="col-md-8 offset-2 text-center collapse" id="collapseExample">        
         <form action="{{ path('showAgenda') }}" method="post" class="form-control mb-2 bg-menu shadow-lg" >
-        {{ form_start(form) }} 
-        {{ form_row(form.startDate, {'label': 'Date de début', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
+        {{ form_start(form) }}  
+        {{ form_row(form.Team, {'label': 'Equipe', 'attr' : {'placeholder':'Selectionnez une équipe ...' }}) }}
         {{ form_row(form.interval, {'label': 'Période ', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
-        {{ form_row(form.Team, {'label': 'Equipe', 'attr' : {'placeholder':'Selectionnez une équipe ...' }}) }}         
         {{ form_rest(form) }}
         {{ form_end(form) }}
         </form>        
