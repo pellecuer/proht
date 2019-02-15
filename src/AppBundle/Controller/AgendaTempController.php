@@ -44,7 +44,7 @@ class AgendaTempController extends Controller {
 
     /**
      * @Route("/edit", name="agendaTempEdit")
-     * @Security("is_granted('ROLE_AGENT')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier le planning; Vous devez avoir le role Valideur")
+     * //@Security("is_granted('ROLE_AGENT')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier le planning; Vous devez avoir le role Valideur")
      *     
      */
     public function editAjaxAction(Request $request, UserInterface $user, checkRules $checkRules)
