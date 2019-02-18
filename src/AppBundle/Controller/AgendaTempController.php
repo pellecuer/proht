@@ -446,6 +446,78 @@ class AgendaTempController extends Controller {
     }
     
     
+    /**     
+     * @Route("/showNextAgenda/next/{nextDate}/team/{team_Id}", name="showNextAgendaTemp")
+     * 
+     * @ParamConverter("team", options={"id": "team_Id"})
+     */
+    public function showNextAction(Team $team, $nextDate)
+    {
+        
+            //crée un array d'array des agendas           
+            $startDate = $nextDate;
+            $immutable = \DateTimeImmutable::createFromMutable(new \DateTime($nextDate));                         
+            $dateInterval = new \DateInterval('P15D');           
+            $endDate = $immutable->add($dateInterval);
+            
+            //$endDate = $team->getEvent()->getEndDate();
+            
+            //build calendar
+            $interval = new \DateInterval('P1D');
+            $arrayDates = [];
+            
+
+            while ($immutable<=$endDate){
+                $arrayDates[] =  $immutable;
+                $immutable = $immutable->add($interval);
+            }
+
+            //show holidays
+            $holidays = [];
+            foreach ($arrayDates as $arrayDate){
+                $holidays[] = $this->getDoctrine()
+                    ->getRepository(Event::class)
+                    ->findHolidaysByDate($arrayDate);
+            }
+
+            //ShowagendasTemp
+            $agentBetweens = [];
+            $agents = [$team->getAgents()];            
+            foreach ($agents as $agent) {
+                $agentIdentification = [];
+                $agentIdentification[] = [
+                    $agent->getId(),
+                    $agent->getName(),
+                    $agent->getFirstName(),
+                    $agent->getNni(),
+                    $agent->getFunction()
+                    ];
+
+                $agendaDate = [];
+                foreach ($arrayDates as $arrayDate) {
+
+                    $agendaDate[] = $this->getDoctrine()
+                        ->getRepository(AgendaTemp::class)
+                        ->findOneBy([
+                            'agent' => $agent,
+                            'date' => $arrayDate,
+                        ],  ['date' => 'ASC']);
+                }      
+                $agentBetweens[] = [$agentIdentification, $agendaDate];            
+            }         
+
+        return $this->render('agendaTemp.html.twig', [
+
+                'dateBetweens' => $arrayDates,
+                'agentBetweens' => $agentBetweens,
+                'team' => $team,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'holidays' => $holidays,
+                 ]);    
+    }
+    
+    
     
     /**
      * Deletes an agenda entity.
@@ -473,6 +545,9 @@ class AgendaTempController extends Controller {
                 'id' => $agent->getId(),                
                     ));
     }
+    
+    
+    
     
     
     

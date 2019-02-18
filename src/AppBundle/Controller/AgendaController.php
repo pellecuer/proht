@@ -165,7 +165,7 @@ class AgendaController extends Controller {
     /**
      *  show next agendas objects.
      *
-     * @Route("/agenda/next/{nextDate}/team/{team_Id}}", name="showNextAgenda")
+     * @Route("/agenda/next/{nextDate}/team/{team_Id}", name="showNextAgenda")
      * @ParamConverter("team", options={"id": "team_Id"})
      * 
      * @Method({"GET", "POST"})
