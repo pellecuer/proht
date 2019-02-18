@@ -204,11 +204,14 @@ class AgendaTempController extends Controller {
             if (!$errors) {
                 $titre = 'Mise à jour Ok';
                 $description = 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agent->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y');
+                $countErrors = 0;
+                
 
             } else {
-                $titre = 'Erreur';
-                $description = implode(" ", $errors);
+                $titre = 'Votre saisie comporte des erreurs : ';
+                $description = "<li class='list-group-item'>" . implode("</li><li class='list-group-item'>", $errors) . "</li>";
                 $agendaTemp->setLetter($letterInMemo);
+                $countErrors = count($errors);
                 $em->persist($agendaTemp);
                 $em->flush();
             }
@@ -239,6 +242,7 @@ class AgendaTempController extends Controller {
             'DateTimeBefore' => $interval[4]->format('D d M H:i:s'),
             'DateTimeAfter' => $interval[5]->format('D d M H:i:s'),
             'average' => $averageHourPerWeek,
+            'countErrors' => $countErrors,
 
         ]));
 

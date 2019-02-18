@@ -105,7 +105,8 @@ $('.editFor').on( "change paste keyup", function(){
             console.log(data);
 
             $( '#titre').text(data.titre);
-            $( '#description').text(data.description);
+            $( '#countErrors').html(data.countErrors);
+            $( '#description').html(data.description);
             $( '#startLegalWeek').text(data.startLegalWeek);
             $( '#endLegalWeek').text(data.endLegalWeek);
             $( '#startDay').text(data.startDay);

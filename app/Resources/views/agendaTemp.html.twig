@@ -100,28 +100,47 @@
                     {% endif  %}
                 </tbody>                 
             </table>
-
-            <h5>Titre : <span id="titre"></span></h5>
-            <h5>Description : <span id="description"></span></h5>
-            <h5>Début de semaine légale : <span id="startLegalWeek"></span></h5>
-            <h5>Fin de semaine légale : <span id="endLegalWeek"></span></h5>
-            <h5>Début de journée : <span id="startDay"></span></h5>
-            <h5>Fin de journée : <span id="endDay"></span></h5>
-            <h5>Heures totalisés cette semaine : <span id="hoursPerWeek"></span></h5>
-            <h5>Temps de repos avant DDay : <span id="intervalBefore"></span></h5>
-            <h5>Temps de repos après DDay : <span id="intervalAfter"></span></h5>            
-            <h5>DateTimeBefore : <span id="DateTimeBefore"></span></h5>
-            <h5>DateTimeAfter : <span id="DateTimeAfter"></span></h5>
-            <h5>Average per Week : <span id="average"></span></h5>
-
-            
-            
+        </div>
+    </div>
+    
+     <div class="row border border-rounded my-2">
+        <div class="col-md-10">
+    <h4> 
+       <span id="titre"></span>
+    </h4>
+    <div>            
+    <ul class="list-group list-group-flush" id="description">                
+    </ul>            
+    </div>
+    
+                
+    <div class="row border border-rounded my-2">
+        <div class="col-md-10">
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#info" aria-expanded="false" aria-controls="collapseExample">
+                <span><i class="fas fa-arrows-alt-v"></i></span><span> Information : </span>
+            </button>
+        </div>
+    </div>
+    <div class="row border border-rounded my-2">
+        <div class="col-md-10">
+            <div id="info" class=" card collapse bg-light">
+                <div class="card-body">Début de semaine légale : <span id="startLegalWeek"></span></div>
+                <div class="card-body">Fin de semaine légale : <span id="endLegalWeek"></span></div>
+                <div class="card-body">Début de journée : <span id="startDay"></span></div>
+                <div class="card-body">Fin de journée : <span id="endDay"></span></div>
+                <div class="card-body">Heures totalisés cette semaine : <span id="hoursPerWeek"></span></div>
+                <div class="card-body">Temps de repos avant DDay : <span id="intervalBefore"></span></div>
+                <div class="card-body">Temps de repos après DDay : <span id="intervalAfter"></span></div>            
+                <div class="card-body">DateTimeBefore : <span id="DateTimeBefore"></span></div>
+                <div class="card-body">DateTimeAfter : <span id="DateTimeAfter"></span></div>
+                <div class="card-body">Moyenne par semaine : <span id="average"></span></div>                  
+            </div>
+        </div>
+    </div>
            {# {% for dateBetween in dateBetweens %}
                 <th class="">{{dateBetween.date | date("F jS \\a\\t g:ia", "Europe/Paris") }}</th>
                 {% endfor %}
             #}
-        </div>
-    </div>
 </div> 
 {% endblock %}
 

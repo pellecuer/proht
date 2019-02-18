@@ -33,8 +33,7 @@
         </span>
     </div>
 </div>
-<div class="container bg-light">
-    
+<div class="container bg-light">    
     <div class="col-md-8 offset-2 text-center collapse" id="collapseExample">        
         <form action="{{ path('showAgenda') }}" method="post" class="form-control mb-2 bg-menu shadow-lg" >
         {{ form_start(form) }}  
@@ -110,7 +109,9 @@
                             
                             {% for agenda in agentRow.1 %}                            
                                 {% if agenda %}
-                                    <td id = "{{ agenda.id }}" class="
+                                    <td 
+                                        id = "{{ agenda.id }}" 
+                                        class="
                                             {% if agenda.letter.letter == 'R' %}
                                                 table-success
                                             {% elseif agenda.letter.letter == 'H' %}

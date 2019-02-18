@@ -44,7 +44,7 @@ class AgendaController extends Controller {
                 
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
-                'choice_label' => 'name',
+                'choice_label' => 'name',                 
                 'placeholder' => 'Sélectionner une équipe',
                 'attr' => array('class' => 'form-control')  
                 ))
@@ -55,7 +55,7 @@ class AgendaController extends Controller {
                 'with_years'  => false,
                 'with_months' => false,                
                 'with_weeks' => true,
-                'weeks' => range(0, 3),
+                'weeks' => range(1, 3),
                 'with_days'   => false,
                 'with_hours'  => false,                
                 'attr' => array('class' => 'form-control'),                    
