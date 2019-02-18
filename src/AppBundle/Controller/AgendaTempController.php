@@ -442,16 +442,17 @@ class AgendaTempController extends Controller {
                 'startDate' => $startDate,
                 'endDate' => $endDate,
                 'holidays' => $holidays,
+                'agent' => $agent,
                  ]);
     }
     
     
     /**     
-     * @Route("/showNextAgenda/next/{nextDate}/team/{team_Id}", name="showNextAgendaTemp")
+     * @Route("/showNextAgenda/next/{nextDate}/agent/{agent_Id}", name="showNextAgendaTemp")
      * 
-     * @ParamConverter("team", options={"id": "team_Id"})
+     * @ParamConverter("agent", options={"id": "agent_Id"})
      */
-    public function showNextAction(Team $team, $nextDate)
+    public function showNextAction(Agent $agent, $nextDate)
     {
         
             //crée un array d'array des agendas           
@@ -482,7 +483,7 @@ class AgendaTempController extends Controller {
 
             //ShowagendasTemp
             $agentBetweens = [];
-            $agents = [$team->getAgents()];            
+            $agents = [$agent];           
             foreach ($agents as $agent) {
                 $agentIdentification = [];
                 $agentIdentification[] = [
@@ -510,8 +511,79 @@ class AgendaTempController extends Controller {
 
                 'dateBetweens' => $arrayDates,
                 'agentBetweens' => $agentBetweens,
-                'team' => $team,
+                'agent' => $agent,
                 'startDate' => $startDate,
+                'endDate' => $endDate,
+                'holidays' => $holidays,
+                 ]);    
+    }
+    
+    
+    
+    /**     
+     * @Route("/showPreviousAgenda/previous/{previousDate}/agent/{agent_Id}", name="showPreviousAgendaTemp")
+     * 
+     * @ParamConverter("agent", options={"id": "agent_Id"})
+     */
+    public function showPreviousAction(Agent $agent, $previousDate)
+    {        
+            //crée un array d'array des agendas
+            $defaultInterval = new \DateInterval('P15D');
+            $end = new \DateTime($previousDate);        
+            $start = $end->sub($defaultInterval);
+            $immutable = \DateTimeImmutable::createFromMutable($start);
+            $endDate = $immutable->add($defaultInterval);                    
+            
+            //build calendar
+            $interval = new \DateInterval('P1D');
+            $arrayDates = [];
+            
+
+            while ($immutable<=$endDate){
+                $arrayDates[] =  $immutable;
+                $immutable = $immutable->add($interval);
+            }
+
+            //show holidays
+            $holidays = [];
+            foreach ($arrayDates as $arrayDate){
+                $holidays[] = $this->getDoctrine()
+                    ->getRepository(Event::class)
+                    ->findHolidaysByDate($arrayDate);
+            }
+
+            //ShowagendasTemp
+            $agentBetweens = [];
+            $agents = [$agent];           
+            foreach ($agents as $agent) {
+                $agentIdentification = [];
+                $agentIdentification[] = [
+                    $agent->getId(),
+                    $agent->getName(),
+                    $agent->getFirstName(),
+                    $agent->getNni(),
+                    $agent->getFunction()
+                    ];
+
+                $agendaDate = [];
+                foreach ($arrayDates as $arrayDate) {
+
+                    $agendaDate[] = $this->getDoctrine()
+                        ->getRepository(AgendaTemp::class)
+                        ->findOneBy([
+                            'agent' => $agent,
+                            'date' => $arrayDate,
+                        ],  ['date' => 'ASC']);
+                }      
+                $agentBetweens[] = [$agentIdentification, $agendaDate];            
+            }         
+
+        return $this->render('agendaTemp.html.twig', [
+
+                'dateBetweens' => $arrayDates,
+                'agentBetweens' => $agentBetweens,
+                'agent' => $agent,
+                'startDate' => $start,
                 'endDate' => $endDate,
                 'holidays' => $holidays,
                  ]);    

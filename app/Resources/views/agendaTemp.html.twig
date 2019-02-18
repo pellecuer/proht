@@ -14,11 +14,11 @@
     <div class="bg-white my-3">
         <span class ="d-flex align-items-center justify-content-between">
             <span>
-                {% if team %}
-                {#<a class="btn btn-outline-dark" href="{{ path('showNextAgendaTemp', {'team_Id': team.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
+                {% if agent %}
+                <a class="btn btn-outline-dark" href="{{ path('showPreviousAgendaTemp', {'agent_Id': agent.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
                     <span><i class="fas fa-step-backward"></i></span> -15 j <span> </span>
-                </a>#}
-                <a class="btn btn-outline-dark" href="{{ path('showNextAgendaTemp', {'team_Id': team.id, 'nextDate': endDate|date("Y-m-d")}) }}">                                        
+                </a>
+                <a class="btn btn-outline-dark" href="{{ path('showNextAgendaTemp', {'agent_Id': agent.id, 'nextDate': endDate|date("Y-m-d")}) }}">                                        
                     <span><i class="fas fa-step-forward"></i></span>+ 15 J <span> </span>
                 </a>
                 {% endif %}
@@ -30,7 +30,7 @@
     <div class= "row">
         <div class="col-md-12">
             <table id="example" class="table table-striped table-hover table-sm shadow-lg" style="width:100%">
-                <caption class="text-center">Equipe {{ team.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
+                <caption class="text-center">Agenda brouillon de {{ agent.firstname }} {{ agent.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
                 <thead class="thead">
                     <tr class="bg-muted">                        
                         <th scope ="col" colspan="7" class="text-success">Vacances scolaires</th>                       
@@ -67,7 +67,8 @@
                         </th> 
                     </tr>
                     <tr class="bg-muted">
-                        <th scope ="col" colspan="2" class="text-color-blue"></th>
+                        <th scope ="col" class="text-color-blue">Valider</th>
+                        <th scope ="col" class="text-color-blue">Supprimer</th>
                         <th scope ="col" class="text-color-blue">Id</th>
                         <th scope ="col" class="text-color-blue">Nom</th>
                         <th scope ="col" class="text-color-blue">Prénom</th>
@@ -122,31 +123,27 @@
     <div>            
     <ul class="list-group list-group-flush" id="description">                
     </ul>            
-    </div>
-    
+    </div>    
                 
+    
     <div class="row border border-rounded my-2">
-        <div class="col-md-10">
+       <div class="col-md-10">
             <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#info" aria-expanded="false" aria-controls="collapseExample">
-                <span><i class="fas fa-arrows-alt-v"></i></span><span> Information : </span>
+                <span><i class="fas fa-arrows-alt-v"></i></span><span> Détail de votre saisie : </span>
             </button>
-        </div>
-    </div>
-    <div class="row border border-rounded my-2">
-        <div class="col-md-10">
-            <div id="info" class=" card collapse bg-light">
-                <div class="card-body">Début de semaine légale : <span id="startLegalWeek"></span></div>
-                <div class="card-body">Fin de semaine légale : <span id="endLegalWeek"></span></div>
-                <div class="card-body">Début de journée : <span id="startDay"></span></div>
-                <div class="card-body">Fin de journée : <span id="endDay"></span></div>
-                <div class="card-body">Heures totalisés cette semaine : <span id="hoursPerWeek"></span></div>
-                <div class="card-body">Temps de repos avant DDay : <span id="intervalBefore"></span></div>
-                <div class="card-body">Temps de repos après DDay : <span id="intervalAfter"></span></div>            
-                <div class="card-body">DateTimeBefore : <span id="DateTimeBefore"></span></div>
-                <div class="card-body">DateTimeAfter : <span id="DateTimeAfter"></span></div>
-                <div class="card-body">Moyenne par semaine : <span id="average"></span></div>                  
-            </div>
-        </div>
+        </div>        
+        <div id="info" class=" card collapse bg-light">
+            <div class="card-body">Début de semaine légale : <span id="startLegalWeek"></span></div>
+            <div class="card-body">Fin de semaine légale : <span id="endLegalWeek"></span></div>
+            <div class="card-body">Début de journée : <span id="startDay"></span></div>
+            <div class="card-body">Fin de journée : <span id="endDay"></span></div>
+            <div class="card-body">Heures totalisés cette semaine : <span id="hoursPerWeek"></span></div>
+            <div class="card-body">Temps de repos avant DDay : <span id="intervalBefore"></span></div>
+            <div class="card-body">Temps de repos après DDay : <span id="intervalAfter"></span></div>            
+            <div class="card-body">DateTimeBefore : <span id="DateTimeBefore"></span></div>
+            <div class="card-body">DateTimeAfter : <span id="DateTimeAfter"></span></div>
+            <div class="card-body">Moyenne par semaine : <span id="average"></span></div>                  
+        </div>        
     </div>
            {# {% for dateBetween in dateBetweens %}
                 <th class="">{{dateBetween.date | date("F jS \\a\\t g:ia", "Europe/Paris") }}</th>
