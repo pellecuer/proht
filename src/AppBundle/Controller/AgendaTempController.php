@@ -384,12 +384,16 @@ class AgendaTempController extends Controller {
             //crée un array d'array des agendas
             $team = $agent->getTeam();
             $startDate = $team->getEvent()->getStartDate();
-            $endDate = $team->getEvent()->getEndDate();
+            $dateInterval = new \DateInterval('P15D');
+            $immutable = \DateTimeImmutable::createFromMutable($startDate); 
+            $endDate = $immutable->add($dateInterval);
+            
+            //$endDate = $team->getEvent()->getEndDate();
             
             //build calendar
             $interval = new \DateInterval('P1D');
             $arrayDates = [];
-            $immutable = \DateTimeImmutable::createFromMutable($startDate);
+            
 
             while ($immutable<=$endDate){
                 $arrayDates[] =  $immutable;

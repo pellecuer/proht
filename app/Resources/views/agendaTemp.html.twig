@@ -10,11 +10,25 @@
         <h1 class="bg-white-semi_transparent">AGENDA BROUILLON </h1>
         <p>Modifier votre planning ou celui de vos équipes</p>
     </header>
-    <div class="row border border-rounded my-2">
-        <div class="col-md-10">            
+    <hr>      
+    <div class="bg-white my-3">
+        <span class ="d-flex align-items-center justify-content-between">
+            <span>
+                <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <span><i class="fas fa-search"></i></span><span> </span>
+                </button>
+                {% if team %}
+                <a class="btn btn-outline-dark" href="{{ path('showPreviousAgenda', {'team_Id': team.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
+                    <span><i class="fas fa-step-backward"></i></span> -15 j <span> </span>
+                </a>
+                <a class="btn btn-outline-dark" href="{{ path('showNextAgenda', {'team_Id': team.id, 'nextDate': endDate|date("Y-m-d")}) }}">                                        
+                    <span><i class="fas fa-step-forward"></i></span>+ 15 J <span> </span>
+                </a>
+                {% endif %}
+            </span>                    
             <span id="buttonPrint">
             </span>
-        </div>
+        </span>
     </div>
     <div class= "row">
         <div class="col-md-12">
