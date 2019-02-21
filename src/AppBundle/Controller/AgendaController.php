@@ -318,7 +318,7 @@ class AgendaController extends Controller {
              ))
                 
             ->add('Envoyer', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn-primary btn-edf-Color'),
+                'attr' => array('class' => 'btn btn-outline-dark'),
             ))
         
             ->getForm()

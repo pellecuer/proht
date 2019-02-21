@@ -203,13 +203,13 @@ class AgendaTempController extends Controller {
             //if $errors, restore $letterInMemory and send $error message
             if (!$errors) {
                 $titre = 'Mise à jour Ok';
-                $description = 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agent->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y');
+                $description = "<li class='list-group-item list-group-item-success'>" . 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agent->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y'). "</li>";
                 $countErrors = 0;
                 
 
             } else {
                 $titre = 'Votre saisie comporte des erreurs : ';
-                $description = "<li class='list-group-item'>" . implode("</li><li class='list-group-item'>", $errors) . "</li>";
+                $description = "<li class='list-group-item list-group-item-danger'>" . "<span class='mr-2' ><i class='fas fa-check text-danger'></i></span>  " . implode("</li><li class='list-group-item'>", $errors) . "</li>";
                 $agendaTemp->setLetter($letterInMemo);
                 $countErrors = count($errors);
                 $em->persist($agendaTemp);

@@ -115,35 +115,57 @@
         </div>
     </div>
     
-     <div class="row border border-rounded my-2">
-        <div class="col-md-10">
-    <h4> 
-       <span id="titre"></span>
-    </h4>
-    <div>            
-    <ul class="list-group list-group-flush" id="description">                
-    </ul>            
+    <div class="row border border-rounded my-2">
+        <div class="col-md-12">        
+            <h4 id="titre"></h4>              
+            <p><ul class="list-group list-group-flush" id="description"></ul></p>
+        </div>
     </div>    
-                
     
     <div class="row border border-rounded my-2">
-       <div class="col-md-10">
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#info" aria-expanded="false" aria-controls="collapseExample">
-                <span><i class="fas fa-arrows-alt-v"></i></span><span> Détail de votre saisie : </span>
+        <div class="col-md-12">            
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal">
+              <i class="far fa-folder-open"></i> Voir le détail
             </button>
-        </div>        
-        <div id="info" class=" card collapse bg-light">
-            <div class="card-body">Début de semaine légale : <span id="startLegalWeek"></span></div>
-            <div class="card-body">Fin de semaine légale : <span id="endLegalWeek"></span></div>
-            <div class="card-body">Début de journée : <span id="startDay"></span></div>
-            <div class="card-body">Fin de journée : <span id="endDay"></span></div>
-            <div class="card-body">Heures totalisés cette semaine : <span id="hoursPerWeek"></span></div>
-            <div class="card-body">Temps de repos avant DDay : <span id="intervalBefore"></span></div>
-            <div class="card-body">Temps de repos après DDay : <span id="intervalAfter"></span></div>            
-            <div class="card-body">DateTimeBefore : <span id="DateTimeBefore"></span></div>
-            <div class="card-body">DateTimeAfter : <span id="DateTimeAfter"></span></div>
-            <div class="card-body">Moyenne par semaine : <span id="average"></span></div>                  
-        </div>        
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Détail de la saisie : </h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <p class=""><span class="font-weight-bold"> Début de semaine légale : </span><span class='badge badge-secondary' id="startLegalWeek"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Fin de semaine légale :  </span><span class='badge badge-secondary' id="endLegalWeek"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Début de journée :  </span><span class='badge badge-secondary' id="startDay"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Fin de journée :  </span><span class='badge badge-secondary' id="endDay"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Heures totalisés cette semaine :  </span><span class='badge badge-secondary' id="hoursPerWeek"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Temps de repos avant le jour J :  </span><span class='badge badge-secondary' id="intervalBefore"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Temps de repos après le jour J :  </span><span class='badge badge-secondary' id="intervalAfter"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Fin de journée de travail J-1 :  </span><span class='badge badge-secondary' id="DateTimeBefore"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Début de journée de travail J+1 :  </span><span class='badge badge-secondary' id="DateTimeAfter"></span></p>
+                    <hr>
+                    <p class=""><span class="font-weight-bold">Nombre d'heure moyen / semaine :  </span><span class='badge badge-secondary' id="average"></span></p>   
+                  </div>                    
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer la fenêtre</button>                   
+                  </div>
+                </div>
+              </div>
+            </div>  
     </div>
            {# {% for dateBetween in dateBetweens %}
                 <th class="">{{dateBetween.date | date("F jS \\a\\t g:ia", "Europe/Paris") }}</th>
