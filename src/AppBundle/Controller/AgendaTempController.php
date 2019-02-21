@@ -297,79 +297,80 @@ class AgendaTempController extends Controller {
     
     
      /**
-     * @Route("/show/{id}", name="showAgendaTemp")     
+     * @Route("/showTeam", name="showAgendaTeam")     
      */
-    public function showAction(Agent $agent)
+    public function showAgendaTeamAction()
     {
-        
-        
-        $agendaTemp = $this->getDoctrine()
-                ->getRepository(AgendaTemp::class)
-                ->findTempByAgent($agent);
-        
-            if (!$agendaTemp) {
-                // si l'agendaTemp n'éxiste pas renvoie la route agenda :
-                return $this->redirectToRoute('showAgenda');            
+        $team = $this->getUser()->getTeam();
+        //Check Roles 
+            // if ROLE AGENT : can't modify other agendas        
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){                
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas visualiser les agendas en attente de validation car vous n\'êtes pas valideur ' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
             }
-
-            //crée un array d'array des agendas
-            $team = $agent->getTeam();            
-            $startDate = $team->getEvent()->getStartDate();
-            $endDate = $team->getEvent()->getEndDate();
+        
+        
+        $startDate = $team->getEvent()->getStartDate();
+        $dateInterval = new \DateInterval('P15D');
+        $immutable = \DateTimeImmutable::createFromMutable($startDate); 
+        $endDate = $immutable->add($dateInterval);
             
-            //build calendar
-            $interval = new \DateInterval('P1D');
-            $arrayDates = [];
-            $immutable = \DateTimeImmutable::createFromMutable($startDate);
+        //build calendar
+        $interval = new \DateInterval('P1D');
+        $arrayDates = [];        
 
-            while ($immutable<=$endDate){
-                $arrayDates[] =  $immutable;
-                $immutable = $immutable->add($interval);
-            }
+        while ($immutable<=$endDate){
+            $arrayDates[] =  $immutable;
+            $immutable = $immutable->add($interval);
+        }
 
-            //show holidays
-            $holidays = [];
-            foreach ($arrayDates as $arrayDate){
-                $holidays[] = $this->getDoctrine()
-                    ->getRepository(Event::class)
-                    ->findHolidaysByDate($arrayDate);
-            }
+        //show holidays
+        $holidays = [];
+        foreach ($arrayDates as $arrayDate){
+            $holidays[] = $this->getDoctrine()
+                ->getRepository(Event::class)
+                ->findHolidaysByDate($arrayDate);
+        }
 
-            //Showagendas
-            $agentBetweens = [];
-            $agents = $team->getAgents();            
-            foreach ($agents as $agent) {
-                $agentIdentification = [];
-                $agentIdentification[] = [
-                    $agent->getId(),
-                    $agent->getName(),
-                    $agent->getFirstName(),
-                    $agent->getNni(),
-                    $agent->getFunction()
-                    ];
+        //Showagendas
+        $agentBetweens = [];
+        $agents = $team->getAgents();            
+        foreach ($agents as $agent) {
+            $agentIdentification = [];
+            $agentIdentification[] = [
+                $agent->getId(),
+                $agent->getName(),
+                $agent->getFirstName(),
+                $agent->getNni(),
+                $agent->getFunction()
+                ];
 
-                $agendaDate = [];
-                foreach ($arrayDates as $arrayDate) {
+            $agendaDate = [];
+            foreach ($arrayDates as $arrayDate) {
 
-                    $agendaDate[] = $this->getDoctrine()
-                        ->getRepository(Agenda::class)
-                        ->findOneBy([
-                            'agent' => $agent,
-                            'date' => $arrayDate,
-                        ],  ['date' => 'ASC']);                
-                }      
-                $agentBetweens[] = [$agentIdentification, $agendaDate];            
-            }           
+                $agendaDate[] = $this->getDoctrine()
+                    ->getRepository(Agenda::class)
+                    ->findOneBy([
+                        'agent' => $agent,
+                        'date' => $arrayDate,
+                    ],  ['date' => 'ASC']);                
+            }      
+            $agentBetweens[] = [$agentIdentification, $agendaDate];            
+        }           
 
-        return $this->render('agendaTemp.html.twig', [
+    return $this->render('agendaTemp.html.twig', [
 
-                'dateBetweens' => $arrayDates,
-                'agentBetweens' => $agentBetweens,
-                'team' => $team,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-                'holidays' => $holidays,
-                 ]);
+            'dateBetweens' => $arrayDates,
+            'agentBetweens' => $agentBetweens,
+            'team' => $team,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'holidays' => $holidays,
+            'agent' => $agent,
+            'countWaitedValidation' => count($agents),
+             ]);
     }
     
     /**     

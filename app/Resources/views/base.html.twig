@@ -42,6 +42,9 @@
                         {% if  app.user.team %}  | Equipe :  {{   app.user.team.name|upper }}{% endif %}
                     {% endif %}
                 </span>
+                
+                <span>{% if is_granted('ROLE_VALIDEUR') %}Vous avez  <span class="badge badge-secondary">{{ countWaitedValidation }}</span><span> agendas en attente de validation{% endif %}</span>
+                    
                 <span class="mr-2 text-white">
                     {% if  app.user %}
                         <a class="btn redEDf mx-1" href="{{ path('logout') }}" role="button">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
