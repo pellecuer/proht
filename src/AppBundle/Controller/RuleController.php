@@ -32,14 +32,21 @@ class RuleController extends Controller {
             ));        
     }
     
-    /**
-     * * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer des règles du travail; Vous devez avoir le role Administrateur")
+    /**     
      * @Route("/create", name="createRule")
      * 
      */
     public function CreateAction(Request $request)
     {       
-         $rule = new Rule();
+        //Check Role        
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas créer une nouvelle règle. Vous devez être Administrateur pour çelà.'
+                );
+               return $this->redirectToRoute('showagent'); 
+            } 
+            
+        $rule = new Rule();
         $form = $this->createForm(RuleType::class, $rule);
         $form->handleRequest($request);
 
@@ -67,7 +74,15 @@ class RuleController extends Controller {
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Rule $rule)    
-    {        
+    {
+        //Check Role        
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas éditer une nouvelle règle. Vous devez être Administrateur pour çelà.'
+                );
+               return $this->redirectToRoute('showrule'); 
+            } 
+            
         $form = $this->createForm(RuleType::class, $rule);
         $form->handleRequest($request);
 
@@ -96,10 +111,18 @@ class RuleController extends Controller {
      */
     public function deleteAction(Rule $rule)
     {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($rule);
-            $em->flush();
-            $this->addFlash('success', 'La règle avec l\'id ' . $rule->getId() .  'a bien été supprimée');
+        //Check Role        
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer. Vous devez être Administrateur pour çelà.'
+                );
+               return $this->redirectToRoute('showrule'); 
+            } 
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($rule);
+        $em->flush();
+        $this->addFlash('success', 'La règle avec l\'id ' . $rule->getId() .  'a bien été supprimée');
         return $this->redirectToRoute('showrule');
     }    
      

@@ -22,11 +22,18 @@ class AgentController extends Controller
 {
     
     /**
-    * @Route("/register", name="user_registration")
-    * //@Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les agents; Vous devez avoir le role Administrateur")
+    * @Route("/register", name="user_registration")    
     */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        //Check Role        
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas enregistrer un agent. Vous devez être Administrateur pour çelà.'
+                );
+               return $this->redirectToRoute('showagent'); 
+            } 
+        
         // 1) build the form
         $agent = new Agent();
         $form = $this->createForm(RegistrationType::class, $agent);
@@ -61,7 +68,7 @@ class AgentController extends Controller
         * @Route("/show/{id}", name="findAgent")
      */
     public function findAgentAction($id)
-    {             
+    {        
         $agent = $this->getDoctrine()->getRepository(Agent::class)
                 ->find($id); 
         if (!$agent) {
@@ -77,8 +84,7 @@ class AgentController extends Controller
     
     
     /**
-     * @Route("/show", name="showagent")
-     * //@Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser les agents; Vous devez avoir le role Valideur")
+     * @Route("/show", name="showagent")     
      */
     public function showAction()
     {
@@ -97,12 +103,19 @@ class AgentController extends Controller
     /**
      * Displays a form to edit an existing agent entity.
      *
-     * @Route("/{id}/edit", name="editAgent")
-     * //@Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les agents; Vous devez avoir le role Administrateur")
+     * @Route("/{id}/edit", name="editAgent")     
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Agent $agent, UserPasswordEncoderInterface $passwordEncoder)    
     {        
+        //Check Role        
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas éditer un agent. Vous devez être Administrateur pour çelà.'
+                );
+               return $this->redirectToRoute('showagent'); 
+            } 
+            
         $form = $this->createForm(AgentType::class, $agent);
         $form->handleRequest($request);
 
@@ -130,16 +143,23 @@ class AgentController extends Controller
       /**
      * Deletes an agent entity.
      *
-     * @Route("/delete/{id}", name="deleteAgent")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agents; Vous devez avoir le role Administrateur")
+     * @Route("/delete/{id}", name="deleteAgent")     
      * @Method("GET")
      */
     public function deleteAction(Agent $agent)
     {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($agent);
-            $em->flush();
-            $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé');
+        //Check Role        
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer un agent. Vous devez être Administrateur pour çelà.'
+                );
+               return $this->redirectToRoute('showagent'); 
+            } 
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($agent);
+        $em->flush();
+        $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé');
            
         return $this->redirectToRoute('showagent');
     } 

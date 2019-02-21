@@ -59,12 +59,20 @@ class TeamController extends Controller {
     /**
      * Creates a new section entity.
      *
-     * @Route("/create", name="create_team")
-     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer une équipe; Vous devez avoir le role Valideurs")     
+     * @Route("/create", name="create_team")      
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
+        //Can create Team if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas créer une équipe. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showteam'); 
+            } 
+        
+        
         $team = new Team();
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
@@ -88,12 +96,19 @@ class TeamController extends Controller {
     /**
      * Displays a form to edit an existing service entity.
      *
-     * @Route("/{id}/edit", name="editTeam")
-     * * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour éditer une équipe; Vous devez avoir le role Valideur")
+     * @Route("/{id}/edit", name="editTeam")    
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Team $team)    
-    {        
+    {
+         //Can edit Team if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas éditer une équipe. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showteam'); 
+            } 
+        
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 
@@ -117,15 +132,20 @@ class TeamController extends Controller {
        /**
      * Deletes a Service entity.
      *
-     * @Route("/delete/{id}", name="deleteTeam")
-     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Valideur")
+     * @Route("/delete/{id}", name="deleteTeam")     
      * @Method("GET")
      */
     public function deleteAction(Team $team)
     {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($team);
-            $em->flush();
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer une équipe. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showteam'); 
+            } 
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($team);
+        $em->flush();
            
         return $this->redirectToRoute('showteam');
     }
@@ -133,14 +153,22 @@ class TeamController extends Controller {
      /**
      * Add an Agent in Team.
      *
-     * @Route("/add/{id}", name="addAgent")
-     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour ajouter des agents dans une équipe; Vous devez avoir le role Administrateur")
+     * @Route("/add/{id}", name="addAgent")      
      * @Method({"GET", "POST"})
      */
     public function addAgentAction(Agent $agent)
-    {         
+    {  
         $connectedUser = $this->getUser();        
         $team = $connectedUser->getTeam();
+        
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas ajouter un agent dans votre équipe. Vous devez être valideur pour çelà.'
+                );
+                return $this->redirectToRoute('showAgents', array('id' => $team->getId()));
+            } 
+        
+        
         $team->addAgent($agent);
 
         $em = $this->getDoctrine()->getManager();
@@ -158,15 +186,19 @@ class TeamController extends Controller {
      * Remove an Agent of Team.
      *
      * @Route("/remove/{id}", name="removeAgent")
-     *  @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agents d'une équipe; Vous devez avoir le role Valideur")
      * @Method({"GET", "POST"})
      */
     public function removeAgentAction(Agent $agent, Request $request)
-    {         
-        //remove Agent
+    {
         $team = $agent->getTeam();
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer un agent de votre équipe. Vous devez être valideur pour çelà.'
+                );
+               return $this->redirectToRoute('showAgents', array('id' => $team->getId())); 
+            } 
         
-      
+        //remove Agent
         $team->removeAgent($agent);
         $em = $this->getDoctrine()->getManager();
             $em->persist($team);

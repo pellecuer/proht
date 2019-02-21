@@ -37,12 +37,19 @@ class SectionController extends Controller
     /**
      * Displays a form to edit an existing section entity.
      *
-     * @Route("/{id}/edit", name="editSection")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les sections; Vous devez avoir le role Administrateur")
+     * @Route("/{id}/edit", name="editSection")     
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Section $section)    
-    {        
+    { 
+        //Can edit Section if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas éditer une section. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showSection'); 
+            } 
+        
         $form = $this->createForm(sectionType::class, $section);
         $form->handleRequest($request);
 
@@ -66,11 +73,18 @@ class SectionController extends Controller
      * Creates a new section entity.
      *
      * @Route("/create", name="createSection")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les sections; Vous devez avoir le role Administrateur")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
+        //Can create Section if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas créer une section. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showSection'); 
+            } 
+        
         $section = new Section();
         $form = $this->createForm(sectionType::class, $section);
         $form->handleRequest($request);
@@ -95,16 +109,22 @@ class SectionController extends Controller
        /**
      * Deletes a Section entity.
      *
-     * @Route("/delete/{id}", name="deleteSection")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les sections; Vous devez avoir le role Administrateur")
+     * @Route("/delete/{id}", name="deleteSection")     
      * @Method("GET")
      */
     public function deleteAction(Section $section)
     {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($section);
-            $em->flush();
-            $this->addFlash('success', 'Le section ' . $section->getName() .  'a bien été supprimé');
+        //Can edit Section if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer une section. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showSection'); 
+            } 
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($section);
+        $em->flush();
+        $this->addFlash('success', 'Le section ' . $section->getName() .  'a bien été supprimé');
         return $this->redirectToRoute('showSection');
     }    
 }

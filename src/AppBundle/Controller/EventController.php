@@ -32,11 +32,18 @@ class EventController extends Controller {
     }
     
     /**
-     * @Route("/create", name="createEvent")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les évènements; Vous devez avoir le role Administrateur")
+     * @Route("/create", name="createEvent")     
      */
     public function CreateAction(Request $request)
     {        
+        //Can create Event if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas créer un évènement. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showEvent');
+            } 
+
         // 1) build the form
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
@@ -68,12 +75,19 @@ class EventController extends Controller {
     }
     
     /**     
-     * @Route("/{id}/edit", name="editEvent")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour éditer les évènements; Vous devez avoir le role Administrateur")
+     * @Route("/{id}/edit", name="editEvent")    
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, $id)
     {
+        //Can create Event if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas éditer un évènement. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showEvent');
+            } 
+            
         $entityManager = $this->getDoctrine()->getManager();
         $event = $entityManager->getRepository(Event::class)->find($id);
         //dump($event);die;
@@ -97,16 +111,23 @@ class EventController extends Controller {
         /**
      * Deletes an Event entity.
      *
-     * @Route("/delete/{id}", name="eventDelete")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les évènements; Vous devez avoir le role Administrateur")
+     * @Route("/delete/{id}", name="eventDelete")    
      * @Method("GET")
      */
     public function deleteAction(Request $request, Event $event, $id)
     {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($event);
-            $em->flush();
-            $this->addFlash('success', 'L\'évènement ' . $event->getCode() .  'a bien été supprimé');
+        //Can create Event if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer un évènement. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showEvent');
+            } 
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($event);
+        $em->flush();
+        $this->addFlash('success', 'L\'évènement ' . $event->getCode() .  'a bien été supprimé');
         return $this->redirectToRoute('showEvent');
     }
 }

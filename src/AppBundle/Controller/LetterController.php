@@ -32,11 +32,18 @@ class LetterController extends Controller {
     }
     
     /**
-     * @Route("/create", name="createLetter")
-     *  @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour Créer les lettres; Vous devez avoir le role Administrateur")
+     * @Route("/create", name="createLetter")     
      */
     public function CreateAction(Request $request)
     {       
+        //Can create Letter if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas créer une Lettre. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showletter'); 
+            } 
+        
         $letter = new Letter();
         $form = $this->createForm(LetterType::class, $letter);
         $form->handleRequest($request);
@@ -64,12 +71,19 @@ class LetterController extends Controller {
     /**
      * Displays a form to edit an existing letter entity.
      *
-     * @Route("/{id}/edit", name="editLetter")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour modifier les lettres; Vous devez avoir le role Administrateur")
+     * @Route("/{id}/edit", name="editLetter")   
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Letter $letter)    
     {        
+        //Can edit Letter if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas éditer une Lettre. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showletter'); 
+            } 
+        
         $form = $this->createForm(LetterType::class, $letter);
         $form->handleRequest($request);
 
@@ -97,16 +111,23 @@ class LetterController extends Controller {
        /**
      * Deletes a Service entity.
      *
-     * @Route("/delete/{id}", name="deleteLetter")
-     *  @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les lettres; Vous devez avoir le role Administrateur")
+     * @Route("/delete/{id}", name="deleteLetter")    
      * @Method("GET")
      */
     public function deleteAction(Letter $letter)
     {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($letter);
-            $em->flush();
-            $this->addFlash('success', 'La lettre ' . $letter->getLetter() .  'a bien été supprimée');
+        //Can delete Letter if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer une Lettre. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('showletter'); 
+            } 
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($letter);
+        $em->flush();
+        $this->addFlash('success', 'La lettre ' . $letter->getLetter() .  'a bien été supprimée');
         return $this->redirectToRoute('showletter');
     }    
      

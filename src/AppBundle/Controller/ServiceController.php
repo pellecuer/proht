@@ -36,12 +36,20 @@ class ServiceController extends Controller
     /**
      * Creates a new service entity.
      *
-     * @Route("/create", name="createService")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour créer les services; Vous devez avoir le role Administrateur")
+     * @Route("/create", name="createService")    
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
+        //Can create Service if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas créer un service. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('ShowService'); 
+            } 
+        
+        
         $service = new Service();
         $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
@@ -68,12 +76,19 @@ class ServiceController extends Controller
     /**
      * Displays a form to edit an existing service entity.
      *
-     * @Route("/{id}/edit", name="editService")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour éditer les services; Vous devez avoir le role Administrateur")
+     * @Route("/{id}/edit", name="editService")     
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Service $service)    
     {        
+        //Can create Service if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas éditer un service. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('ShowService'); 
+            } 
+        
         $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
 
@@ -97,16 +112,23 @@ class ServiceController extends Controller
        /**
      * Deletes a Service entity.
      *
-     * @Route("/delete/{id}", name="deleteService")
-     * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les services; Vous devez avoir le role Administrateur")
+     * @Route("/delete/{id}", name="deleteService")   
      * @Method("GET")
      */
     public function deleteAction(Service $service)
     {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($service);
-            $em->flush();
-            $this->addFlash('success', 'Le service ' . $service->getName() .  'a bien été supprimé');
+        //Can delete Service if has role admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer un service. Vous devez être administrateur pour çelà.'
+                );
+                return $this->redirectToRoute('ShowService'); 
+            } 
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($service);
+        $em->flush();
+        $this->addFlash('success', 'Le service ' . $service->getName() .  'a bien été supprimé');
         return $this->redirectToRoute('ShowService');
     }    
 }

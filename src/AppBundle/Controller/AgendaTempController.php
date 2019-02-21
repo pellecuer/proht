@@ -49,6 +49,8 @@ class AgendaTempController extends Controller {
      */
     public function editAjaxAction(Request $request, UserInterface $user, checkRules $checkRules)
     {
+        
+        
         /*  Get the object agendaTemp send by Ajax */        
         $id = $request->request->get('id');        
         $agendaTemp = $this->getDoctrine()
@@ -56,6 +58,7 @@ class AgendaTempController extends Controller {
             ->find($id);
         $agent = $agendaTemp->getAgent();
         $letterInMemo = $agendaTemp->getLetter();
+        
 
 
         /* Get the letter send by Ajax */
@@ -297,7 +300,9 @@ class AgendaTempController extends Controller {
      * @Route("/show/{id}", name="showAgendaTemp")     
      */
     public function showAction(Agent $agent)
-    {        
+    {
+        
+        
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findTempByAgent($agent);
@@ -380,6 +385,29 @@ class AgendaTempController extends Controller {
                 // si l'agendaTemp n'éxiste pas renvoie la route agenda :
                 return $this->redirectToRoute('showAgenda');            
             }
+            
+            //Check Roles 
+            // if ROLE AGENT : can't modify other agendas        
+             if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                if ($this->getUser()->getTeam() != $agent->getTeam()) {
+                    $this->addFlash('danger',
+                            'Vous ne pouvez pas modifier l\'agenda d\'un agent d\'une autre équipe que la votre' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                }               
+            } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_AGENT')) {
+                 if ($this->getUser() != $agent) {
+                     $this->addFlash('danger',
+                        'Vous ne pouvez pas modifier l\'agenda d\'un autre agent ' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                 }
+            }
+                
+            
+            
+            
+            
 
             //crée un array d'array des agendas
             $team = $agent->getTeam();
@@ -455,6 +483,24 @@ class AgendaTempController extends Controller {
     public function showNextAction(Agent $agent, $nextDate)
     {
         
+            //Check Roles 
+            // if ROLE AGENT : can't modify other agendas        
+             if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                if ($this->getUser()->getTeam() != $agent->getTeam()) {
+                    $this->addFlash('danger',
+                            'Vous ne pouvez pas modifier l\'agenda d\'un agent d\'une autre équipe que la votre' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                }               
+            } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_AGENT')) {
+                 if ($this->getUser() != $agent) {
+                     $this->addFlash('danger',
+                        'Vous ne pouvez pas modifier l\'agenda d\'un autre agent ' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                 }
+            }
+        
             //crée un array d'array des agendas           
             $startDate = $nextDate;
             $immutable = \DateTimeImmutable::createFromMutable(new \DateTime($nextDate));                         
@@ -527,6 +573,25 @@ class AgendaTempController extends Controller {
      */
     public function showPreviousAction(Agent $agent, $previousDate)
     {        
+            //Check Roles 
+            // if ROLE AGENT : can't modify other agendas        
+             if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                if ($this->getUser()->getTeam() != $agent->getTeam()) {
+                    $this->addFlash('danger',
+                            'Vous ne pouvez pas modifier l\'agenda d\'un agent d\'une autre équipe que la votre' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                }               
+            } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_AGENT')) {
+                 if ($this->getUser() != $agent) {
+                     $this->addFlash('danger',
+                        'Vous ne pouvez pas modifier l\'agenda d\'un autre agent ' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                 }
+            }
+
+
             //crée un array d'array des agendas
             $defaultInterval = new \DateInterval('P15D');
             $end = new \DateTime($previousDate);        
@@ -594,12 +659,30 @@ class AgendaTempController extends Controller {
     /**
      * Deletes an agenda entity.
      *
-     * @Route("/delete/{id}}", name="deleteTemp")
-     * @Security("is_granted('ROLE_AGENT')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Administrateur")
+     * @Route("/delete/{id}}", name="deleteTemp")     
      * @Method({"GET", "POST"})
      */
     public function deleteAction(Agent $agent)
     {    
+         //Check Roles 
+            // if ROLE AGENT : can't delete other agendas        
+             if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                if ($this->getUser()->getTeam() != $agent->getTeam()) {
+                    $this->addFlash('danger',
+                            'Vous ne pouvez pas supprimer l\'agenda d\'un agent d\'une autre équipe que la votre' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                }               
+            } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_AGENT')) {
+                 if ($this->getUser() != $agent) {
+                     $this->addFlash('danger',
+                        'Vous ne pouvez pas supprimer l\'agenda d\'un autre agent ' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                 }
+            }
+            
+        //remove agendas
         $agendaToRemoves = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findTempByAgent($agent);
@@ -626,12 +709,30 @@ class AgendaTempController extends Controller {
     /**
      * Persist temp in agenda entity.
      *
-     * @Route("/valid/{id}", name="validTemp")
-     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour valider les agendas; Vous devez avoir le role Valideur")    
+     * @Route("/valid/{id}", name="validTemp")        
      * @Method({"GET", "POST"})
      */
     public function validAction(Agent $agent, historyAgenda $historyAgenda)
     {    
+        //Check Roles 
+            // if ROLE AGENT : can't valid agenda        
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                if ($this->getUser()->getTeam() != $agent->getTeam()) {
+                    $this->addFlash('danger',
+                            'Vous ne pouvez pas valider l\'agenda d\'un agent d\'une autre équipe que la votre' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
+                }               
+            } else {
+                // if ROLE AGENT : can't valid agenda       
+                $this->addFlash('danger',
+                   'Vous ne pouvez pas valider l\'agenda car vous n\'êtes pas valideur.' 
+                );
+                return $this->redirectToRoute('showAgenda');                 
+            }
+        
+        
+        
         $connectedUser = $this->getUser();
         $agendaToUpdates = $this->getDoctrine()
             ->getRepository(AgendaTemp::class)
@@ -671,8 +772,7 @@ class AgendaTempController extends Controller {
     /**
      * Initialize an agenda entity.
      *
-     * @Route("/initialize/{agentId}", name="InitializeAgenda")
-     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour initialiser les agendas; Vous devez avoir le role Administrateur")
+     * @Route("/initialize/{agentId}", name="InitializeAgenda")    
      * @Method("GET")
      */
     public function initializeAction($agentId, InitializeAgenda $initializeAgenda)
@@ -681,6 +781,28 @@ class AgendaTempController extends Controller {
         $agent = $this->getDoctrine()
         ->getRepository(Agent::class)                
         ->find($agentId);
+        
+        //Check Roles 
+            // if ROLE VALIDEUR : can't initialize agenda of other team       
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                if ($this->getUser()->getTeam() != $agent->getTeam()) {
+                    $this->addFlash('danger',
+                            'Vous ne pouvez pas initialiser l\'agenda d\'un agent d\'une autre équipe que la votre.' 
+                    );
+                    return $this->redirectToRoute('showAgents', array(
+                        'id' => $agent->getTeam()->getId(),
+                    ));
+                }               
+            } else {
+                // if ROLE AGENT : can't initialize agenda       
+                $this->addFlash('danger',
+                   'Vous ne pouvez pas initialiser l\'agenda car vous n\'êtes pas valideur.' 
+                );
+                return $this->redirectToRoute('showAgenda');                 
+            }
+        
+        
+        
         $team = $agent->getTeam();        
         $initializeAgenda->initialize($team, $agent); 
         $this->addFlash('success', 'L\'agenda a été réinitialisé pour l\'agent ' . $agent->getName());

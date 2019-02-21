@@ -212,6 +212,14 @@ class AgendaController extends Controller {
             ;
         
         
+        //prohibit show team<>myTeam unless granted Admin
+           $myTeam =  $this->getUser()->getTeam();
+           if ($team != $myTeam && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+               $this->addFlash('danger',
+                       'Vous ne pouvez pas voir l\'agenda d\'une autre équipe que la votre'
+               );
+               return $this->redirectToRoute('showAgenda'); 
+           } 
 
 
         //Set Next Date from parameters        
@@ -276,7 +284,7 @@ class AgendaController extends Controller {
     
     
     /**
-     *  show next agendas objects.
+     *  show previous agendas objects.
      *
      * @Route("/agenda/previous/{previousDate}/team/{team_Id}}", name="showPreviousAgenda")
      * @ParamConverter("team", options={"id": "team_Id"})
@@ -324,7 +332,17 @@ class AgendaController extends Controller {
             ->getForm()
             ;
         
-
+        
+        //prohibit show team<>myTeam unless granted Admin
+           $myTeam =  $this->getUser()->getTeam();
+           if ($team != $myTeam && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+               $this->addFlash('danger',
+                       'Vous ne pouvez pas voir l\'agenda d\'une autre équipe que la votre'
+               );
+               return $this->redirectToRoute('showAgenda'); 
+           } 
+        
+        
         //Set previous Date from parameters
         $defaultInterval = new \DateInterval('P15D');
         $end = new \DateTime($previousDate);        

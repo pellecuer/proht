@@ -24,10 +24,17 @@ class HistoryController extends Controller {
    
     /**
      * @Route("/{id}/show", name="showHistory")
-     * @Security("is_granted('ROLE_VALIDEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour visualiser l'historique des modifications; Vous devez avoir le role valideur")
      */
     public function showAction(Agent $agent)
     {         
+        //Check Role        
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $this->addFlash('danger',
+                        'Vous ne pouvez pas visualiser l\'historique des modifications d\'un agent. Vous devez être Administrateur pour çelà.'
+                );
+               return $this->redirectToRoute('showagent');
+            } 
+        
         $historys = $this->getDoctrine()
             ->getRepository(HistoryChange::class)
             ->findByAgent($agent);
