@@ -31,20 +31,17 @@
             <div class="row align-items-end justify-content-between py-2 rounded" style="background-color: #09357A; min-height: 100px;">
                 <span class="ml-5 text-white">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        {{ app.user.firstname|capitalize }} {{ app.user.username|upper }}                       
+                        {{ app.user.firstname|capitalize }} {{ app.user.username|upper }}
+                        {% if  app.user.team %}  | Equipe :  {{   app.user.team.name|upper }}{% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
                             | Rôle : ADMINISTRATEUR  
                         {% elseif is_granted('ROLE_VALIDEUR') %}
-                            | Rôle :  VALIDEUR  
+                            | Rôle :  VALIDEUR   <a class="badge badge-danger ml-2 px-2" href="{{ path('showAgendaTeam') }}">Agendas en attente </a>
                         {% else %}
                             | Rôle : AGENT
                         {% endif %}
-                        {% if  app.user.team %}  | Equipe :  {{   app.user.team.name|upper }}{% endif %}
-                    {% endif %}
+                    {% endif %}                   
                 </span>
-                
-                <span>{% if is_granted('ROLE_VALIDEUR') %}Vous avez  <span class="badge badge-secondary">{{ countWaitedValidation }}</span><span> agendas en attente de validation{% endif %}</span>
-                    
                 <span class="mr-2 text-white">
                     {% if  app.user %}
                         <a class="btn redEDf mx-1" href="{{ path('logout') }}" role="button">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
@@ -52,6 +49,7 @@
                         <a class="btn greenEDf mx-1" href="{{ path('login') }}" role="button"> Connexion <i class="fas fa-sign-in-alt"></i></a>
                     {% endif %}                    
                 </span>
+                
             </div>        
             <div class="row bg-menu shadow-lg">
                 <nav class="navbar navbar-expand-lg navbar-light" >               
@@ -88,7 +86,8 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('doc') }}">Doc</a>
-                            </li>                            
+                            </li>
+                            
                         </ul>
                     </div>
                 </nav>

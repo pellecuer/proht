@@ -358,7 +358,7 @@ class AgendaTempController extends Controller {
                     ],  ['date' => 'ASC']);                
             }      
             $agentBetweens[] = [$agentIdentification, $agendaDate];            
-        }           
+        }        
 
     return $this->render('agendaTemp.html.twig', [
 
@@ -368,8 +368,7 @@ class AgendaTempController extends Controller {
             'startDate' => $startDate,
             'endDate' => $endDate,
             'holidays' => $holidays,
-            'agent' => $agent,
-            'countWaitedValidation' => count($agents),
+            'agent' => $agent,            
              ]);
     }
     
@@ -404,10 +403,6 @@ class AgendaTempController extends Controller {
                     return $this->redirectToRoute('showAgenda');
                  }
             }
-                
-            
-            
-            
             
 
             //crée un array d'array des agendas
