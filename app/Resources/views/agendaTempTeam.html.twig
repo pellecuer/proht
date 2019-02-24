@@ -14,11 +14,11 @@
     <div class="bg-white my-3">
         <span class ="d-flex align-items-center justify-content-between">
             <span>
-                {% if agent %}
-                <a class="btn btn-outline-dark" href="{{ path('showPreviousAgendaTemp', {'agent_Id': agent.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
+                {% if team %}
+                <a class="btn btn-outline-dark" href="{{ path('showPreviousAgendaTempForTeam', {'team_Id': team.id, 'previousDate': startDate|date("Y-m-d")}) }}">
                     <span><i class="fas fa-step-backward"></i></span> -15 j <span> </span>
                 </a>
-                <a class="btn btn-outline-dark" href="{{ path('showNextAgendaTemp', {'agent_Id': agent.id, 'nextDate': endDate|date("Y-m-d")}) }}">                                        
+                <a class="btn btn-outline-dark" href="{{ path('showNextAgendaTempForTeam', {'team_Id': team.id, 'nextDate': endDate|date("Y-m-d")}) }}">
                     <span><i class="fas fa-step-forward"></i></span>+ 15 J <span> </span>
                 </a>
                 {% endif %}
@@ -30,7 +30,7 @@
     <div class= "row">
         <div class="col-md-12">
             <table id="example" class="table table-striped table-hover table-sm shadow-lg" style="width:100%">
-                <caption class="text-center">Agenda brouillon de {{ agent.firstname }} {{ agent.name }} du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
+                <caption class="text-center">Agenda brouillon de l'équipe {{ team.name }}  du {{ startDate|localizeddate('none', 'none', 'fr', null, 'EE d MMMM y')}} au  {{ endDate|localizeddate('none', 'none', 'fr', null, ' E d MMMM y')}}</caption>
                 <thead class="thead">
                     <tr class="bg-muted">                        
                         <th scope ="col" colspan="7" class="text-success">Vacances scolaires</th>                       
