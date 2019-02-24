@@ -622,23 +622,31 @@ class AgendaTempController extends Controller {
                 return $this->redirectToRoute('showAgenda');
             }
             
-            //Check Roles 
-            // if ROLE AGENT : can't modify other agendas        
-             if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
-                if ($this->getUser()->getTeam() != $agent->getTeam()) {
-                    $this->addFlash('danger',
-                            'Vous ne pouvez pas modifier l\'agenda d\'un agent d\'une autre équipe que la votre' 
-                    );
-                    return $this->redirectToRoute('showAgenda');
-                }               
-            } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_AGENT')) {
-                 if ($this->getUser() != $agent) {
-                     $this->addFlash('danger',
-                        'Vous ne pouvez pas modifier l\'agenda d\'un autre agent ' 
-                    );
-                    return $this->redirectToRoute('showAgenda');
-                 }
+            //Check Roles
+            // ADMIN do everything
+            // elseif ROLE VALIDEUR : can't modify other agendas than team
+            // else if ROLE AGENT, can't modify other agendas
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+
+                if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+                    if ($this->getUser()->getTeam() != $agent->getTeam()) {
+                        $this->addFlash('danger',
+                            'Vous ne pouvez pas modifier l\'agenda d\'un agent d\'une autre équipe que la votre'
+                        );
+                        return $this->redirectToRoute('showAgenda');
+                    }
+                } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_AGENT')) {
+                    if ($this->getUser() != $agent) {
+                        $this->addFlash('danger',
+                            'Vous ne pouvez pas modifier l\'agenda d\'un autre agent '
+                        );
+                        return $this->redirectToRoute('showAgenda');
+                    }
+                }
             }
+
+
+
             
 
             //crée un array d'array des agendas
