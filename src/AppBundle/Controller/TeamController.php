@@ -158,8 +158,17 @@ class TeamController extends Controller {
      */
     public function addAgentAction(Agent $agent)
     {  
-        $connectedUser = $this->getUser();        
+        $connectedUser = $this->getUser();
         $team = $connectedUser->getTeam();
+
+        if (!$team){
+            $this->addFlash('danger',
+                'Vous n\'avez pas d\'équipe. Pour changer un agent d\'équipe, merci de sélectionner un agent et de cliquer sur l\'icone modifier.'
+            );
+            return $this->redirectToRoute('showagent');
+        }
+
+
         
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
                 $this->addFlash('danger',
