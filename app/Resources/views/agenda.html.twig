@@ -8,7 +8,7 @@
 {% block body %}    
 <div class="container bg-light">    
     <header class="text-center py-3">
-        <h1 class="bg-white-semi_transparent">AGENDA</h4>
+        <h1 class="bg-white-semi_transparent">AGENDA</h1>
         <p>Consulter, imprimer, votre  planning, ou celui de vos équipes</p>
     </header>
     
@@ -34,14 +34,14 @@
     </div>
 </div>
 <div class="container bg-light">    
-    <div class="col-md-8 offset-2 text-center collapse" id="collapseExample">        
+    <div class="col-md-8 offset-2 text-center collapse" id="collapseExample">
         <form action="{{ path('showAgenda') }}" method="post" class="form-control mb-2 bg-menu shadow-lg" >
-        {{ form_start(form) }}  
+        {{ form_start(form) }}
         {{ form_row(form.Team, {'label': 'Equipe', 'attr' : {'placeholder':'Selectionnez une équipe ...' }}) }}
-        {{ form_row(form.interval, {'label': 'Période ', 'attr' : {'placeholder':'Entrez une date ...' }}) }}
+        {{ form_row(form.interval, {'label': 'Equipe', 'attr' : {'placeholder':'Selectionnez une équipe ...' }}) }}
         {{ form_rest(form) }}
         {{ form_end(form) }}
-        </form>        
+        </form>
     </div> 
 </div>
 <div class="container">    

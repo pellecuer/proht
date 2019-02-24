@@ -25,6 +25,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+
+
+
+
+
  
 class AgendaController extends Controller {
         
@@ -55,11 +61,12 @@ class AgendaController extends Controller {
                 'with_years'  => false,
                 'with_months' => false,                
                 'with_weeks' => true,
-                'weeks' => range(1, 3),
+                'weeks' => range(0, 3),
                 'with_days'   => false,
                 'with_hours'  => false,                
-                'attr' => array('class' => 'form-control'),                    
-                'placeholder' => ['weeks' => 'semaines'],                
+                'attr' => array('class' => 'form-control'),
+                'placeholder' => ['weeks' => 'Sélectionnez un nombre de semaines'],
+                'labels' => ['weeks' => ' '],
              ))
                 
             ->add('Envoyer', SubmitType::class, array(
