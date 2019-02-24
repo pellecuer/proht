@@ -256,6 +256,35 @@ class AgendaTempRepository extends EntityRepository
            ->getQuery()
            ->getResult()
            ;
-   }    
-    
+   }
+
+    /**
+     * @param $agent
+     */
+    public function findAgentIdByAgendaTemp($agentInTeam)
+    {
+        return $this->createQueryBuilder('agendaTemp')
+            ->innerJoin('agendaTemp.agent', 'agent')
+            ->Select('agent.id')
+            ->where('agendaTemp.agent IN (:agent)')
+            ->setParameter('agent', $agentInTeam)
+            ->distinct()
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param $agent
+     */
+    public function findMyAgent($agentsId)
+    {
+        return $this->createQueryBuilder('agent')
+            ->where('agent.id  IN (:agentsId)')
+            ->setParameter('agentsId', $agentsId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

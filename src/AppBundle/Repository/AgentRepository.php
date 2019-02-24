@@ -10,4 +10,18 @@ namespace AppBundle\Repository;
  */
 class AgentRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * @param $agent
+     */
+    public function findMyAgent($agentsId)
+    {
+        return $this->createQueryBuilder('agent')
+            ->where('agent.id  IN (:agentsId)')
+            ->setParameter('agentsId', $agentsId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

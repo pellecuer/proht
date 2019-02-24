@@ -13,7 +13,7 @@
         {{ form_start(form) }}
         {{ form_row(form.letter, {'label': 'Lettre', 'attr' : {'placeholder':'Entrez une lettre ...' }}) }}
         {{ form_row(form.startTime, {'label': 'Heure de début', 'attr' : {'placeholder':'format hh:mm' }}) }}
-        {{ form_row(form.endTime, {'label': 'Heure de fin', 'attr' : {'placeholder':'format hh:mm' }}) }}
+        {{ form_row(form.endTime, {'label': 'Heure de fin', 'attr' : {'placeholder':'format hh.mm' }}) }}
         {{ form_row(form.effectiveDuration, {'label': 'Duréee effective', 'attr' : {'placeholder':'format (hh.mm)' }}) }}        
         {{ form_rest(form) }}
         {{ form_end(form) }}

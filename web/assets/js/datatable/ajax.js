@@ -89,7 +89,8 @@ $('.editFor').on( "keyup", function(){
 //sendAgendaTempControlleur
 $('.editFor').on( "change paste keyup", function(){
     var id = $(this).attr('id');
-    var letter = $(this).html();    
+    var letter = $(this).html();
+    $('.editFor').css({"border": ""});
 
     $.ajax({
         url:'/agendaTemp/edit',
@@ -104,8 +105,7 @@ $('.editFor').on( "change paste keyup", function(){
         {
             console.log(data);
 
-            $( '#titre').text(data.titre);
-            $( '#countErrors').html(data.countErrors);
+            $( '#titre').html(data.titre);
             $( '#description').html(data.description);
             $( '#startLegalWeek').text(data.startLegalWeek);
             $( '#endLegalWeek').text(data.endLegalWeek);
@@ -122,9 +122,13 @@ $('.editFor').on( "change paste keyup", function(){
             
             if (data.bgLetter) {
                 $( '#' + id ).css({"border": ""}).removeClass('table-success').removeClass('table-danger').removeClass('table-info').addClass(data.bgLetter);                
-            } else {
+            }
+
+            if (data.countErrors) {
                 $( '#' + id ).css({"border": "1px solid red"});
             }
+
+
         }
     });
 });

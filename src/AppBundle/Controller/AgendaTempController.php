@@ -83,9 +83,11 @@ class AgendaTempController extends Controller {
             $response = new Response(json_encode(array(
 
                 'letter' => $letterInMemo->getLetter(),
+                'countErrors' => 1,
                 'bgLetter' => '',
-                'titre' => 'Erreur :',
-                'description' =>  $errors['Lettre']
+                'titre' => "<span class='text-danger'>Votre saisie comporte des erreurs : </span>",
+                'description' =>  "<li class='list-group-item list-group-item-danger rounded'>" . $errors['Lettre'] . "</li>"
+
             )));
             $response->headers->set('Content-Type', 'application/json');
             return $response;
@@ -205,14 +207,14 @@ class AgendaTempController extends Controller {
 
             //if $errors, restore $letterInMemory and send $error message
             if (!$errors) {
-                $titre = 'Mise à jour Ok';
-                $description = "<li class='list-group-item list-group-item-success'>" . 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agent->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y'). "</li>";
+                $titre = "<span class='text-success'>Mise à jour Ok </span>";
+                $description = "<li class='list-group-item list-group-item-success rounded'>" . 'La lettre ' . $letter->getLetter() . ' a été mise à jour pour l\'agent ' . $agent->getName() . ' à la date du ' . $agendaTemp->getDate()->format('d M Y'). "</li>";
                 $countErrors = 0;
                 
 
             } else {
-                $titre = 'Votre saisie comporte des erreurs : ';
-                $description = "<li class='list-group-item list-group-item-danger'>" . "<span class='mr-2' ><i class='fas fa-check text-danger'></i></span>  " . implode("</li><li class='list-group-item'>", $errors) . "</li>";
+                $titre = "<span class='text-danger'>Votre saisie comporte des erreurs : </span>";
+                $description = "<li class='list-group-item list-group-item-danger rounded'>" . "<span class='mr-2' ><i class='fas fa-check text-danger'></i></span>  " . implode("</li><li class='list-group-item list-group-item-danger rounded'>" . "<span class='mr-2' ><i class='fas fa-check text-danger'></i></span>  " , $errors) . "</li>";
                 $agendaTemp->setLetter($letterInMemo);
                 $countErrors = count($errors);
                 $em->persist($agendaTemp);
@@ -261,17 +263,18 @@ class AgendaTempController extends Controller {
      */
     public function createAction(Agent $agent)
     {          
-        //check it temp exist for this User and this Agent        
+        //check it temp exist for this Agent
         $team = $agent->getTeam();
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findTempByAgent($agent);
+
         
         if (!$agendaTemp) {
             // si l'agendaTemp n'éxiste pas, récupère l'agenda éxistant de la team                
             $agendas = $this->getDoctrine()
                 ->getRepository(Agenda::class)
-                ->findAgendaByTeam($team, $agent);
+                ->findAgendaByAgent($agent);
             
             //crée les agendas Temp                
             foreach ($agendas as $agenda){
@@ -284,13 +287,14 @@ class AgendaTempController extends Controller {
                     //$agendaTemp->setUtilisateur($agendaToCopy->getUtilisateur());
                     $em->persist($agendaTemp);
                     $em->flush();
-                    }
+            }
 
             return $this->redirectToRoute('showOneAgendaTemp', array(
                 'id' => $agent->getId(),       
                 ));
         
-        }  return $this->redirectToRoute('showOneAgendaTemp', array(
+        }
+        return $this->redirectToRoute('showOneAgendaTemp', array(
             'id' => $agent->getId(), 
                 ));          
     }  
@@ -336,8 +340,24 @@ class AgendaTempController extends Controller {
 
         //Showagendas
         $agentBetweens = [];
-        $agents = $team->getAgents();            
-        foreach ($agents as $agent) {
+
+        // Find agents who are in Temp
+        $agentInTeam = $team->getAgents();
+
+            $agentsId =  $this->getDoctrine()
+                ->getRepository(AgendaTemp::class)
+                ->findAgentIdByAgendaTemp($agentInTeam);
+
+
+        $agentInTemp = $this->getDoctrine()
+            ->getRepository(Agent::class)
+            ->findMyAgent($agentsId);
+
+        //dump($agentInTemp);die;
+
+
+
+        foreach ($agentInTemp as $agent) {
             $agentIdentification = [];
             $agentIdentification[] = [
                 $agent->getId(),
@@ -351,14 +371,18 @@ class AgendaTempController extends Controller {
             foreach ($arrayDates as $arrayDate) {
 
                 $agendaDate[] = $this->getDoctrine()
-                    ->getRepository(Agenda::class)
+                    ->getRepository(AgendaTemp::class)
                     ->findOneBy([
                         'agent' => $agent,
                         'date' => $arrayDate,
-                    ],  ['date' => 'ASC']);                
-            }      
-            $agentBetweens[] = [$agentIdentification, $agendaDate];            
-        }        
+                    ],  ['date' => 'ASC']);
+            }
+            $agentBetweens[] = [$agentIdentification, $agendaDate];
+        }
+
+        //if (!$agentIdentification){
+            //$agentBetweens = [];
+       // }
 
     return $this->render('agendaTemp.html.twig', [
 
@@ -368,7 +392,7 @@ class AgendaTempController extends Controller {
             'startDate' => $startDate,
             'endDate' => $endDate,
             'holidays' => $holidays,
-            'agent' => $agent,            
+            'agent' => $agent,
              ]);
     }
     
@@ -383,7 +407,7 @@ class AgendaTempController extends Controller {
         
             if (!$agendaTemp) {
                 // si l'agendaTemp n'éxiste pas renvoie la route agenda :
-                return $this->redirectToRoute('showAgenda');            
+                return $this->redirectToRoute('showAgenda');
             }
             
             //Check Roles 
@@ -692,7 +716,7 @@ class AgendaTempController extends Controller {
        $em->flush();
        $this->addFlash('success', 'L\'agenda provisoire a bien été supprimé pour l\'agent ' . $agent->getName());      
            
-        return $this->redirectToRoute('showOneAgendaTemp', array(
+        return $this->redirectToRoute('showAgendaTeam', array(
                 'id' => $agent->getId(),                
                     ));
     }
@@ -711,7 +735,7 @@ class AgendaTempController extends Controller {
     public function validAction(Agent $agent, historyAgenda $historyAgenda)
     {    
         //Check Roles 
-            // if ROLE AGENT : can't valid agenda        
+            // if ROLE VALIDEUR : can valid agenda
             if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
                 if ($this->getUser()->getTeam() != $agent->getTeam()) {
                     $this->addFlash('danger',
@@ -779,30 +803,33 @@ class AgendaTempController extends Controller {
         ->find($agentId);
         
         //Check Roles 
-            // if ROLE VALIDEUR : can't initialize agenda of other team       
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
+            // if NOT ADMIN & HAS ROLE VALIDEUR : can't initialize agenda of other team
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')) {
                 if ($this->getUser()->getTeam() != $agent->getTeam()) {
                     $this->addFlash('danger',
-                            'Vous ne pouvez pas initialiser l\'agenda d\'un agent d\'une autre équipe que la votre.' 
+                        'Vous ne pouvez pas initialiser l\'agenda d\'un agent d\'une autre équipe que la votre.'
                     );
                     return $this->redirectToRoute('showAgents', array(
                         'id' => $agent->getTeam()->getId(),
                     ));
-                }               
+                }
+
+                // if NOT ADMIN & NOT VALIDEUR : can't initialize agenda
             } else {
-                // if ROLE AGENT : can't initialize agenda       
                 $this->addFlash('danger',
-                   'Vous ne pouvez pas initialiser l\'agenda car vous n\'êtes pas valideur.' 
+                    'Vous ne pouvez pas initialiser l\'agenda car vous n\'êtes ni valideur, ni administrateur.'
                 );
-                return $this->redirectToRoute('showAgenda');                 
+                return $this->redirectToRoute('showAgenda');
             }
+        }
         
         
         
-        $team = $agent->getTeam();        
-        $initializeAgenda->initialize($team, $agent); 
+        $team = $agent->getTeam();
+        $initializeAgenda->initialize($team, $agent);
         $this->addFlash('success', 'L\'agenda a été réinitialisé pour l\'agent ' . $agent->getName());
-        
+
         return $this->redirectToRoute('showAgents', array(
             'id' => $agent->getTeam()->getId(),
         ));
