@@ -15,7 +15,7 @@ use AppBundle\Entity\Letter;
 use AppBundle\Entity\Agent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
-use AppBundle\Entity\User;
+
 use AppBundle\Entity\Rule;
 
 
