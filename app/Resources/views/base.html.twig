@@ -35,15 +35,16 @@
                         {{ app.user.firstname|capitalize }} {{ app.user.username|upper }}
                         {% if  app.user.team %}  | Equipe :  {{   app.user.team.name|upper }}{% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
-                            | Rôle : ADMINISTRATEUR  |
+                            | Rôle : ADMINISTRATEUR
                         {% elseif is_granted('ROLE_VALIDEUR') %}
-                            | Rôle :  VALIDEUR |
+                            | Rôle :  VALIDEUR
                         {% else %}
-                            | Rôle : AGENT |
+                            | Rôle : AGENT
                         {% endif %}
-                    {% endif %}
-                    {% if (user_management.countWaitedValidation( app.user)) %}
-                        <a class=" ml-2 px-2" href="{{ path('showAgendaTeam') }}"> <span class="text-white"><strong>Agendas en attente de validation : </strong></span><span class="badge badge-danger">{{ user_management.countWaitedValidation( app.user) }}</span> </a>
+
+                        {% if (user_management.countWaitedValidation( app.user)) %}
+                            <a class=" p-2" href="{{ path('showAgendaTeam') }}"> <span class="text-white">| Agendas en attente de validation : </span><span class="m-2 badge badge-danger">{{ user_management.countWaitedValidation( app.user) }}</span> </a>
+                        {% endif %}
                     {% endif %}
                 </span>
                 <span class="mr-2 text-white">
