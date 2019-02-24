@@ -43,7 +43,7 @@
                         {% endif %}
                     {% endif %}
                     {% if (user_management.countWaitedValidation( app.user)) %}
-                        <a class=" ml-2 px-2" href="{{ path('showAgendaTeam') }}"> <span class="text-white">Agendas en attente de validation : </span><span class="badge badge-danger">{{ user_management.countWaitedValidation( app.user) }}</span> </a>
+                        <a class=" ml-2 px-2" href="{{ path('showAgendaTeam') }}"> <span class="text-white"><strong>Agendas en attente de validation : </strong></span><span class="badge badge-danger">{{ user_management.countWaitedValidation( app.user) }}</span> </a>
                     {% endif %}
                 </span>
                 <span class="mr-2 text-white">
