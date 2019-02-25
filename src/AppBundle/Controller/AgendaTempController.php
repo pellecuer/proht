@@ -31,6 +31,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use AppBundle\Service\historyAgenda;
 use AppBundle\Service\checkRules;
 use AppBundle\Service\initializeAgenda;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 
@@ -48,9 +49,7 @@ class AgendaTempController extends Controller {
      *     
      */
     public function editAjaxAction(Request $request, UserInterface $user, checkRules $checkRules)
-    {
-        
-        
+    {        
         /*  Get the object agendaTemp send by Ajax */        
         $id = $request->request->get('id');        
         $agendaTemp = $this->getDoctrine()
@@ -60,13 +59,8 @@ class AgendaTempController extends Controller {
         $letterInMemo = $agendaTemp->getLetter();
         
 
-
         /* Get the letter send by Ajax */
         $letterUpdate = strtoupper($request->request->get('letter'));
-
-        
-        
-        
         
         /* check if letter exist */
         $letter = $this
@@ -304,8 +298,35 @@ class AgendaTempController extends Controller {
      /**
      * @Route("/showTeam", name="showAgendaTeam")     
      */
-    public function showAgendaTeamAction()
+    public function showAgendaTeamAction(Request $request, UserInterface $agent)
     {
+        //build the form
+        $form = $this->createFormBuilder()              
+
+            ->add('interval', ChoiceType::class, array(
+                'choices' => [
+                    'Quinze jours'=> new \DateInterval('P15D'),
+                    'Un mois'=> new \DateInterval('P1M'),
+                    'Trois semaines'=> new \DateInterval('P3M'),
+                ],
+                'expanded' => true,
+                'multiple' => false,
+            )) 
+            ->add('Envoyer', SubmitType::class, array(
+                'attr' => array('class' => 'btn btn btn-dark btn-lg'),
+            ))
+        
+            ->getForm();
+        
+        //get date from Form
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {             
+            $data = $form->getData();
+            $dateInterval = $data['interval']; 
+        } else {
+            $dateInterval = new \DateInterval('P15D');
+        }
+        
         $team = $this->getUser()->getTeam();
         //Check Roles 
             // if ROLE AGENT : can't modify other agendas        
@@ -317,8 +338,7 @@ class AgendaTempController extends Controller {
             }
         
         
-        $startDate = $team->getEvent()->getStartDate();
-        $dateInterval = new \DateInterval('P15D');
+        $startDate = $team->getEvent()->getStartDate();        
         $immutable = \DateTimeImmutable::createFromMutable($startDate); 
         $endDate = $immutable->add($dateInterval);
             
@@ -390,6 +410,7 @@ class AgendaTempController extends Controller {
             'startDate' => $startDate,
             'endDate' => $endDate,
             'holidays' => $holidays,
+            'form'=>$form->createView(),
              ]);
     }
 
@@ -611,8 +632,35 @@ class AgendaTempController extends Controller {
     /**     
      * @Route("/showOne/{id}", name="showOneAgendaTemp")   
      */
-    public function showOneAction(Agent $agent)
+    public function showOneAction(Agent $agent, Request $request)
     {        
+        //build the form
+        $form = $this->createFormBuilder()              
+
+            ->add('interval', ChoiceType::class, array(
+                'choices' => [
+                    'Quinze jours'=> new \DateInterval('P15D'),
+                    'Un mois'=> new \DateInterval('P1M'),
+                    'Trois semaines'=> new \DateInterval('P3M'),
+                ],
+                'expanded' => true,
+                'multiple' => false,
+            )) 
+            ->add('Envoyer', SubmitType::class, array(
+                'attr' => array('class' => 'btn btn btn-dark btn-lg'),
+            ))
+        
+            ->getForm();
+        
+        //get date from Form
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {             
+            $data = $form->getData();
+            $dateInterval = $data['interval']; 
+        } else {
+            $dateInterval = new \DateInterval('P15D');
+        }
+        
         $agendaTemp = $this->getDoctrine()
                 ->getRepository(AgendaTemp::class)
                 ->findTempByAgent($agent);
@@ -651,8 +699,7 @@ class AgendaTempController extends Controller {
 
             //crée un array d'array des agendas
             $team = $agent->getTeam();
-            $startDate = $team->getEvent()->getStartDate();
-            $dateInterval = new \DateInterval('P15D');
+            $startDate = $team->getEvent()->getStartDate();           
             $immutable = \DateTimeImmutable::createFromMutable($startDate); 
             $endDate = $immutable->add($dateInterval);
             
@@ -711,6 +758,7 @@ class AgendaTempController extends Controller {
                 'endDate' => $endDate,
                 'holidays' => $holidays,
                 'agent' => $agent,
+                'form'=>$form->createView(),
                  ]);
     }
     

@@ -28,7 +28,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-
+ 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 
 
@@ -46,7 +48,7 @@ class AgendaController extends Controller {
      * @Method({"GET", "POST"})
      */
     public function showAgendaAction(Request $request, UserInterface $agent)
-    {        
+    {
         //build the form
         $form = $this->createFormBuilder()
                 
@@ -316,8 +318,7 @@ class AgendaController extends Controller {
      * @Method({"GET", "POST"})
      */
     public function showPreviousAgendaAction(Request $request, UserInterface $agent, $previousDate, Team $team)
-    {    
-        //dump ($nextDate);die;
+    {            
         //build the form
         $form = $this->createFormBuilder()
              ->add('Team', EntityType::class, array(
