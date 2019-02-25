@@ -209,23 +209,15 @@ class AgendaController extends Controller {
         //dump ($nextDate);die;
         //build the form
         $form = $this->createFormBuilder()
-            ->add('startDate', DateType::class, array(            
-            'constraints' => array(
-                    new NotBlank()
-            ),
-            'widget' => 'single_text',
-            'label'  => 'Date de début',
-            'attr' => array('class' => 'form-control'),
-             ))
-                
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
-                'choice_label' => 'name',
-                'placeholder' => 'Sélectionner une équipe',
-                'attr' => array('class' => 'form-control')  
+                'choice_label' => 'name',                 
+                'placeholder' => 'Choisir une équipe',
+                'attr' => array('class' => 'form-control'),
+                 'required' => false,
                 ))
                 
-            ->add('interval', DateIntervalType::class, array(
+            /*->add('interval', DateIntervalType::class, array(
                 'widget' => 'choice',
                 'allow_extra_fields' => true,
                 'with_years'  => false,
@@ -234,16 +226,29 @@ class AgendaController extends Controller {
                 'weeks' => range(0, 3),
                 'with_days'   => false,
                 'with_hours'  => false,                
-                'attr' => array('class' => 'form-control'),                    
-                'placeholder' => ['weeks' => 'semaines'],                
+                'attr' => array('class' => 'form-control'),
+                'placeholder' => ['weeks' => 'Sélectionnez un nombre de semaines'],
+                'labels' => ['weeks' => ' '],
              ))
+            */
+
+            ->add('interval', ChoiceType::class, array(
+                'choices' => [
+                    'Quinze jours'=> new \DateInterval('P15D'),
+                    'Un mois'=> new \DateInterval('P1M'),
+                    'Trois semaines'=> new \DateInterval('P3M'),
+                ],
+                'expanded' => true,
+                'multiple' => false,
+            ))
+
+
                 
             ->add('Envoyer', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn-primary sendDate'),
+                'attr' => array('class' => 'btn btn btn-dark btn-lg'),
             ))
         
-            ->getForm()
-            ;
+            ->getForm();
         
         
         //prohibit show team<>myTeam unless granted Admin
@@ -330,23 +335,15 @@ class AgendaController extends Controller {
         //dump ($nextDate);die;
         //build the form
         $form = $this->createFormBuilder()
-            ->add('startDate', DateType::class, array(            
-            'constraints' => array(
-                    new NotBlank()
-            ),
-            'widget' => 'single_text',
-            'label'  => 'Date de début',
-            'attr' => array('class' => 'form-control'),
-             ))
-                
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
-                'choice_label' => 'name',
-                'placeholder' => 'Sélectionner une équipe',
-                'attr' => array('class' => 'form-control')  
+                'choice_label' => 'name',                 
+                'placeholder' => 'Choisir une équipe',
+                'attr' => array('class' => 'form-control'),
+                 'required' => false,
                 ))
                 
-            ->add('interval', DateIntervalType::class, array(
+            /*->add('interval', DateIntervalType::class, array(
                 'widget' => 'choice',
                 'allow_extra_fields' => true,
                 'with_years'  => false,
@@ -355,16 +352,29 @@ class AgendaController extends Controller {
                 'weeks' => range(0, 3),
                 'with_days'   => false,
                 'with_hours'  => false,                
-                'attr' => array('class' => 'form-control'),                    
-                'placeholder' => ['weeks' => 'semaines'],                
+                'attr' => array('class' => 'form-control'),
+                'placeholder' => ['weeks' => 'Sélectionnez un nombre de semaines'],
+                'labels' => ['weeks' => ' '],
              ))
+            */
+
+            ->add('interval', ChoiceType::class, array(
+                'choices' => [
+                    'Quinze jours'=> new \DateInterval('P15D'),
+                    'Un mois'=> new \DateInterval('P1M'),
+                    'Trois semaines'=> new \DateInterval('P3M'),
+                ],
+                'expanded' => true,
+                'multiple' => false,
+            ))
+
+
                 
             ->add('Envoyer', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn-outline-dark'),
+                'attr' => array('class' => 'btn btn btn-dark btn-lg'),
             ))
         
-            ->getForm()
-            ;
+            ->getForm();
         
         
         //prohibit show team<>myTeam unless granted Admin

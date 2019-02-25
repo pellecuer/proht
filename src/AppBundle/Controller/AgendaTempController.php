@@ -118,7 +118,7 @@ class AgendaTempController extends Controller {
 
             //check if date < today
             if ($checkRules->ForbidModifyBefore($date)) {
-                $errors['Modification sur date antérieure '] = "Vous ne pouvez pas modifier l'agenda sur des dates antérieures "; 
+                $errors['Modification sur date antérieure '] = "Vous ne pouvez pas modifier l'agenda sur des dates antérieures à aujourd'hui."; 
             }
                 
             //check if date > today + 2 or 7 depends on role user
@@ -131,7 +131,7 @@ class AgendaTempController extends Controller {
                     
             if ($checkRules->ForbidModifyAfter($date, $dateMinModifyOk)){
                
-                $errors['Modification sur proche'] = "Vous ne pouvez pas modifier l'agenda sur une date inférieure au " . $dateMinModifyOk->modify('+1 day')->format('d M Y') ; 
+                $errors['Modification sur proche'] = "Vous ne pouvez pas modifier l'agenda sur une date inférieure au " . $dateMinModifyOk->modify('+1 day')->format('d M Y') . "." ; 
             }   
             
 
