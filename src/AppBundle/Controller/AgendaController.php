@@ -215,22 +215,7 @@ class AgendaController extends Controller {
                 'placeholder' => 'Choisir une équipe',
                 'attr' => array('class' => 'form-control'),
                  'required' => false,
-                ))
-                
-            /*->add('interval', DateIntervalType::class, array(
-                'widget' => 'choice',
-                'allow_extra_fields' => true,
-                'with_years'  => false,
-                'with_months' => false,                
-                'with_weeks' => true,
-                'weeks' => range(0, 3),
-                'with_days'   => false,
-                'with_hours'  => false,                
-                'attr' => array('class' => 'form-control'),
-                'placeholder' => ['weeks' => 'Sélectionnez un nombre de semaines'],
-                'labels' => ['weeks' => ' '],
-             ))
-            */
+                ))  
 
             ->add('interval', ChoiceType::class, array(
                 'choices' => [
@@ -341,22 +326,7 @@ class AgendaController extends Controller {
                 'placeholder' => 'Choisir une équipe',
                 'attr' => array('class' => 'form-control'),
                  'required' => false,
-                ))
-                
-            /*->add('interval', DateIntervalType::class, array(
-                'widget' => 'choice',
-                'allow_extra_fields' => true,
-                'with_years'  => false,
-                'with_months' => false,                
-                'with_weeks' => true,
-                'weeks' => range(0, 3),
-                'with_days'   => false,
-                'with_hours'  => false,                
-                'attr' => array('class' => 'form-control'),
-                'placeholder' => ['weeks' => 'Sélectionnez un nombre de semaines'],
-                'labels' => ['weeks' => ' '],
-             ))
-            */
+                ))            
 
             ->add('interval', ChoiceType::class, array(
                 'choices' => [
