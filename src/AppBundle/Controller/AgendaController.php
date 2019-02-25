@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -51,11 +53,12 @@ class AgendaController extends Controller {
              ->add('Team', EntityType::class, array(
                 'class' => Team::class,
                 'choice_label' => 'name',                 
-                'placeholder' => 'Sélectionner une équipe',
-                'attr' => array('class' => 'form-control')  
+                'placeholder' => 'Choisir une équipe',
+                'attr' => array('class' => 'form-control'),
+                 'required' => false,
                 ))
                 
-            ->add('interval', DateIntervalType::class, array(
+            /*->add('interval', DateIntervalType::class, array(
                 'widget' => 'choice',
                 'allow_extra_fields' => true,
                 'with_years'  => false,
@@ -68,9 +71,22 @@ class AgendaController extends Controller {
                 'placeholder' => ['weeks' => 'Sélectionnez un nombre de semaines'],
                 'labels' => ['weeks' => ' '],
              ))
+            */
+
+            ->add('interval', ChoiceType::class, array(
+                'choices' => [
+                    'Quinze jours'=> new \DateInterval('P15D'),
+                    'Un mois'=> new \DateInterval('P1M'),
+                    'Trois semaines'=> new \DateInterval('P3M'),
+                ],
+                'expanded' => true,
+                'multiple' => false,
+            ))
+
+
                 
             ->add('Envoyer', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn-primary sendDate'),
+                'attr' => array('class' => 'btn btn btn-dark btn-lg'),
             ))
         
             ->getForm();
@@ -83,6 +99,9 @@ class AgendaController extends Controller {
             $data = $form->getData();
             $dateInterval = $data['interval'];
             $team = $data['Team'];
+            if (!$team){
+                $team = $this->getUser()->getTeam();
+            }
             $startDate = $team->getEvent()->getStartDate();
             $agents = $team->getAgents();
             
