@@ -17,7 +17,7 @@
         <span class ="d-flex align-items-center justify-content-between">
             <span>
                 <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <span><i class="fas fa-search"></i></span><span> </span>
+                    <span><i class="fas fa-search"></i></span><span class="mx-2">Parcourir</span>
                 </button>
                 {% if team %}
                 <a class="btn btn-outline-dark" href="{{ path('showPreviousAgenda', {'team_Id': team.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
@@ -41,11 +41,11 @@
         <h3 class="my-5"> <span><i class="fas fa-search"></i></span><span> Parcourir un agenda</span></h3>
 
         <div class="mb-2 d-flex align-items-center justify-content-around ">
-            {{ form_row(form.Team, {'label': ' ', 'attr' : {'placeholder':'Choisir une équipe ...' }}) }}
+            {{ form_row(form.Team, {'label': ' ', 'attr' : {'placeholder':'Choisir une équipe ...', 'class':'custom-select d-block w-100' }}) }}
         {##"{{ form_row(form.interval, {'label': 'Période', 'attr' : {'placeholder':'Selectionnez une équipe ...' }}) }}#}
         </div>
         <div class="mb-2 d-flex align-items-center justify-content-around bg-white rounded">
-            {{ form_row(form.interval, {'label': 'Choisir une durée<', 'attr' : {'class':'form-check form-check-inline', 'type':'radio' }}) }}
+            {{ form_row(form.interval, {'label': 'Choisir une durée', 'attr' : {'class':'form-check form-check-inline', 'type':'radio' }}) }}
         </div>
         <div class="mt-5 d-flex align-items-center justify-content-around ">
             <span>{{ form_row(form.Envoyer)}}</span>

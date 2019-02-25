@@ -25,26 +25,27 @@ class UserManagement {
     
     public function countWaitedValidation(UserInterface $user)
     {
-
         $agent =  $this->em
             ->getRepository(Agent::class)
             ->findOneBy(['username'=> $user->getUsername()]);
 
         $team = $agent->getTeam();
-        $agentInTeam = $team->getAgents();
-        $agentsId =  $this->em
-            ->getRepository(AgendaTemp::class)
-            ->findAgentIdByAgendaTemp($agentInTeam);
+        if (!$team){
+            $countWaitedValidation = null;
+        } else {
+            $agentInTeam = $team->getAgents();
+            $agentsId =  $this->em
+                ->getRepository(AgendaTemp::class)
+                ->findAgentIdByAgendaTemp($agentInTeam);
 
 
-        $agentInTemp = $this->em
-            ->getRepository(Agent::class)
-            ->findMyAgent($agentsId);
+            $agentInTemp = $this->em
+                ->getRepository(Agent::class)
+                ->findMyAgent($agentsId);
 
-        $countWaitedValidation = count ($agentInTemp);
+            $countWaitedValidation = count ($agentInTemp);
+        }        
 
         return $countWaitedValidation;
-
-
     }    
 }

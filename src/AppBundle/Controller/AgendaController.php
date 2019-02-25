@@ -102,6 +102,14 @@ class AgendaController extends Controller {
             if (!$team){
                 $team = $this->getUser()->getTeam();
             }
+            
+            if (!$team){
+                 $this->addFlash('danger',
+                        'Merci de sélectionner une équipe'
+                );
+                return $this->redirectToRoute('showAgenda'); 
+            }
+            
             $startDate = $team->getEvent()->getStartDate();
             $agents = $team->getAgents();
             
