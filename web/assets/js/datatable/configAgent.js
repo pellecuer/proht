@@ -40,16 +40,39 @@ var table =
             {
                 "targets": [ 6 ],
                 "visible": true,
-                "searchable": false
+                "searchable": true
             },
             {
                 "targets": [ 7 ],
                 "visible": true,
-                "searchable": false
+                "searchable": true
             },
 
             {
                 "targets": [ 8 ],
+                "visible": true,
+                "searchable": true
+            },
+            
+            {
+                "targets": [ 9 ],
+                "visible": true,
+                "searchable": true
+            },
+            
+            {
+                "targets": [ 10 ],
+                "visible": true,
+                "searchable": false
+            },
+            {
+                "targets": [ 11 ],
+                "visible": true,
+                "searchable": false
+            },
+            
+            {
+                "targets": [ 12 ],
                 "visible": true,
                 "searchable": false
             },

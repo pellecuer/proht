@@ -19,13 +19,13 @@ class historyAgenda {
     $this->em = $entityManager;
 }
     
-    public function history($agenda, $connectedUser)
+    public function history($agenda, $connectedUser, $letter)
     {        
         $history = new HistoryChange();
         $history->setDateChange(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
         $history->setDate($agenda->getDate());
         $history->setAgent($agenda->getAgent());
-        $history->setLetter($agenda->getLetter());
+        $history->setLetter($letter);
         $history->setValideur($connectedUser);     
         $this->em->persist($history);
         $this->em->flush();

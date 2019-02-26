@@ -50,8 +50,11 @@ class Team
         return $this->agents;
     }
     
-    
-    /**
+    function setAgents($agents) {
+        $this->agents = $agents;
+    }
+
+        /**
      * @var
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")

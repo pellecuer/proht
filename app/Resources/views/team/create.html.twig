@@ -11,7 +11,7 @@
         <h1>Créer une nouvelle équipe</h1>        
             <div class="form-group mb-2">
             {{ form_start(form, {'action': path('create_team'), 'method': 'POST'}) }} 
-            {{ form_row(form.name, {'label': 'Nom d\'utilisateur', 'attr' : {'placeholder':'Nom d\'utilisateur ...' }}) }}
+            {{ form_row(form.name, {'label': 'Nom de l\'équipe', 'attr' : {'placeholder':'Nom de l\'équipe ...' }}) }}
             {{ form_row(form.Event, {'label': 'Evenement' }) }}
             {{ form_row(form.Section, {'label': 'Section' }) }}           
             {{ form_row(form.Envoyer) }}

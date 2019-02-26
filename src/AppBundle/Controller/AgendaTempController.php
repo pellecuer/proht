@@ -87,7 +87,7 @@ class AgendaTempController extends Controller {
             return $response;
 
         } else {
-            //Define Legal Week and varaibles
+            //Define Legal Week and varaibles            
             $date = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
             $startLegalWeek = $checkRules->StartLegalWeek($date);
             $endLegalWeek = $checkRules->EndLegalWeek($date);
@@ -231,16 +231,16 @@ class AgendaTempController extends Controller {
             'description' => $description,
             'letter' => $updatedLetter,
             'bgLetter' => $bgLetter,
-            'startLegalWeek' => strftime($startLegalWeek->format('D d M Y H:i:s')),
+            'startLegalWeek' => strftime($startLegalWeek->format('d m Y H:i:s')),
 
-            'endLegalWeek' => $endLegalWeek->format('D d M Y H:i:s'),
-            'startDay' => $interval[2]->format('D d M H:i:s'),
-            'endDay' => $interval[3]->format('D d M H:i:s'),
+            'endLegalWeek' => $endLegalWeek->format('d m Y H:i:s'),
+            'startDay' => $interval[2]->format('d m H:i:s'),
+            'endDay' => $interval[3]->format('d m H:i:s'),
             'hoursPerWeek' => $hoursPerWeek,
             'intervalBefore' => $interval[0],
             'intervalAfter' => $interval[1],
-            'DateTimeBefore' => $interval[4]->format('D d M H:i:s'),
-            'DateTimeAfter' => $interval[5]->format('D d M H:i:s'),
+            'DateTimeBefore' => $interval[4]->format('d m H:i:s'),
+            'DateTimeAfter' => $interval[5]->format('d m H:i:s'),
             'average' => $averageHourPerWeek,
             'countErrors' => $countErrors,
 
@@ -982,7 +982,7 @@ class AgendaTempController extends Controller {
             $em->remove($agendaToRemove);            
         }                
        $em->flush();
-       $this->addFlash('success', 'L\'agenda provisoire a bien été supprimé pour l\'agent ' . $agent->getName());      
+       //$this->addFlash('success', 'L\'agenda provisoire a bien été supprimé pour l\'agent ' . $agent->getName());      
            
         return $this->redirectToRoute('showAgendaTeam', array(
                 'id' => $agent->getId(),                
@@ -1044,7 +1044,7 @@ class AgendaTempController extends Controller {
                 if ($agenda->getLetter() != $letter){
                    $agenda->setLetter($letter);
                     $em->persist($agenda);                    
-                    $historyAgenda->history($agenda, $connectedUser);
+                    $historyAgenda->history($agenda, $connectedUser, $letter);
                 }
             }
         }                
@@ -1101,6 +1101,49 @@ class AgendaTempController extends Controller {
         return $this->redirectToRoute('showAgents', array(
             'id' => $agent->getTeam()->getId(),
         ));
+    }
+    
+    /**
+     * sendhistoryModif an agenda entity.
+     *
+     * @Route("/sendhistoryModif/{id}", name="sendhistoryModif")    
+     * @Method("GET")
+     */
+    public function sendHistoryModifAction(Agent $agent, historyAgenda $historyAgenda)    
+    {
+        $connectedUser = $this->getUser();
+        
+         $agendaToUpdates = $this->getDoctrine()
+            ->getRepository(AgendaTemp::class)
+            ->findTempByAgent($agent);        
+        
+        $em = $this->getDoctrine()->getManager();
+         
+        
+        foreach ($agendaToUpdates as $agendaToUpdate){
+            // update dans l'agenda
+            $date = $agendaToUpdate->getDate();
+            $letter = $agendaToUpdate->getLetter();
+            $agent = $agendaToUpdate->getAgent();            
+            
+            $agendas = $this->getDoctrine()
+            ->getRepository(Agenda::class)
+            ->findAgendaToUpdate($date, $agent);            
+            
+            //Check the differences between new and old version of agenda and persist if difference exists
+            foreach ($agendas as $agenda){
+                if ($agenda->getLetter() != $letter){                                       
+                    $historyAgenda->history($agenda, $connectedUser, $letter);
+                }
+            }
+        }
+        
+        $this->addFlash('success',
+                        'Vos demandes de modifications ont été prise en compte.'
+                    );
+                    return $this->redirectToRoute('showAgents', array(
+                        'id' => $agent->getTeam()->getId(),
+                    )); 
     }
 }
 

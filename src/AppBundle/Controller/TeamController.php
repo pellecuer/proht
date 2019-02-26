@@ -144,6 +144,11 @@ class TeamController extends Controller {
                 return $this->redirectToRoute('showteam'); 
             } 
         $em = $this->getDoctrine()->getManager();
+        $team->setEvent(NULL);
+        $team->setSection(NULL);
+        $team->setSection(NULL);
+        $team->setAgents(NULL);
+        $em->persist($team);
         $em->remove($team);
         $em->flush();
            
