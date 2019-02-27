@@ -402,7 +402,7 @@ class AgendaTempController extends Controller {
             //$agentBetweens = [];
        // }
 
-    return $this->render('agendaTempTeam.html.twig', [
+    return $this->render('agenda/agendaTempTeam.html.twig', [
 
             'dateBetweens' => $arrayDates,
             'agentBetweens' => $agentBetweens,
@@ -506,7 +506,7 @@ class AgendaTempController extends Controller {
         }
 
 
-        return $this->render('agendaTempTeam.html.twig', [
+        return $this->render('agenda/agendaTempTeam.html.twig', [
 
             'dateBetweens' => $arrayDates,
             'agentBetweens' => $agentBetweens,
@@ -610,7 +610,7 @@ class AgendaTempController extends Controller {
 
 
 
-        return $this->render('agendaTempTeam.html.twig', [
+        return $this->render('agenda/agendaTempTeam.html.twig', [
 
             'dateBetweens' => $arrayDates,
             'agentBetweens' => $agentBetweens,
@@ -749,7 +749,7 @@ class AgendaTempController extends Controller {
                 $agentBetweens[] = [$agentIdentification, $agendaDate];            
             }         
 
-        return $this->render('agendaTemp.html.twig', [
+        return $this->render('agenda/agendaTemp.html.twig', [
 
                 'dateBetweens' => $arrayDates,
                 'agentBetweens' => $agentBetweens,
@@ -841,7 +841,7 @@ class AgendaTempController extends Controller {
                 $agentBetweens[] = [$agentIdentification, $agendaDate];            
             }         
 
-        return $this->render('agendaTemp.html.twig', [
+        return $this->render('agenda/agendaTemp.html.twig', [
 
                 'dateBetweens' => $arrayDates,
                 'agentBetweens' => $agentBetweens,
@@ -931,7 +931,7 @@ class AgendaTempController extends Controller {
                 $agentBetweens[] = [$agentIdentification, $agendaDate];            
             }         
 
-        return $this->render('agendaTemp.html.twig', [
+        return $this->render('agenda/agendaTemp.html.twig', [
 
                 'dateBetweens' => $arrayDates,
                 'agentBetweens' => $agentBetweens,

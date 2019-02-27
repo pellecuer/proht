@@ -183,7 +183,7 @@ class AgendaController extends Controller {
             $agentBetweens[] = [$agentIdentification, $agendaDate];            
         }
         
-        return $this->render('agenda.html.twig', [
+        return $this->render('agenda/agenda.html.twig', [
 
             'dateBetweens' => $arrayDates,
             'agentBetweens' => $agentBetweens,
@@ -296,7 +296,7 @@ class AgendaController extends Controller {
             $agentBetweens[] = [$agentIdentification, $agendaDate];            
         }
         
-        return $this->render('agenda.html.twig', [
+        return $this->render('agenda/agenda.html.twig', [
 
             'dateBetweens' => $arrayDates,
             'agentBetweens' => $agentBetweens,
@@ -409,7 +409,7 @@ class AgendaController extends Controller {
             $agentBetweens[] = [$agentIdentification, $agendaDate];            
         }
         
-        return $this->render('agenda.html.twig', [
+        return $this->render('agenda/agenda.html.twig', [
 
             'dateBetweens' => $arrayDates,
             'agentBetweens' => $agentBetweens,
