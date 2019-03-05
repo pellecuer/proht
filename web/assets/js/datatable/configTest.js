@@ -1,16 +1,16 @@
 var table =
 
     $('#example').DataTable({
-        "fixedColumns": {
-            "leftColumns": 1
-        },
+         
         "scrollX": true,
-        "scrollY": '30vh',
-        "scrollCollapse": true,
+        "scrollY": '30vh',       
         "rowReorder": true,
+        "fixedColumns":   {
+            "leftColumns": 1,
+            "rightColumns": 1
+        },
         
-        
-        "paging":   false,
+        "paging":   true,
         "ordering": true,
         "info":     true,
         "order": [[ 1, "desc" ]],
@@ -18,8 +18,8 @@ var table =
         "columnDefs": [
             {
                 "targets": [ 0 ],
-                "visible": false,
-                "searchable": false
+                "visible": true,
+                "searchable": true
             },
             {
                 "targets": [ 1 ],
@@ -36,17 +36,6 @@ var table =
                 "visible": true,
                 "searchable": true
             },
-            {
-                "targets": [ 4 ],
-                "visible": true,
-                "searchable": false
-            },
-            {
-                "targets": [ 5 ],
-                "visible": true,
-                "searchable": false
-            },
-
         ],
 
 
@@ -89,7 +78,17 @@ new $.fn.dataTable.Buttons( table, {
         {
             extend: 'print',
             text: 'Imprimer',
-            autoPrint: true
+            autoPrint: true,
+            exportOptions: {
+                columns: ':visible',
+            },
+            customize: function (win) {
+                $(win.document.body).find('table').addClass('compact').css('font-size', '9px');
+                $(win.document.body).find('tr:nth-child(odd) td').each(function(index){
+                    $(this).css('background-color','#D0D0D0');
+                });
+                $(win.document.body).find('h1').css('text-align','center');
+            }
         },
         {
             extend: 'copyHtml5',
@@ -101,11 +100,12 @@ new $.fn.dataTable.Buttons( table, {
         },
         {
             extend: 'pdfHtml5',
-            text: 'PDF',
+            text: 'PDF A3',
             orientation: 'landscape',
-            pageSize: 'LEGAL'
-        }
-    ],
+            pageSize: 'A3'
+            // A4 = 'legal'
+        }              
+    ]
 } );
 
 table.buttons( 0, null ).containers().appendTo( '#buttonPrint' );

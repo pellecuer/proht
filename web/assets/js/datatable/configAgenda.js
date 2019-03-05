@@ -1,16 +1,17 @@
 var table =
 
     $('#example').DataTable({
-         "fixedColumns": {
-            "leftColumns": 6
-        },
+         
         "scrollX": true,
         "scrollY": '50vh',
-        "scrollCollapse": true,
+        "rowReorder": true,
+        "fixedColumns": {
+            "leftColumns": 6
+        },       
         
        
         
-        "paging":   false,
+        "paging":   true,
         "ordering": true,
         "info":     true,
         "order": [[ 1, "desc" ]],

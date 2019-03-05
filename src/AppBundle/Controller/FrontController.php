@@ -16,6 +16,13 @@ class FrontController extends Controller
         return $this->redirectToRoute('showAgenda');
     }
     
+    /**
+     * @Route("/test", name="test")
+     */
+    public function testAction(Request $request)
+    {       
+        return $this->render('test.html.twig');
+    }
     
     /**
      * @Route("/seeplanning", name="seeplanning")
