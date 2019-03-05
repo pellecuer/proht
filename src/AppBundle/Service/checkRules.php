@@ -131,16 +131,6 @@ class checkRules {
         return $rAfter;
     }
     
-    public function HoursAroundH ($agent, $agendaTemp)
-    {        
-        $restBefore = RestBetweenDays($agent, $agendaTemp)[0];
-        $restAfter = RestBetweenDays($agent, $agendaTemp)[1]; 
-
-        return $restBefore + $restAfter;                   
-    }
-    
-    
-    
 
 
     
