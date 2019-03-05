@@ -13,10 +13,7 @@
     <hr>      
     <div class="bg-white my-3">
         <span class ="d-flex align-items-center justify-content-between">
-            <span>
-                <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <span><i class="fas fa-search"></i></span><span class="mx-2">Parcourir</span>
-                </button>
+            <span>                
                 {% if agent %}
                 <a class="btn btn-outline-dark" href="{{ path('showPreviousAgendaTemp', {'agent_Id': agent.id, 'previousDate': startDate|date("Y-m-d")}) }}">                                        
                     <span><i class="fas fa-step-backward"></i></span> -15 j <span> </span>
@@ -31,28 +28,6 @@
         </span>
     </div>
 </div>
-{#put form here#}
-
-<div class="col-md-8 offset-2 text-center collapse" id="collapseExample">
-        <form action="{{ path('showOneAgendaTemp', {'id': agent.id}) }}" method="post" class="form-control my-5 bg-menu shadow-lg" >
-        {{ form_start(form) }}
-            <h3 class="my-5"> <span><i class="fas fa-search"></i></span><span> Parcourir un agenda</span></h3>
-            <div class="mb-2 d-flex align-items-center justify-content-around bg-white rounded">
-                {{ form_row(form.interval, {'label': 'Choisir une durée', 'attr' : {'class':'form-check form-check-inline', 'type':'radio' }}) }}
-            </div>
-            <div class="mt-5 d-flex align-items-center justify-content-around ">
-                <span>{{ form_row(form.Envoyer)}}</span>
-            </div>
-            <div class="d-flex align-items-center justify-content-end mr-1">
-                <span data-toggle="collapse" data-target="#collapseExample" ><i class="fas fa-angle-up fa-3x"></i></span>
-            </div>
-        {{ form_rest(form) }}
-        {{ form_rest(form) }}
-        {{ form_end(form) }}
-        </form>
-    </div>
-
-{# END OF FORM #}
             
             
 <div class="container">            
@@ -72,6 +47,17 @@
                             {% endif %}
                             {% endfor %}
                         </th>
+                    </tr>
+                    <tr class="bg-muted">
+                        <th scope ="col" colspan="6" class="text-dark"></th>                        
+                        {% for dateBetween in dateBetweens %}
+                        <th scope ="col" colspan="3" class="text-dark">
+                            {% if (dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd')  == 1) or  (dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd')  == 15)%}
+                                {{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'MMMM')|capitalize  }}
+                            {% else %}                                
+                            {% endif %}                            
+                        {% endfor %}
+                        </th> 
                     </tr>
                     <tr class ="bg-dark">
                         <th scope ="col" colspan="7" class="text-info"></th>                        

@@ -79,6 +79,12 @@
                             {% endfor %}
                         </th>
                     </tr>
+                    <tr class="bg-muted">
+                        <th scope ="col" colspan="6" class="text-info"></th>
+                        <th scope ="col" colspan="{{ dateBetweens|length }}" class="text-dark">
+                            {{ dateBetweens.0.date|localizeddate('none', 'none', 'fr', null, 'MMMM Y')|capitalize  }}
+                        </th>             
+                    </tr>                   
                     <tr class ="bg-dark">
                         <th scope ="col" colspan="6" class="text-info"></th>                        
                         {% for dateBetween in dateBetweens %}
