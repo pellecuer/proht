@@ -47,18 +47,7 @@
                             {% endif %}
                             {% endfor %}
                         </th>
-                    </tr>
-                    <tr class="bg-muted">
-                        <th scope ="col" colspan="6" class="text-dark"></th>                        
-                        {% for dateBetween in dateBetweens %}
-                        <th scope ="col" colspan="3" class="text-dark">
-                            {% if (dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd')  == 1) or  (dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd')  == 15)%}
-                                {{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'MMMM')|capitalize  }}
-                            {% else %}                                
-                            {% endif %}                            
-                        {% endfor %}
-                        </th> 
-                    </tr>
+                    </tr>                    
                     <tr class ="bg-dark">
                         <th scope ="col" colspan="7" class="text-info"></th>                        
                         {% for dateBetween in dateBetweens %}
@@ -90,7 +79,10 @@
                         <th scope ="col" class="text-color-blue">NNI</th>
                         <th scope ="col" class="text-color-blue">Fonction</th>
                         {% for dateBetween in dateBetweens %}
-                            <th scope ="col" class="">{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}</th>
+                            <th scope ="col" class="">
+                                {{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'd') }}
+                                <br>{{ dateBetween.date|localizeddate('none', 'none', 'fr', null, 'MMM') }}                            
+                            </th>
                         {% endfor %}
                     </tr>
                 </thead>
