@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+use AppBundle\Service\initializeAgenda;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  
 class AgendaController extends Controller {        
@@ -423,6 +425,50 @@ class AgendaController extends Controller {
         $this->addFlash('success', 'L\'agent ' . $agent->getName() .  ' a bien été supprimé de l\'agenda');
            
         return $this->redirectToRoute('showAgenda');
+    }
+    
+    /**
+     * Initialize an agenda entity.
+     *
+     * @Route("/initialize/{agentId}", name="InitializeAgenda")    
+     * @Method("GET")
+     */
+    public function initializeAction($agentId, InitializeAgenda $initializeAgenda)
+    {
+        //Get the service Initialize
+        $agent = $this->getDoctrine()
+        ->getRepository(Agent::class)                
+        ->find($agentId);
+        
+        //Check Roles 
+            // if NOT ADMIN & HAS ROLE VALIDEUR : can't initialize agenda of other team
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')) {
+                if ($this->getUser()->getTeam() != $agent->getTeam()) {
+                    $this->addFlash('danger',
+                        'Vous ne pouvez pas initialiser l\'agenda d\'un agent d\'une autre équipe que la votre.'
+                    );
+                    return $this->redirectToRoute('showAgents', array(
+                        'id' => $agent->getTeam()->getId(),
+                    ));
+                }
+
+                // if NOT ADMIN & NOT VALIDEUR : can't initialize agenda
+            } else {
+                $this->addFlash('danger',
+                    'Vous ne pouvez pas initialiser l\'agenda car vous n\'êtes ni valideur, ni administrateur.'
+                );
+                return $this->redirectToRoute('showAgenda');
+            }
+        }    
+        
+        $team = $agent->getTeam();
+        $initializeAgenda->initialize($team, $agent);
+        $this->addFlash('success', 'L\'agenda a été réinitialisé pour l\'agent ' . $agent->getName());
+
+        return $this->redirectToRoute('showAgents', array(
+            'id' => $agent->getTeam()->getId(),
+        ));
     }
     
 }

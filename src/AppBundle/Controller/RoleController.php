@@ -36,7 +36,7 @@ class RoleController extends Controller {
      * @Route("/create", name="createRole")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function createAction(Request $request)
     {
         $role = new Role();
         $form = $this->createForm(RoleType::class, $role);

@@ -34,7 +34,7 @@ class EventController extends Controller {
     /**
      * @Route("/create", name="createEvent")     
      */
-    public function CreateAction(Request $request)
+    public function createAction(Request $request)
     {        
         //Can create Event if has role admin
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){

@@ -22,7 +22,7 @@ class SectionController extends Controller
      * @Route("/show", name="showSection")
      * @Method("GET")
      */
-    public function indexAction()
+    public function showAction()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -75,7 +75,7 @@ class SectionController extends Controller
      * @Route("/create", name="createSection")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function createAction(Request $request)
     {
         //Can create Section if has role admin
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
