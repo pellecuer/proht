@@ -3,7 +3,7 @@ var table =
     $('#example').DataTable({
          
         "scrollX": true,
-        "scrollY": '50vh',
+        "scrollY": '20vh',
         "rowReorder": true,
         "fixedColumns": {
             "leftColumns": 6
