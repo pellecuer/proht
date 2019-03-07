@@ -42,9 +42,7 @@ class EventType extends AbstractType
             
             ->add('eventType', ChoiceType::class, array(
                 'choices' => array(
-                    'Vacances scolaires' => 'Vacances scolaires',
-                    'Copat' => 'copat',
-                    'Rcd' => 'RCD',
+                    'Vacances scolaires' => 'Vacances scolaires',                    
                     'Arrêt de tranche' => 'Arrêt de tranche'
                     ),                
                 'constraints' => array(
