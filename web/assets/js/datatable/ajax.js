@@ -5,16 +5,18 @@ $(".editFor" ).on( "mouseenter", function(){
     $(this).attr('contenteditable', 'true');
 });
 
+$(".editFor" ).on( "mouseleave", function(){
+    //$( this).css( "background-color", "transparent");
+    //$('html,body').css('cursor','crosshair');
+    $(this).attr('contenteditable', 'false');
+});
+
 $(".editFor" ).on( "keypress", function(){
     //$('html,body').css('cursor','crosshair');
     $(this).text('');
 });
 
-  $(".editFor" ).on( "mouseleave", function(){
-    //$( this).css( "background-color", "transparent");
-    //$('html,body').css('cursor','crosshair');
-    $(this).attr('contenteditable', 'false');
-});
+  
 
 
     

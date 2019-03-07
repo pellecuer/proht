@@ -99,6 +99,20 @@ $(".editFor" ).on( "keypress", function(){
 
 
 
+//Next td on tab keydown
+$('.editFor').on( "keydown", function(e){
+    //$('html,body').css('cursor','crosshair');
+    if (e.keyCode === 9) {
+        e.preventDefault();
+        $(this).closest('td').next('td').next('td').mousemove();
+        //alert($(this).closest('td').next().text());
+        
+    // call custom function here
+  } 
+});
+
+
+
 //delete object in DB
 $('.trash').on( "click", function(){
     //$(this).closest('tr').remove();
