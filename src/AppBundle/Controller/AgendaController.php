@@ -3,40 +3,26 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Agenda;
-use AppBundle\Entity\Letter;
 use AppBundle\Entity\Agent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
 
-
-use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
- 
-
-
- 
-class AgendaController extends Controller {
-        
+class AgendaController extends Controller {        
     
 
 
@@ -57,22 +43,8 @@ class AgendaController extends Controller {
                 'placeholder' => 'Choisir une équipe',
                 'attr' => array('class' => 'form-control'),
                  'required' => false,
-                ))
-                
-            /*->add('interval', DateIntervalType::class, array(
-                'widget' => 'choice',
-                'allow_extra_fields' => true,
-                'with_years'  => false,
-                'with_months' => false,                
-                'with_weeks' => true,
-                'weeks' => range(0, 3),
-                'with_days'   => false,
-                'with_hours'  => false,                
-                'attr' => array('class' => 'form-control'),
-                'placeholder' => ['weeks' => 'Sélectionnez un nombre de semaines'],
-                'labels' => ['weeks' => ' '],
-             ))
-            */
+                ))                
+            
 
             ->add('interval', ChoiceType::class, array(
                 'choices' => [
@@ -83,8 +55,6 @@ class AgendaController extends Controller {
                 'expanded' => true,
                 'multiple' => false,
             ))
-
-
                 
             ->add('Envoyer', SubmitType::class, array(
                 'attr' => array('class' => 'btn btn btn-dark btn-lg'),
@@ -205,7 +175,7 @@ class AgendaController extends Controller {
      * 
      * @Method({"GET", "POST"})
      */
-    public function showNextAgendaAction(Request $request, UserInterface $agent, $nextDate, Team $team)
+    public function showNextAgendaAction(UserInterface $agent, $nextDate, Team $team)
     {    
         //dump ($nextDate);die;
         //build the form
@@ -316,7 +286,7 @@ class AgendaController extends Controller {
      * 
      * @Method({"GET", "POST"})
      */
-    public function showPreviousAgendaAction(Request $request, UserInterface $agent, $previousDate, Team $team)
+    public function showPreviousAgendaAction(UserInterface $agent, $previousDate, Team $team)
     {            
         //build the form
         $form = $this->createFormBuilder()
@@ -431,7 +401,7 @@ class AgendaController extends Controller {
      * @Security("is_granted('ROLE_ADMINISTRATEUR')", statusCode=404, message="Vous ne disposez pas de droits suffisants pour supprimer les agendas; Vous devez avoir le role Administrateur")
      * @Method("GET")
      */
-    public function deleteAction(Request $request, $agentId)
+    public function deleteAgendaAction($agentId)
     {
             
         $agent = $this->getDoctrine()

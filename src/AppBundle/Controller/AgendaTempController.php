@@ -7,7 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use AppBundle\Entity\Agenda;
 use AppBundle\Entity\AgendaTemp;
@@ -15,23 +16,17 @@ use AppBundle\Entity\Letter;
 use AppBundle\Entity\Agent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
-
 use AppBundle\Entity\Rule;
 
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 use AppBundle\Service\historyAgenda;
 use AppBundle\Service\checkRules;
 use AppBundle\Service\initializeAgenda;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 
@@ -298,36 +293,18 @@ class AgendaTempController extends Controller {
      /**
      * @Route("/showTeam", name="showAgendaTeam")     
      */
-    public function showAgendaTeamAction(Request $request, UserInterface $agent)
-    {
-        //build the form
-        $form = $this->createFormBuilder()              
-
-            ->add('interval', ChoiceType::class, array(
-                'choices' => [
-                    'Quinze jours'=> new \DateInterval('P15D'),
-                    'Un mois'=> new \DateInterval('P1M'),
-                    'Trois semaines'=> new \DateInterval('P3M'),
-                ],
-                'expanded' => true,
-                'multiple' => false,
-            )) 
-            ->add('Envoyer', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn btn-dark btn-lg'),
-            ))
+    public function showAgendaTeamAction(UserInterface $agent)
+    {        
+        $dateInterval = new \DateInterval('P15D');
+        $team = $this->getUser()->getTeam();
         
-            ->getForm();
-        
-        //get date from Form
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {             
-            $data = $form->getData();
-            $dateInterval = $data['interval']; 
-        } else {
-            $dateInterval = new \DateInterval('P15D');
+        if(!$team){
+             $this->addFlash('danger',
+                        'Pour visualiser cette page vous devez faire partie d\'une équipe' 
+                    );
+                    return $this->redirectToRoute('showAgenda');
         }
         
-        $team = $this->getUser()->getTeam();
         //Check Roles 
             // if ROLE AGENT : can't modify other agendas        
             if (!$this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){                
@@ -335,8 +312,7 @@ class AgendaTempController extends Controller {
                         'Vous ne pouvez pas visualiser les agendas en attente de validation car vous n\'êtes pas valideur ' 
                     );
                     return $this->redirectToRoute('showAgenda');
-            }
-        
+            }   
         
         $startDate = $team->getEvent()->getStartDate();        
         $immutable = \DateTimeImmutable::createFromMutable($startDate); 
@@ -409,8 +385,7 @@ class AgendaTempController extends Controller {
             'team' => $team,
             'startDate' => $startDate,
             'endDate' => $endDate,
-            'holidays' => $holidays,
-            'form'=>$form->createView(),
+            'holidays' => $holidays,            
              ]);
     }
 
@@ -694,9 +669,6 @@ class AgendaTempController extends Controller {
             }
 
 
-
-            
-
             //crée un array d'array des agendas
             $team = $agent->getTeam();
             $startDate = $team->getEvent()->getStartDate();           
@@ -769,8 +741,7 @@ class AgendaTempController extends Controller {
      * @ParamConverter("agent", options={"id": "agent_Id"})
      */
     public function showNextAction(Agent $agent, $nextDate)
-    {
-        
+    {        
             //Check Roles 
             // if ROLE AGENT : can't modify other agendas        
              if ($this->get('security.authorization_checker')->isGranted('ROLE_VALIDEUR')){
@@ -991,9 +962,6 @@ class AgendaTempController extends Controller {
     
     
     
-    
-    
-    
     /**
      * Persist temp in agenda entity.
      *
@@ -1090,9 +1058,7 @@ class AgendaTempController extends Controller {
                 );
                 return $this->redirectToRoute('showAgenda');
             }
-        }
-        
-        
+        }    
         
         $team = $agent->getTeam();
         $initializeAgenda->initialize($team, $agent);
