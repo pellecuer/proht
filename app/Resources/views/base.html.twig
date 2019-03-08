@@ -29,7 +29,7 @@
                     </a> 
                 </div>
             </div>
-            <div class="row align-items-end justify-content-between py-2 rounded" style="background-color: #09357A; min-height: 100px;">
+            <div class="row align-items-end justify-content-between py-2 rounded custom-upper-headband" >
                 <span class="ml-5 text-white">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         {{ app.user.firstname|capitalize }} {{ app.user.username|upper }}
@@ -49,9 +49,9 @@
                 </span>
                 <span class="mr-2 text-white">
                     {% if  app.user %}
-                        <a class="btn redEDf mx-1" href="{{ path('logout') }}" role="button">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
+                        <a class="btn btn-custom-redEDf mx-1" href="{{ path('logout') }}" role="button">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
                     {% else %}
-                        <a class="btn greenEDf mx-1" href="{{ path('login') }}" role="button"> Connexion <i class="fas fa-sign-in-alt"></i></a>
+                        <a class="btn btn-custom-greenEDf mx-1" href="{{ path('login') }}" role="button"> Connexion <i class="fas fa-sign-in-alt"></i></a>
                     {% endif %}                    
                 </span>
                 

@@ -1,95 +1,26 @@
 
 
-footer {    
-    position: absolute;   
-    bottom: -40px;
-    width:100%;
-}
+
 
 h1, h2, h3 {
     color: #09357A;
     font-weight: bold;
 }
 
-.title-EDF {
-    font-size: 4em;
-    font-weight:bold;
+
+/* header */
+
+.custom-upper-headband {
+    background-color: #09357A;
+    min-height: 100px;
 }
 
-.text-color-blue {
-    color: #09357A;
+footer {    
+    position: absolute;   
+    bottom: -40px;
+    width:100%;
 }
-
-/* buttons */
-.btn-custom {
-	background-color: #FE5815;
-        color:white;
-}
-
-/* buttons sucess*/
-.btn-custom-bg {
-    
-}
-
-
- /* font awesome */
-
-.fa-sign-out-alt, fa-sign-in-alt {
-    color:#ffffff;
-}
-
-.fa-circle {
-   color: #ffffff;
-}
-
-.fa-plus {
-   color: #ffffff;
-}
-
-
-.fa-white {
-    color:#ffffff;
-}
-
-.fa-trash-alt {
-    color: #09357A;
-}
-
-.fa-history {
-     color: #09357A;
-}
-
-
-.fa-edit {
-     color: #868e96;
-}
-
-
-
-.homeCards {
-	position:relative;
-	top: 20px;
-}
-
-.redEDf {
-	background-color: #FE5815;
-        color:#ffffff;
-}
-
-.greenEDf {
-	background-color: #009933;
-        color:#ffffff;
-}
-
-.cardh {
-    box-shadow: 1px 2px #888888;
-	background-color: #09357A;
-}
-
-.card {
-	box-shadow: 1px 2px #888888;
-	border-color: #09357A;
-}
+ 
 
 .bg-holidays {
     background-color: #FE5815;
@@ -100,26 +31,20 @@ h1, h2, h3 {
     background-color: #e3f2fd;
 }
 
-.bg-stopTranche {
-    background-color: #FFFF00;
-    border: solid 1px #ffffff;
+
+
+/* buttons */
+.btn-custom-redEDf {
+	background-color: #FE5815;
+        color:#ffffff;
+}
+
+.btn-custom-greenEDf {
+	background-color: #009933;
+        color:#ffffff;
 }
 
 
-.bg-h {
-    background-color: #cd0000;
-    border: solid 1px #ffffff;
-}
-
-.bg-r {
-    background-color: #008b00;
-    border: solid 1px #ffffff;
-}
-
-.bg-b {
-    background-color: #09357A;
-   
-}
 
 /*Style of print bottom data table.net*/
 .buttons-print {
@@ -150,19 +75,40 @@ h1, h2, h3 {
   border-radius: 5px;
 }
 
-.btn-edf-Color{
-  background-color: #09357A;
+
+
+
+ /* font awesome */
+
+.fa-sign-out-alt, fa-sign-in-alt {
+    color:#ffffff;
 }
 
-.text-orange-edf {
-  color: #FE5815;
+.fa-circle {
+   color: #ffffff;
 }
 
-.text-blue-edf {
+.fa-plus {
+   color: #ffffff;
+}
+
+
+
+.fa-trash-alt {
     color: #09357A;
 }
 
-ul {
+.fa-history {
+     color: #09357A;
+}
+
+
+.fa-edit {
+     color: #868e96;
+}
+
+
+#description {
   list-style-type: none;
   margin: 0;
   padding: 0;
