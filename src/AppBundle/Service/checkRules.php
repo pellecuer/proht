@@ -193,19 +193,6 @@ class checkRules {
                 'date' => $dayBefore,                
             ]);
 
-        //if no DayBefore or if letter before = R Or H, set intervalBefore to minimum legal (11h)
-        $HLetter = $this->em
-            ->getRepository(Letter::class)
-            ->findOneBy([
-                'letter' =>'H',
-                ]);
-        $RLetter = $this->em
-            ->getRepository(Letter::class)
-            ->findOneBy([
-                'letter' =>'R',
-            ]);
-
-
 
          //check the dateAfter
         $dayAfter = $date->modify('tomorrow');
@@ -218,7 +205,6 @@ class checkRules {
 
 
         //Check interval before and after
-
         $immutableDay = \DateTimeImmutable::createFromMutable($agendaTemp->getDate());
 
         //set startDateTime Day on date
@@ -259,21 +245,41 @@ class checkRules {
         $intervalAfter = $endDateTimeDay->diff($startDateTimeDayAfter)->format('%H:%I:%S');
         }
        
-        //$intervalAfter =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
-        // $intervalBefore =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
-
-        if (!$AgendaTempBefore || $AgendaTempBefore->getLetter()->getLetter() == 'H' || $AgendaTempBefore->getLetter()->getLetter() == 'R')  {
+        
+       
+        
+        
+        
+        //if no DayBefore or if letter before = R Or H, set intervalBefore to minimum legal (11h)
+        if (!$AgendaTempBefore || $AgendaTempBefore->getLetter()->getLetter() == 'H' || $AgendaTempBefore->getLetter()->getLetter() == 'R' )  {
             //$intervalBefore =  new \DateInterval('PT11H');
             $intervalBefore =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
             $endDateTimeDayBefore = $startDateTimeDay->modify('-11 hour');
         }
 
 
-        //if no DayAfter or if letter before = R Or H, set intervalBefore to minimum legal (11h)
-        if (!$AgendaTempAfter || $AgendaTempAfter->getLetter() == $HLetter || $AgendaTempAfter->getLetter()->getLetter() == $RLetter)  {
+        //if no DayAfter or if letter after = R Or H, set intervalAfter to minimum legal (11h)
+        if (!$AgendaTempAfter || $AgendaTempAfter->getLetter()->getLetter() == 'H' || $AgendaTempAfter->getLetter()->getLetter() == 'R')  {
             //$intervalAfter =  new \DateInterval('PT11H');
-            $intervalBefore =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
+            $intervalAfter =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
             $startDateTimeDayAfter = $endDateTimeDay->modify('+11 hour');
+        }
+        
+        
+         //if $agendaTemp == R set before and after to 11       
+        if ($agendaTemp->getLetter()->getLetter() == 'R'){
+            $intervalBefore =  \DateInterval::createFromDateString('11 hours')->format('%H:%I:%S');
+            $intervalAfter = $intervalBefore;
+             $endDateTimeDayBefore = $startDateTimeDay->modify('-11 hour');
+             $startDateTimeDayAfter = $endDateTimeDay->modify('+11 hour');
+        }
+        
+        //if $agendaTemp == H set before and after to 24   
+        if ($agendaTemp->getLetter()->getLetter() == 'R'){
+            $intervalBefore =  \DateInterval::createFromDateString('24 hours')->format('%H:%I:%S');
+            $intervalAfter = $intervalBefore;
+             $endDateTimeDayBefore = $startDateTimeDay->modify('-24 hour');
+             $startDateTimeDayAfter = $endDateTimeDay->modify('+24 hour');
         }
 
 
@@ -311,7 +317,7 @@ class checkRules {
         } else {
             return false;
         }        
-    }
+    }    
 
 
 }
