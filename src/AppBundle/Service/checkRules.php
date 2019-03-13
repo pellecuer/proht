@@ -244,11 +244,7 @@ class checkRules {
         //Check intervalBefore and intervalAfter
         $intervalAfter = $endDateTimeDay->diff($startDateTimeDayAfter)->format('%H:%I:%S');
         }
-       
-        
-       
-        
-        
+               
         
         //if no DayBefore or if letter before = R Or H, set intervalBefore to minimum legal (11h)
         if (!$AgendaTempBefore || $AgendaTempBefore->getLetter()->getLetter() == 'H' || $AgendaTempBefore->getLetter()->getLetter() == 'R' )  {
