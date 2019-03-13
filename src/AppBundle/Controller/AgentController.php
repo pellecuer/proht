@@ -64,7 +64,23 @@ class AgentController extends Controller
     }
     
     
+     /**
+        * @Route("/show/{id}", name="findAgent")
+     */
+    public function findAgentAction($id)
+    {        
+        $agent = $this->getDoctrine()->getRepository(Agent::class)
+                ->find($id); 
+        if (!$agent) {
+            throw $this->createNotFoundException(
+                'No agent found'
+            );
+        }        
         
+        return $this->render('agent/show.html.twig', array(
+                'agents' => $agent,
+            ));
+    }   
     
     /**
      * @Route("/show", name="showagent")     
