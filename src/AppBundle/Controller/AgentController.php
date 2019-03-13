@@ -78,7 +78,7 @@ class AgentController extends Controller
         }        
         
         return $this->render('agent/show.html.twig', array(
-                'agents' => $agent,
+                'agent' => $agent,
             ));
     }   
     
