@@ -106,7 +106,7 @@ new $.fn.dataTable.Buttons( table, {
 
 table.buttons( 0, null ).containers().appendTo( '#buttonPrint' );
 
- new $.fn.dataTable.FixedColumns( table, {
-        leftColumns: 6
-        
-    } );
+new $.fn.dataTable.FixedColumns( table, {
+       leftColumns: 6
+
+   } );

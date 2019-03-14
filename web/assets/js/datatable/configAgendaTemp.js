@@ -1,8 +1,11 @@
 var table =
 
     $('#example').DataTable({
+        
+        "scrollX": true,
+        "scrollCollapse": true,
         "paging":   true,
-        "ordering": true,
+        "ordering": false,
         "info":     true,
         "order": [[ 1, "desc" ]],
 
@@ -102,3 +105,8 @@ new $.fn.dataTable.Buttons( table, {
 } );
 
 table.buttons( 0, null ).containers().appendTo( '#buttonPrint' );
+
+new $.fn.dataTable.FixedColumns( table, {
+       leftColumns: 6
+
+   } );

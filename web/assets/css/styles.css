@@ -92,20 +92,31 @@ footer {
    color: #ffffff;
 }
 
-
+.fa-eye{
+    color: #868e96;
+}
 
 .fa-trash-alt {
-    color: #09357A;
+    color: #868e96;
 }
 
 .fa-history {
-     color: #09357A;
+     color: #868e96;
 }
 
 
 .fa-edit {
      color: #868e96;
 }
+
+.fa-edit {
+     color: #868e96;
+}
+
+.fa-home {
+    color: #09357A;
+}
+
 
 
 #description {

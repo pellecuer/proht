@@ -34,7 +34,12 @@
                             <th>Voir</th>
                             <th>Editer</th>
                             <th>Supprimer</th>
-                            <th>initialiser l'agenda pour la période </th>
+                             {% if is_granted('ROLE_VALIDEUR') %}
+                             <th>initialiser l'agenda pour la période </th>                            
+                            {% else %}
+                               <th> </th>
+                            {% endif %}
+                            
                         </tr>
                     </thead>                    
                     <tbody> 
@@ -47,7 +52,11 @@
                                 <td><a href="{{ path('findAgent', { 'id': agent.id }) }}"><i class="fas fa-eye"></i></a></td></td>
                                 <td><a href="{{ path('editAgent', { 'id': agent.id }) }}"><i class="fas fa-edit"></i></a></td>
                                 <td><a href="{{ path('removeAgent', { 'id': agent.id }) }}"><i class="fas fa-trash-alt"></i></a></td>
-                                <td class="initialize"><a class="btn btn-success btn-sm" href="{{ path('InitializeAgenda', { 'agentId': agent.id }) }}" role="button">Initialiser</a></td>
+                                {% if is_granted('ROLE_VALIDEUR') %}
+                                    <td class="initialize"><a class="btn btn-success btn-sm" href="{{ path('InitializeAgenda', { 'agentId': agent.id }) }}" role="button">Initialiser</a></td>
+                                {% else %}
+                                    <td> </td>
+                                {% endif %}
                             </tr>
                         {% endfor %}                       
                     </tbody>

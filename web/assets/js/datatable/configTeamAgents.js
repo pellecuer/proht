@@ -7,10 +7,10 @@ var table =
         "order": [[ 1, "desc" ]],
 
         "columnDefs": [
-            {
-                "targets": [ 1 ],
+             {
+                "targets": [ 0 ],
                 "visible": false,
-                "searchable": false
+                "searchable": true
             },
             {
                 "targets": [ 1 ],

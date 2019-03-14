@@ -45,23 +45,11 @@ class AgendaController extends Controller {
                 'placeholder' => 'Choisir une équipe',
                 'attr' => array('class' => 'form-control'),
                  'required' => false,
-                ))                
-            
-
-            ->add('interval', ChoiceType::class, array(
-                'choices' => [
-                    'Quinze jours'=> new \DateInterval('P15D'),
-                    'Un mois'=> new \DateInterval('P1M'),
-                    'Trois semaines'=> new \DateInterval('P3M'),
-                ],
-                'expanded' => true,
-                'multiple' => false,
-            ))
+                ))
                 
             ->add('Envoyer', SubmitType::class, array(
                 'attr' => array('class' => 'btn btn btn-dark btn-lg'),
-            ))
-        
+            ))        
             ->getForm();
         
             
@@ -69,21 +57,11 @@ class AgendaController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) { 
             //if role admin ok, else redirect
-            $data = $form->getData();
-            $dateInterval = $data['interval'];
-            $team = $data['Team'];
-            if (!$team){
-                $team = $this->getUser()->getTeam();
-            }
-            
-            if (!$team){
-                 $this->addFlash('danger',
-                        'Merci de sélectionner une équipe'
-                );
-                return $this->redirectToRoute('showAgenda'); 
-            }
+            $data = $form->getData();            
+            $team = $data['Team'];            
             
             $startDate = $team->getEvent()->getStartDate();
+            $endDate = $team->getEvent()->getEndDate();
             $agents = $team->getAgents();
             
             //prohibit show team<>myTeam unless granted Admin
@@ -96,29 +74,31 @@ class AgendaController extends Controller {
             } 
             
         } else {            
-            //if form is not submitted, initialize defaults variables
-            $dateInterval = new \DateInterval('P15D');
-            $team = $this->getUser()->getTeam();
+            //if form is not submitted, initialize defaults variables            
+            $team = $this->getUser()->getTeam(); 
             
-            if ($team) {
+            if (!$team){                
+                $interval15Day = new \DateInterval('P15D');
+                $startDate = new \DateTime('now');
+                $immutableStart = \DateTimeImmutable::createFromMutable($startDate);
+                $endDate = $immutableStart->add($interval15Day);
+                $agents = [];
+                
+            } else {                
                 $startDate = $team->getEvent()->getStartDate();
-                $agents = $team->getAgents();
-
-            } else {
-              $startDate = new \DateTime('now');
-              $agents = [];              
-            } 
+                $endDate = $team->getEvent()->getEndDate();
+                $agents = $team->getAgents(); 
+            }  
         }
 
         //build ArrayDate
-        $immutable = \DateTimeImmutable::createFromMutable($startDate);        
-        $endDate = $immutable->add($dateInterval);
-        $interval = new \DateInterval('P1D');
+        $immutable = \DateTimeImmutable::createFromMutable($startDate); 
+        $intervalOneDay = new \DateInterval('P1D');
         $arrayDates = [];
         
         while ($immutable<$endDate){
             $arrayDates[] = $immutable;
-            $immutable = $immutable->add($interval);
+            $immutable = $immutable->add($intervalOneDay);
         }
 
         //build holidays
