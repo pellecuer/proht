@@ -34,12 +34,7 @@
                             <th>Code arrêt</th>
                             <th></th>
                             <th></th>
-                            <th>test</th>
-                            <th>test</th>
-                            <th>test</th>
-                            <th>test</th>
-                            <th>test</th>
-                            <th>test</th>
+                            
                         </tr>
                     </thead>                    
                     <tbody> 
@@ -50,13 +45,7 @@
                                 <td class="editFor">{{ service.chief }}</td>
                                 <td class="editFor">{{ service.event.code }}</td>                               
                                 <td><a href="{{ path('editService', { 'id': service.id }) }}"><i class="fas fa-edit"></i></a></td>
-                                <td><a href="{{ path('deleteService', { 'id': service.id }) }}"><i class="fas fa-trash-alt"></i></a></td>
-                                <td>{{ service.id }}</td>
-                                <td>{{ service.id }}</td>
-                                <td>{{ service.id }}</td>
-                                <td>{{ service.id }}</td>
-                                <td>{{ service.id }}</td>
-                                <td>{{ service.id }}</td>
+                                <td><a href="{{ path('deleteService', { 'id': service.id }) }}"><i class="fas fa-trash-alt"></i></a></td>                                
                             </tr>
                         {% endfor %}
                     </tbody>

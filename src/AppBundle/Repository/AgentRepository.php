@@ -12,7 +12,7 @@ class AgentRepository extends \Doctrine\ORM\EntityRepository
 {
 
     /**
-     * @param $agent
+     * @param $agentsId
      */
     public function findMyAgent($agentsId)
     {

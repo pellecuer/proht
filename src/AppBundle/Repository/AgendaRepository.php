@@ -31,7 +31,7 @@ class AgendaRepository extends EntityRepository
     }
     
     /**
-     * @param $startDate, $endDate, $agendaId     
+     * @param $startDate, $endDate, $agent    
      */
     public function findAllBetweenDate($startDate, $endDate, $agent)
     {
@@ -53,7 +53,7 @@ class AgendaRepository extends EntityRepository
     
     
     /**
-     * @param $startDate, $endDate, $event
+     * @param $startDate, $endDate,
      * @return Event[]
      */
     public function findEventBetweenDate($startDate, $endDate)
@@ -69,7 +69,7 @@ class AgendaRepository extends EntityRepository
     }
     
     /**
-     * @param $startDate, $endDate, $agendaId      
+     * @param $startDate, $endDate, $agent     
      */
     public function deleteAgentAgendaBetweenDate($startDate, $endDate, $agent)
     {
@@ -87,7 +87,7 @@ class AgendaRepository extends EntityRepository
     }
     
     /**
-     * @return Agenda[] Returns an array of Agenda objects
+     * @param $agent  
      */
     public function findAgent($agent)
     {
@@ -137,7 +137,7 @@ class AgendaRepository extends EntityRepository
     }
     
     /**
-     * @param $team, $user     
+     * @param $date, $agent     
      */
     public function findAgendaToUpdate($date, $agent)
     {

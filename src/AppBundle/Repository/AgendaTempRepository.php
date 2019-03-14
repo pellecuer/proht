@@ -14,7 +14,7 @@ class AgendaTempRepository extends EntityRepository
 {
     
     /**
-     * @return Agenda[] Returns an array of Agenda objects
+     * @return Agenda[] Returns an array of AgendaTemp objects
      */
     public function findAgentBetweenDate($startDate, $endDate, $agent)
     {
@@ -26,7 +26,7 @@ class AgendaTempRepository extends EntityRepository
             ->setParameter('end', $endDate)
             ->setParameter('agent', $agent)
             ->orderBy('a.date', 'ASC')
-            ->setMaxResults(1000)
+            ->setMaxResults(10000)
             ->getQuery()
             ->getResult()
             ;
@@ -259,7 +259,7 @@ class AgendaTempRepository extends EntityRepository
    }
 
     /**
-     * @param $agent
+     * @param $agentInTeam
      */
     public function findAgentIdByAgendaTemp($agentInTeam)
     {
@@ -275,7 +275,7 @@ class AgendaTempRepository extends EntityRepository
     }
 
     /**
-     * @param $agent
+     * @param $agentsId
      */
     public function findMyAgent($agentsId)
     {

@@ -5,7 +5,7 @@ var table =
         "scrollX": true,
         "scrollCollapse": true,
         "paging":   true,
-        "ordering": true,
+        "ordering": false,
         "info":     true,
         "order": [[ 1, "desc" ]],
 

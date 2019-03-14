@@ -18,6 +18,9 @@ class checkRules {
 
 
 
+    /**
+     *  Fonction de recherche du début de semaine (dimanche pour l’objet en fonction de la date. 
+     */
     public function StartLegalWeek(\DateTimeImmutable $date)
     {        
         if ($date->format('w') == 0) {
@@ -29,6 +32,10 @@ class checkRules {
         return $startLegalWeek;
     }
     
+    
+    /**
+     *  Fonction de recherche de la fin de semaine (dimanche pour l’objet en fonction de la date. 
+     */
     public function EndLegalWeek(\DateTimeImmutable $date)
     {        
         $endLegalWeek = $date->modify('next sunday 00:00');
@@ -36,6 +43,10 @@ class checkRules {
         return $endLegalWeek;
     }
     
+    
+    /**
+     *  Fonction de vérification que la semaine est complète (du dimanche au dimanche).
+     */
     public function isLegalWeekFull($startLegalWeek, $endLegalWeek, $agent)
     {        
         $AgendaTempStartLegalWeek = $this->em
@@ -53,7 +64,11 @@ class checkRules {
         }
     }
     
-     public function ArrayWeek ($startLegalWeek, $endLegalWeek, $agent)
+     
+    /**
+     *  Fonction de vérification que la semaine est complète (du dimanche au dimanche).
+     */
+    public function ArrayWeek ($startLegalWeek, $endLegalWeek, $agent)
     {        
        $arrayWeek = $this->em
                     ->getRepository(AgendaTemp::class)
@@ -63,7 +78,9 @@ class checkRules {
     } 
     
     
-    
+    /**
+     *  Renvoie le nombre d’heures par semaine
+     */
     public function HoursPerWeek($arrayWeeks)
     {
         $hoursPerWeek = 0;
@@ -79,7 +96,9 @@ class checkRules {
         return $hoursPerWeek;
     }
     
-    
+    /**
+     *  Fonction de recherche de lettre H dans l'agenda de l'agent sur la semaine légale sélectionnée.
+     */
     public function LookForH($startLegalWeek, $endLegalWeek, $agent, $HLetter)
     {
         //Check if H in legal week        
@@ -90,6 +109,9 @@ class checkRules {
         return $H;
     }
     
+    /**
+     *  Fonction de recherche de lettre H sur la semaine suivante dans l'agenda de l'agent sur la semaine légale sélectionnée
+     */
     public function LookForNextH($endLegalWeek, $agent, $HLetter)
     {
         //Check if H in legal week + 7
@@ -104,7 +126,9 @@ class checkRules {
     }    
     
      
-    
+    /**
+     *  Fonction de recherche du R avant H = obsolète
+     */
     public function RBeforeH ($H, $agent, $RLetter)
     {
         $dateBeforeH =$H[0]
@@ -117,7 +141,10 @@ class checkRules {
         
         return $rBefore;
     }
-
+    
+    /**
+     *  Fonction de recherche du R après H = obsolète
+     */
     public function RAfterH ($H, $agent, $RLetter)
     {        
          $dateAfterH = $H[0]
@@ -132,8 +159,10 @@ class checkRules {
     }
     
 
-
     
+    /**
+     *  Fonction de calcul de la moyenne d'heure par semaine.
+     */
     public function AverageHourPerWeek($agent, $checkRules, $date, $startLegalWeek)
     {
         //find AgendaTemp - X semaines
@@ -180,7 +209,9 @@ class checkRules {
         
         
 
-
+    /**
+     *  Fonction de calcul du temps de repos avant et après la date de lobjet agendaTemp
+     */
     public function RestBetweenDays($agent, $agendaTemp)
     {
         //check the dateBefore
@@ -293,6 +324,9 @@ class checkRules {
 
     }
     
+    /**
+     *  Fonction de vérification que la semaine est complète (du dimanche au dimanche).
+     */
     public function ForbidModifyBefore(\DateTimeImmutable $date)
     {        
         $now = new \DateTime("now");
@@ -304,7 +338,9 @@ class checkRules {
         }
     }
     
-    
+    /**
+     *  Fonction de vérification que la semaine est complète (du dimanche au dimanche).
+     */
     public function ForbidModifyAfter(\DateTimeImmutable $date, $dateMinModifyOk)
     {
         if($date < $dateMinModifyOk ){            

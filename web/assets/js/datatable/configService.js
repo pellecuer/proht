@@ -1,15 +1,6 @@
 var table =
 
-    $('#example').DataTable({
-        "fixedColumns": {
-            "leftColumns": 1
-        },
-        "scrollX": true,
-        "scrollY": '30vh',
-        "scrollCollapse": true,
-        "rowReorder": true,
-        
-        
+    $('#example').DataTable({        
         "paging":   false,
         "ordering": true,
         "info":     true,
