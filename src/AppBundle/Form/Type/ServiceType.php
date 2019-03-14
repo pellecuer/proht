@@ -32,7 +32,7 @@ class ServiceType extends AbstractType
                 'attr' => array('class' => 'form-group mb-2')  
                 ))
                 ->add('Envoyer', SubmitType::class, array(
-            'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
+            'attr' => array('class' => 'btn btn-outline-dark'),
             )); 
     }/**
      * {@inheritdoc}
