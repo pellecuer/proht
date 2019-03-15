@@ -39,7 +39,7 @@ class TeamType extends AbstractType
                 
                 ->add('Envoyer', SubmitType::class, array(
             'attr' => array(
-                'class' => 'btn btn-primary mb-2 sendDate'),                
+                'class' => 'btn btn-outline-dark'),                
             ));
     }
     

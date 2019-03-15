@@ -41,7 +41,7 @@ class LetterType extends AbstractType
                     ))
                 
                 ->add('Envoyer', SubmitType::class, array(
-            'attr' => array('class' => 'btn btn-primary mb-2 sendDate'),
+            'attr' => array('class' => 'btn btn-outline-dark'),
             )); 
     }/**
      * {@inheritdoc}
