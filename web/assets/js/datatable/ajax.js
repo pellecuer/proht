@@ -28,6 +28,7 @@ $('.editFor').on( "change keyup", function(){
     $('.editFor').css({"border": ""});
 
     $.ajax({
+        //url:'/agendaTemp/edit',
         url:'/agendaTemp/edit',
         type: "POST",
         dataType: "json",
